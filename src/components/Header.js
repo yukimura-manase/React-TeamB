@@ -4,7 +4,8 @@ import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 
 const Header=()=>{
-  const history=useHistory();
+
+  const history = useHistory();
   const handleLink = path =>history.push(path);
 
   const login=()=>{
@@ -24,6 +25,7 @@ const Header=()=>{
       <button onClick={logout}>ログアウト</button>
     </nav>
   )
+
 }
 
 export default Header;
