@@ -1,0 +1,66 @@
+
+< Firestoreのデータ構造の特徴 >
+1.collection => 配列形式
+2.Document => オブジェクト形式
+
+< DBの商品情報データ構造 >
+Items(collection・配列形式) => item(Document・オブジェクト形式(単体))
+
+注意点:firestore上でのDocumentは、collectionに内包される関係性にあり、index番号で管理される。
+=> つまり、firestoreでitem1とかitem2とか設定してても、データを持ってくるときには、collection配列の中にあるオブジェクト群の無名の1つとなっている。
+=> index番号や識別子となるIDで操作する。
+
+Items[item1,item2,item3・・・]
+
+item1
+{ ID:1,
+  contents:"人気の定番具材「ハム」と「チキン」をセットにした食べごたえ抜群のサンドイッチです"
+  imageURL:"/img_coffee/1.jpg"
+  name:"Gorgeous4サンド"
+  priceL:700
+  priceM:480
+}
+
+< DBのトッピング情報データ構造 >
+subItems(collection・配列形式) => item(Document・オブジェクト形式)
+
+Items[item1,item2,item3・・・]
+
+{
+    ID:1,
+    name:"コーヒークリーム",
+    priceL:300,
+    priceM:200
+}
+
+< DBのユーザーごとのカート情報のデータ構造 >
+
+users(collection・配列形式) => userID(ID自動割り振り・Document) => carts(collection・配列形式) => cart(ID自動割り振り・Document)
+=> cartの中身はDocument
+
+{
+    itemlist:[item1,item12],
+    address:"東京都港区",
+    addressNumber:"111-2222",   
+    mail:"aaa@icloud.com",
+    orderDate:"2021-08-30",
+    orderID:"YGrYl05X6bq3lrADhf9y",
+    orderTime:11,
+    phoneNumber:"090-1111-2222",
+    status:"2",
+    user:"佐藤"
+}
+
+itemlistの中身は、item1などの{}(オブジェクト)が入っている！
+
+item1
+{ ID:1,
+  contents:"人気の定番具材「ハム」と「チキン」をセットにした食べごたえ抜群のサンドイッチです"
+  imageURL:"/img_coffee/1.jpg"
+  name:"Gorgeous4サンド"
+  priceL:700
+  priceM:480
+}
+
+
+
