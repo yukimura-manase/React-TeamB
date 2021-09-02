@@ -2,6 +2,7 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 const Header=()=>{
   const history=useHistory();
