@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Link
+  } from 'react-router-dom' // Router設定仮置き
 
 export const OrderFinish = () => {
     
@@ -12,8 +18,8 @@ export const OrderFinish = () => {
             <div className="container">		
                 <div>
                     <div>
-                    <h1>ThankYou!!</h1>
-                    <h3>決済が完了しました！</h3>
+                    <h1>ThankYou</h1>
+                    <h3>決済が完了しました。</h3>
                         <div>
                             <p>この度はご注文ありがとうございます。</p>
                         </div>
@@ -22,10 +28,14 @@ export const OrderFinish = () => {
 
                 <div>
                     <div>					
-                        <button >トップ画面を表示する</button>			
+                        <button  onClick={()=>handleLink('/App')}>トップ画面を表示する</button>			
                     </div>
                 </div>
             </div>
+
+
         </div>
     )
 }
+
+// export default OrderFinish;
