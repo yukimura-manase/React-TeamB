@@ -1,11 +1,11 @@
 import React from 'react';
-import {useHistory} from 'react-router-dom';
+import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 
 const Header=()=>{
 
-  const history = useHistory();
+  const history = useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
   const handleLink = path =>history.push(path);
 
   const login=()=>{
@@ -19,8 +19,8 @@ const Header=()=>{
 
   return(
     <nav>
-      <button onClick={()=>handleLink('/')}>一覧</button>
-      <button onClick={()=>handleLink('/cart')}>ショッピングカートへ</button>
+      <button onClick={ ()=>handleLink('/') }>一覧</button>
+      <button onClick={ ()=>handleLink('/cart') }>ショッピングカートへ</button>
       <button onClick={login}>ログイン</button>
       <button onClick={logout}>ログアウト</button>
     </nav>

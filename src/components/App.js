@@ -1,6 +1,6 @@
 import React from 'react';
-import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
-import {useHistory} from "react-router-dom"
+//import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
+//import {useHistory} from "react-router-dom"
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,13 +11,34 @@ import {
 import  '../service/firebase'
 import Header from './Header'
 
+import {Cart} from './Cart'
+
+
+
 const App = ()=> {
+  
   return (
-    <React.Fragment>
+    <Router>
+
+      <div>
+
       <h1>TeamBの制作物</h1>
+
       <Header/>
-    </React.Fragment>
-  );
+
+      {/* Switchでルーティング(アクセス経路)設定の世界 */}
+
+       <Switch>
+         <Route path='/cart' component={Cart} />
+         
+       </Switch>
+      
+
+        </div>
+    </Router>
+  )
+
 }
 
 export default App;
+
