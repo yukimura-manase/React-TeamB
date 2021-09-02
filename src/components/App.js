@@ -15,12 +15,8 @@ import  '../service/firebase'
 import Header from './Header'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 
-const currySelector = state => state.StoreState.loginUser
-
 const App = ()=> {
   const dispatch = useDispatch()
-  const curry = useSelector(currySelector)
-  console.log(curry)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {

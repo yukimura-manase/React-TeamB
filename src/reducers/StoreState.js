@@ -4,7 +4,7 @@ import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM } from '../acti
 import firebase from 'firebase/compat/app'
 
 const initialState = {
-  loginUser: {},
+  loginUser: null,
   Curry: [],
   Cart: [],
 }
@@ -13,57 +13,77 @@ const initialState = {
 const StoreState = (state = initialState, action) => {
   switch (action.type) {
     case SETLOGINUSER:
-      let loginUser = Object.assign({},state.loginUser)
+      let loginUser = state.loginUser
       loginUser = action.loginUser
       return { ...state, loginUser: loginUser }
-    case DELETELOGINUSER:
-      let deleteUser = Object.assign({},state.loginUser)
-      let deleteCart = state.Cart.slice()
-      deleteUser={}
-      deleteCart=[]
-      return { ...state, loginUser: deleteUser,Cart:deleteCart }
-    // case FETCHCARTITEM:
-    //   let cartItem=state.Cart.slice()
-    //   firebase
-    //   .firestore()
-    //   .collection(`users/${state.loginUser.uid}/carts`)
-    //   .get().then(snapshot => {
-    //     if (snapshot.empty) {
-    //       firebase
-    //       .firestore()
-    //       .collection(`users/${state.loginUser.uid}/carts`)
-    //       .add(
-    //       cartItem= {
-    //         orderDate: "",
-    //         userName: "",
-    //         mailAddress: "",
-    //         addressNumber: "",
-    //         address: "",
-    //         phoneNumber: "",
-    //         deliveryDate: "",
-    //         deliveryTime: "",
-    //         status: 0,
-    //         cartItemList: []
-    //       })
-    //     }
-    //     snapshot.forEach(doc => {
-    //         commit("addCartItem", { id: doc.id, cartItem: doc.data() })
-    //       }
-    //     })
-    //   })
-    //   return { ...state, loginUser: deleteUser,Cart:deleteCart }
 
-    case FETCHITEM:
-      const CurryItem=state.Curry.slice()
+    case DELETELOGINUSER:
+      let deleteUser = Object.assign({}, state.loginUser)
+      let deleteCart = state.Cart.slice()
+      deleteUser = null
+      deleteCart = []
+      return { ...state, loginUser: deleteUser, Cart: deleteCart }
+
+    case FETCHCARTITEM:
+      let cartItem = []
+      console.log(cartItem)
       firebase
       .firestore()
-      .collection(`product`)
-      .get().then(snapshot => {
-        snapshot.forEach(doc => {
-          CurryItem.push(doc.data())
+        .collection(`users/${state.loginUser.uid}/carts`)
+        .get().then(snapshot => {
+          if (snapshot.empty) {
+            firebase
+            .firestore()
+              .collection(`users/${state.loginUser.uid}/carts`)
+              .add({
+                orderDate: "",
+                userName: "",
+                mailAddress: "",
+                addressNumber: "",
+                address: "",
+                phoneNumber: "",
+                deliveryDate: "",
+                deliveryTime: "",
+                status: 0,
+                cartItemList: []
+              }).then(doc => {
+                cartItem.push({
+                  id: doc.id, cartItem: {
+                    orderDate: "",
+                    userName: "",
+                    mailAddress: "",
+                    addressNumber: "",
+                    address: "",
+                    phoneNumber: "",
+                    deliveryDate: "",
+                    deliveryTime: "",
+                    status: 0,
+                    cartItemList: []
+                  }
+                })
+                console.log(cartItem)
+                return { ...state, Cart: cartItem }
+              })
+          }
+          snapshot.forEach(doc => {
+            cartItem.push({ id: doc.id, cartItem: doc.data() })
+            console.log(cartItem)
+            return { ...state, Cart: cartItem }
+          }
+          )
         })
-      })
-      return {...state,Curry:CurryItem}
+        
+    case FETCHITEM:
+      const CurryItem = state.Curry.slice()
+      firebase
+        .firestore()
+        .collection(`product`)
+        .get().then(snapshot => {
+          snapshot.forEach(doc => {
+            CurryItem.push(doc.data())
+          })
+        })
+      return { ...state, Curry: CurryItem }
     default:
       return state
   }
@@ -226,22 +246,22 @@ export default StoreState;
   //       deliveryTime: "",
   //       status: 0,
   //       cartItemList: []
-  //     }).then(doc => {
-  //       commit("addCartItem", {
-  //         id: doc.id, cartItem: {
-  //           orderDate: "",
-  //           userName: "",
-  //           mailAddress: "",
-  //           addressNumber: "",
-  //           address: "",
-  //           phoneNumber: "",
-  //           deliveryDate: "",
-  //           deliveryTime: "",
-  //           status: 0,
-  //           cartItemList: []
-  //         }
-  //       })
-  //     })
+      // }).then(doc => {
+      //   commit("addCartItem", {
+      //     id: doc.id, cartItem: {
+      //       orderDate: "",
+      //       userName: "",
+      //       mailAddress: "",
+      //       addressNumber: "",
+      //       address: "",
+      //       phoneNumber: "",
+      //       deliveryDate: "",
+      //       deliveryTime: "",
+      //       status: 0,
+      //       cartItemList: []
+      //     }
+      //   })
+      // })
 //   },
 //   deleteConfirm({ commit }, id){
 //     commit("deleteAction", id)
