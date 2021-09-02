@@ -5,7 +5,7 @@ import { useDispatch,useSelector } from 'react-redux';
 export const cartSelector = state => { // stateの使いたいデータを持ってくる！
     console.log('cartSlelctor')
     console.log(state)
-    return state.StoreState.cartlist
+    return state.Cartstate.cartlist
 } 
 
 export const Cart = ()=>{

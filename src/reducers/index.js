@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux'
-import StoreState from './StoreState'; // 仮置き
+import {AppState,Cartstate} from './StoreState'; // 仮置き
 
-export default combineReducers({StoreState}); // ファイルの結合
+export default combineReducers({AppState,Cartstate}); // ファイルの結合
 
 // import { compose, createStore, applyMiddleware } from 'redux';
 // const reducer = (state = initialState, action) => {
