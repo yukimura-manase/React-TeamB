@@ -10,12 +10,14 @@ import {
 
 import  '../service/firebase'
 import Header from './Header'
+import CurryDetail from './CurryDetail'
 
 const App = ()=> {
   return (
     <React.Fragment>
       <h1>TeamBの制作物</h1>
       <Header/>
+      <CurryDetail/>
     </React.Fragment>
   );
 }
