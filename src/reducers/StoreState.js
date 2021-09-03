@@ -32,74 +32,22 @@ console.log(initialState)
 const StoreState = (state = initialState, action) => {
   switch (action.type) {
     case SETLOGINUSER:
+      console.log(action.loginUser)
       return { ...state, loginUser: action.loginUser }
 
     case DELETELOGINUSER:
       return { ...state, loginUser: null, Cart: [] }
-    // case DELETELOGINUSER:
-    //   let deleteUser = Object.assign({}, state.loginUser)
-    //   let deleteCart = state.Cart.slice()
-    //   deleteUser = null
-    //   deleteCart = []
-    //   return { ...state, loginUser: deleteUser, Cart: deleteCart }
 
     case FETCHCARTITEM:
       let cartItem = state.Cart.slice()
-      firebase
-      .firestore()
-        .collection(`users/${action.loginUser.uid}/carts`)
-        .get().then(snapshot => {
-          if (snapshot.empty) {
-            firebase
-            .firestore()
-              .collection(`users/${action.loginUser.uid}/carts`)
-              .add({
-                orderDate: "",
-                userName: "",
-                mailAddress: "",
-                addressNumber: "",
-                address: "",
-                phoneNumber: "",
-                deliveryDate: "",
-                deliveryTime: "",
-                status: 0,
-                cartItemList: []
-              }).then(doc => {
-                cartItem.push({
-                  id: doc.id, cartItem: {
-                    orderDate: "",
-                    userName: "",
-                    mailAddress: "",
-                    addressNumber: "",
-                    address: "",
-                    phoneNumber: "",
-                    deliveryDate: "",
-                    deliveryTime: "",
-                    status: 0,
-                    cartItemList: []
-                  }
-                })
-                // console.log(cartItem)
-                // return { ...state, Cart: cartItem }
-              })
-          }
-          snapshot.forEach(doc => {
-            cartItem.push({ id: doc.id, cartItem: doc.data() })
-          }
-          )
-        })
+      cartItem = action.Cart
+      console.log(cartItem)
       return { ...state, Cart: cartItem }
+
     case FETCHITEM:
-      console.log('フェッチ');
-      const CurryItem = state.Curry.slice()
-      firebase
-        .firestore()
-        .collection(`product`)
-        .get().then(snapshot => {
-          snapshot.forEach(doc => {
-            CurryItem.push(doc.data())
-          })
-        })
+      let CurryItem = state.Curry.slice()
+      CurryItem = action.Curry
+      console.log(CurryItem)
       return { ...state, Curry: CurryItem }
 
 
