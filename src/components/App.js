@@ -1,19 +1,38 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
-import {useHistory} from "react-router-dom"
 import {
+  useHistory,
   BrowserRouter as Router,
   Switch,
   Route,
   Link
 } from 'react-router-dom' // Router設定仮置き
 
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/auth'
+import 'firebase/compat/firestore'
 import  '../service/firebase'
 import Header from './Header'
-import { BuyHistory } from "./buyHistory";
-import { OrderFinish } from './orderFinish';
+import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
+
+import { BuyHistory } from "./BuyHistory";
+import { OrderFinish } from './OrderFinish';
 
 const App = ()=> {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        dispatch(setLoginUser(user))
+        dispatch(fetchCartItem())
+      } else {
+        dispatch(deleteLoginUser())
+      }
+      dispatch(fetchItem())
+    })
+  }, []);
+
   return (
     <Router>
       <React.Fragment>
