@@ -6,13 +6,7 @@ export const DELETELOGINUSER = 'deleteLoginUser';
 export const FETCHITEM = 'fetchItem';
 export const FETCHCARTITEM = 'fetchCartItem';
 export const REMOVECART = 'removeCart';
-
-export const removeCart = (index)=>{
-    return {
-        type:REMOVECART,
-        index:index
-    }
-}
+export const ADDDATA = 'addData';
 
 export const setLoginUser = (user) =>({ // ログインユーザー情報のセット
     type: SETLOGINUSER,
@@ -23,12 +17,44 @@ export const deleteLoginUser = () =>({ // ログインユーザー情報の削�
     type: DELETELOGINUSER,
 })
 
-export const fetchItem = () =>({ // firestoreから商品情報を取ってくる。
+export const fetchItem = (curryItem) =>({
     type: FETCHITEM,
+    Curry:curryItem
 })
 
-export const fetchCartItem = () =>({ // firestoreからカート情報を取ってくる。
+export const fetchCartItem = (cartItem) =>({
     type: FETCHCARTITEM,
+    Cart: cartItem
 })
 
+export const removeCart = (index)=>{
+    return {
+        type:REMOVECART,
+        index:index
+    }
+}
+
+export const addData = ( 
+    // orderDate,
+    userName,
+    mailAddress,
+    addressNumber,
+    address,
+    phoneNumber,
+    deliveryDate,
+    deliveryTime,
+    status
+    ) => ({
+
+        type: ADDDATA,
+        // orderDate: orderDate,
+        userName: userName,
+        mailAddress: mailAddress,
+        addressNumber: addressNumber,
+        address: address,
+        phoneNumber: phoneNumber,
+        deliveryDate: deliveryDate,
+        deliveryTime: deliveryTime,
+        status: status,
+})
 

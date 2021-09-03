@@ -1,51 +1,76 @@
 // Stateを管理するStore => Actionsを受け取ったStateの変更処理をする部門を内部に持っている。
 // StateとStateの更新処理 => ファイル単位のuseStateのようなもの。
 
-import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM ,REMOVECART } from '../actions/ActionCreator'
-
+import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM ,REMOVECART, ADDDATA} from '../actions/ActionCreator'
 import firebase from 'firebase/compat/app'
 
 const initialStateApp = {
 
-    loginUser: {},
+    loginUser: {}, // null
     Curry: [],
-    Cart: [],
+    Cart: [
+        { cartItem: {
+          orderDate: "",
+          userName: "",
+          mailAddress: "",
+          addressNumber: "",
+          address: "",
+          phoneNumber: "",
+          deliveryDate: "",
+          deliveryTime: "",
+          status: 0,
+          //カートのカレー情報 仮置き
+          cartItemList: [
+            {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
+          ]
+        }}
+      ],
     cartlist:[ 
         {id:1,itemName:'ロボ玉試作1号機',size:'M',num:1,topping:'ラーメン',total:2150},
         {id:2,itemName:'ロボ玉試作2号機',size:'S',num:5,topping:'ひまわり',total:3400},
         {id:3,itemName:'ロボ玉試作3号機',size:'L',num:8,topping:'ひまわり',total:5500},
     ]
-
-
   }
 
 
 export const StoreState = (state = initialStateApp, action) => {
 
     switch (action.type) {
-      case SETLOGINUSER:
-        let loginUser = Object.assign({},state.loginUser)
-        loginUser = action.loginUser
-        return { ...state, loginUser: loginUser }
-
-      case DELETELOGINUSER:
-        let deleteUser = Object.assign({},state.loginUser)
-        let deleteCart = state.Cart.slice()
-        deleteUser={}
-        deleteCart=[]
-        return { ...state, loginUser: deleteUser,Cart:deleteCart }
+        case SETLOGINUSER:
+            console.log(action.loginUser)
+            return { ...state, loginUser: action.loginUser }
       
-      case FETCHITEM:
-        const CurryItem=state.Curry.slice()
-        firebase
-        .firestore()
-        .collection(`product`)
-        .get().then(snapshot => {
-          snapshot.forEach(doc => {
-            CurryItem.push(doc.data())
-          })
-        })
-        return {...state,Curry:CurryItem}
+        case DELETELOGINUSER:
+        return { ...state, loginUser: null, Cart: [] }
+    
+        case FETCHCARTITEM:
+        let cartItem = state.Cart.slice()
+        cartItem = action.Cart
+        console.log(cartItem)
+        return { ...state, Cart: cartItem }
+    
+        case FETCHITEM:
+        let CurryItem = state.Curry.slice()
+        CurryItem = action.Curry
+        console.log(CurryItem)
+        return { ...state, Curry: CurryItem }
+    
+        case ADDDATA:
+            const data = state.Cart.slice()
+            const dataObject = {
+                // orderDate: action.orderDate,
+                userName: action.userName,
+                mailAddress: action.mailAddress,
+                addressNumber: action.addressNumber,
+                address: action.address,
+                phoneNumber: action.phoneNumber,
+                deliveryDate: action.deliveryDate,
+                deliveryTime: action.deliveryTime,
+                status: action.status,
+            }
+    
+            const dataArray = [ ...data, dataObject ]
+                return { cartItem: dataArray }
 
         case REMOVECART:{
             const copyCart = state.cartlist.concat() // コピー
@@ -63,10 +88,13 @@ export const StoreState = (state = initialStateApp, action) => {
             }
         }
 
-      default:
-        return state
+        default:
+            return state
     }
 }
+
+
+
 
 
 // deleteCartItem({getters},{cart}){
@@ -322,3 +350,4 @@ export const StoreState = (state = initialStateApp, action) => {
 //     getCurryId: (state) => (id) => state.itemList.find((itemList) => itemList.id === id),
 // },
 // })
+

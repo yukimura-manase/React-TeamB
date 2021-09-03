@@ -17,58 +17,146 @@ import 'firebase/compat/firestore' // firestore access
 import  '../service/firebase'
 import Header from './Header'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
+import {Detail} from './detail'
+import {Product} from './Product'
+
+import { BuyHistory } from "./BuyHistory";
+import { OrderFinish } from './OrderFinish';
+
 
 import {Cart} from './Cart'
 
 import Buyhistory from './Buyhistory'
 
 
-const currySelector = state => state.StoreState.loginUser
+//const currySelector = state => state.StoreState.loginUser
 
-
-
-const App = ()=> {
   
+const userSelector = state => state.StoreState
+
+// const currySelector=state=>state.StoreState.Curry
+// const cartSelector=state=>state.StoreState.Cart
+
+const App = () => {
   const dispatch = useDispatch()
-  const curry = useSelector(currySelector)
-  console.log(curry)
+
+  const state = useSelector(userSelector)
+
+  const setUser=(user)=>{
+    console.log(user)
+    dispatch(setLoginUser(user))
+  }
+
+  const deleteUser=()=>{
+    dispatch(deleteLoginUser())
+  }
+
+  const fetchCart = (user) => {
+    let cartItem = []
+    firebase
+      .firestore()
+      .collection(`users/${user.uid}/carts`)
+      .get().then(snapshot => {
+        if (snapshot.empty) {
+          firebase
+            .firestore()
+            .collection(`users/${user.uid}/carts`)
+            .add({
+              orderDate: "",
+              userName: "",
+              mailAddress: "",
+              addressNumber: "",
+              address: "",
+              phoneNumber: "",
+              deliveryDate: "",
+              deliveryTime: "",
+              status: 0,
+              cartItemList: []
+            }).then(doc => {
+              cartItem.push({
+                id: doc.id, cartItem: {
+                  orderDate: "",
+                  userName: "",
+                  mailAddress: "",
+                  addressNumber: "",
+                  address: "",
+                  phoneNumber: "",
+                  deliveryDate: "",
+                  deliveryTime: "",
+                  status: 0,
+                  cartItemList: []
+                }
+              })
+            })
+        }
+        snapshot.forEach(doc => {
+          cartItem.push({ id: doc.id, cartItem: doc.data() })
+        }
+        )
+        dispatch(fetchCartItem(cartItem))
+      })
+  }
+
+  const fetchCurry = () => {
+    const CurryItem = []
+    firebase
+      .firestore()
+      .collection(`product`)
+      .get().then(snapshot => {
+        snapshot.forEach(doc => {
+          CurryItem.push(doc.data())
+        })
+        dispatch(fetchItem(CurryItem))
+      })
+  }
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        dispatch(setLoginUser(user))
-        dispatch(fetchCartItem())
+        setUser(user)
+        fetchCart(user)
       } else {
-        dispatch(deleteLoginUser())
+        deleteUser()
       }
-      dispatch(fetchItem())
     })
+    fetchCurry()
   }, []);
 
   return (
-    <Router>
+    // <Router>
 
-      <div>
+    //   <div>
 
+    <React.Fragment>
+      <Router>
       <h1>TeamBの制作物</h1>
 
       <Header/>
 
       {/* Switchでルーティング(アクセス経路)設定の世界 */}
 
-       <Switch>
+       {/* <Switch>
 
-         <Route path='/cart' component={Cart} />
-
-         <Route path='/buyhistory' component={Buyhistory} />
          
-       </Switch>
+         
+       </Switch> */}
       
+      {/* <Route path='/buyhistory' component={Buyhistory} /> */}
+        {/* </div>
+    </Router> */}
+  {/* ) */}
 
-        </div>
-    </Router>
-  )
+      <Switch>
+        <Route path='/detail/:id' component={Detail}></Route>
+        <Route path='/' exact component={Product}></Route>
+        <Route path='/orderFinish' exact component={OrderFinish} />
+        <Route path='/buyHistory' exact component={BuyHistory} />
+        <Route path='/cart' exact component={Cart} />
+      </Switch>
 
+      </Router>
+    </React.Fragment>
+  );
 }
 
 export default App;

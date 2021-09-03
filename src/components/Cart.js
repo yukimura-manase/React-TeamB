@@ -190,7 +190,7 @@ export const Cart = ()=>{
                 <div>ご注文金額合計：{ sumTotalPlice() }円(税込)</div>
                 {/* {checkLogin()} */}
                 <div>
-                    <button onClick={ ()=>{handleLink('/buyhistory')} }>注文に進む！</button>
+                    <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
                     {/* {   (()=>{ // ログインしていれば、注文に進む！ ログインしていなければ、まずはログイン！
                             if(user){
                                 return( <button onClick={ ()=>{handleLink('/buyhistory')} }>注文に進む！</button> )
@@ -203,7 +203,7 @@ export const Cart = ()=>{
                 {   
                      user === undefined || !Object.keys(user).length ?
                     <button onClick={ ()=>{handleLink('/')} }>まずはログイン！</button> :
-                    <button onClick={ ()=>{handleLink('/buyhistory')} }>注文に進む！</button>
+                    <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
                 }
                 </div>
             
