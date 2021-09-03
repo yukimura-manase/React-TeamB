@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
 import {useHistory} from 'react-router-dom';
+import { fetchItem } from '../actions/ActionCreator';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/firestore'
 
 export const curryItem = state =>{
     return state.StoreState.Curry
@@ -9,9 +12,20 @@ export const curryItem = state =>{
 export const Product =()=>{
     const curry =useSelector(curryItem)
 
-    // useEffect(()=>{
-    //     console.log(1)
-    // },[curry])
+    // const dispatch=useDispatch()
+    useEffect(()=>{
+        if(!curry){
+            const CurryItem = []
+      firebase
+        .firestore()
+        .collection(`product`)
+        .get().then(snapshot => {
+          snapshot.forEach(doc => {
+            CurryItem.push(doc.data())
+          })
+        })
+        }
+    },[])
 
 
     const history=useHistory()
