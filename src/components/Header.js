@@ -2,6 +2,7 @@ import React from 'react';
 import {useHistory} from 'react-router-dom';
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 const Header=()=>{
   const history=useHistory();
@@ -20,6 +21,7 @@ const Header=()=>{
     <nav>
       <button onClick={()=>handleLink('/')}>一覧</button>
       <button onClick={()=>handleLink('/cart')}>ショッピングカートへ</button>
+      <button onClick={()=>handleLink('/currydetail')}>詳細</button>
       <button onClick={login}>ログイン</button>
       <button onClick={logout}>ログアウト</button>
     </nav>
