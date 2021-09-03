@@ -9,6 +9,8 @@ const initialState = {
   Cart: [],
 }
 
+console.log(initialState)
+
 
 const StoreState = (state = initialState, action) => {
   switch (action.type) {
@@ -25,7 +27,7 @@ const StoreState = (state = initialState, action) => {
 
     case FETCHITEM:
       let CurryItem = state.Curry.slice()
-      CurryItem=action.Curry
+      CurryItem = action.Curry
       return { ...state, Curry: CurryItem }
 
     default:
