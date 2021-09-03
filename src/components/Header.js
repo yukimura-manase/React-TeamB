@@ -5,12 +5,19 @@ import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-const userSelector = state => state.StoreState.loginUser
+const userSelector=state=>state.StoreState.loginUser
+const currySelector=state=>state.StoreState.Curry
+const cartSelector=state=>state.StoreState.Cart
 
 const Header=()=>{
   const history=useHistory();
   const handleLink = path =>history.push(path);
-  const user = useSelector(userSelector)
+  const user=useSelector(userSelector)
+  const curry=useSelector(currySelector)
+  const cart=useSelector(cartSelector)
+  console.log(curry)
+  console.log(user)
+  console.log(cart)
 
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()

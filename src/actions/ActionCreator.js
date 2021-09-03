@@ -14,13 +14,14 @@ export const deleteLoginUser = () =>({
     type: DELETELOGINUSER,
 })
 
-export const fetchItem = () =>({
+export const fetchItem = (curryItem) =>({
     type: FETCHITEM,
+    Curry:curryItem
 })
 
-export const fetchCartItem = (user) =>({
+export const fetchCartItem = (cartItem) =>({
     type: FETCHCARTITEM,
-    loginUser:user
+    Cart: cartItem
 })
 
 
