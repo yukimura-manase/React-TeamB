@@ -15,21 +15,30 @@ import  '../service/firebase'
 import Header from './Header'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 
+const userSelector=state=>state.StoreState.loginUser
+const currySelector=state=>state.StoreState.Curry
+const cartSelector=state=>state.StoreState.Cart
+
 const App = ()=> {
   const dispatch = useDispatch()
+  const userinfo=useSelector(userSelector)
+  const curry=useSelector(currySelector)
+  const cart=useSelector(cartSelector)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         dispatch(setLoginUser(user))
-        dispatch(fetchCartItem())
+        dispatch(fetchCartItem(user))
       } else {
         dispatch(deleteLoginUser())
       }
-      dispatch(fetchItem())
     })
+    dispatch(fetchItem())
   }, []);
-
+    console.log(curry)
+    console.log(userinfo)
+    console.log(cart)
   return (
     <React.Fragment>
       <h1>TeamBの制作物</h1>

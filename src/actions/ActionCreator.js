@@ -18,8 +18,9 @@ export const fetchItem = () =>({
     type: FETCHITEM,
 })
 
-export const fetchCartItem = () =>({
+export const fetchCartItem = (user) =>({
     type: FETCHCARTITEM,
+    loginUser:user
 })
 
 
