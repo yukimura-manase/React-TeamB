@@ -3,6 +3,7 @@ export const SETLOGINUSER = 'setLoginUser';
 export const DELETELOGINUSER = 'deleteLoginUser';
 export const FETCHITEM = 'fetchItem';
 export const FETCHCARTITEM = 'fetchCartItem';
+export const ADDDATA = 'addData';
 
 //Action Creator
 export const setLoginUser = (user) =>({
@@ -18,8 +19,32 @@ export const fetchItem = () =>({
     type: FETCHITEM,
 })
 
-export const fetchCartItem = () =>({
+export const fetchCartItem = (user) =>({
     type: FETCHCARTITEM,
+    loginUser:user
 })
 
+export const addData = ( 
+    // orderDate,
+    userName,
+    mailAddress,
+    addressNumber,
+    address,
+    phoneNumber,
+    deliveryDate,
+    deliveryTime,
+    status
+    ) => ({
+
+        type: ADDDATA,
+        // orderDate: orderDate,
+        userName: userName,
+        mailAddress: mailAddress,
+        addressNumber: addressNumber,
+        address: address,
+        phoneNumber: phoneNumber,
+        deliveryDate: deliveryDate,
+        deliveryTime: deliveryTime,
+        status: status,
+})
 

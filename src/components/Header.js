@@ -11,7 +11,6 @@ const Header=()=>{
   const history=useHistory();
   const handleLink = path =>history.push(path);
   const user = useSelector(userSelector)
-  console.log(user)
 
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchItem, fetchCartItem } from "../actions/ActionCreator";
+import { addData } from "../actions/ActionCreator";
 // import { OrderFinish } from "./OrderFinish";
 // import {
 // 	BrowserRouter as Router,
@@ -9,6 +9,7 @@ import { fetchItem, fetchCartItem } from "../actions/ActionCreator";
 // 	Route,
 // 	Link
 //   } from 'react-router-dom' // Router設定仮置き
+
 const cartSelector = state => state.StoreState.Cart;
 
 export const BuyHistory = () => {
@@ -35,7 +36,7 @@ export const BuyHistory = () => {
 	[ status, setStatus ] = useState(""),
 	[ errors, setErrors ] = useState([]);
 
-	// [ item, setItems ] = useState ([]);
+	// [ first, setItems ] = useState ('');
 
 
 	//イベント発火時に値を持ってくるよ！
@@ -88,9 +89,59 @@ export const BuyHistory = () => {
 		return val.test ( phoneNumber );
 	}
 
-	// const order = ( deliveryDate ) => {
+	const order = ( deliveryDate ) => {
+		let today = new Date()//今日の日付
 
-	// }
+		today = new Date (
+			today.getFullYear(), //年
+			today.getMonth(), //月
+			today.getDate(), //日
+			today.getHours(), //時間
+		)
+
+		let hopeDate = new Date(deliveryDate)
+		let nowDay =  today.getDate()
+		let date = new Date(hopeDate)
+
+		hopeDate = new Date (
+			today.getMonth(), //月
+			today.getDate(), //日
+		)
+
+		let selectDay = date.getDate()　//お届け希望の日付
+		let nowHour = today.getHours() //現在の時間
+		let i = Math.abs( deliveryTime - nowHour ) //お届け希望の時間 - 今の時間
+
+		//同じ日の処理
+		if ( nowDay === selectDay ) {
+			if ( deliveryTime <= nowHour ) {
+				return false
+			} else if ( 3 <= i ) { //今の時間以降の場合
+				return true
+			} else {
+				return false
+			}
+		}
+	
+
+		//違う日の処理 ( 昨日以前 or 明日以降 )
+		else if ( nowDay >= selectDay ) {
+			return false
+		} else {
+			return true
+		}
+	}
+
+	
+
+	// const dt = new Date();
+	// 	let hours = dt.getHours();		
+		
+	// 	let dateDiff = new Date(deliveryTime.orderDate).getDate() - dt.getDate();				
+	// 	let time = deliveryTime.orderTime - hours
+
+
+
 
 
 	//エラーの処理
@@ -105,40 +156,41 @@ export const BuyHistory = () => {
 		}
 
 		//アドレスエラー
-		if ( mailAddress == "" ) {
+		if ( mailAddress === "" ) {
 			allErrors.push("アドレスを入力してください") }
 		else if( !attmark( mailAddress ) ) {
 			allErrors.push("メールアドレスの形式が不正です") }
 
 		//郵便番号エラー
-		if ( addressNumber == "" ) {
+		if ( addressNumber === "" ) {
 			allErrors.push("郵便番号を入力してください")
 		} else if ( !yuubin(addressNumber) ) {
 			allErrors.push("郵便番号はXXX-XXXXの形式で入力してください") }
 
 		//住所エラー
-		if ( address == "" ) {
+		if ( address === "" ) {
 			allErrors.push("住所を入力してください") }
 
 		//TELエラー
-		if ( phoneNumber == "" ) {
+		if ( phoneNumber === "" ) {
 			allErrors.push("電話番号を入力してください")
 		} else if (!denwa(phoneNumber)) {
 			allErrors.push("電話番号はXXXX-XXXX-XXXXの形式で入力してください")
 		}
 
 		//お届け日エラー
-		if( deliveryDate == "" ) {
+		if( deliveryDate === "" ) {
 			allErrors.push("配送日を入力してください")
 		}
+		//時間指定エラー
+		else if ( !order(deliveryDate) ) {
+			allErrors.push("今から3時間後の日時をご入力ください") }
 
 		//お届け時間エラー
-		if( !deliveryTime ) {
+		if( deliveryTime === "" ) {
 			allErrors.push("配送時間を入力してください")
 		}
 
-		// //時間指定エラー
-		// if(time  <= 3 && dateDiff < 1 ){ allErrors.push("今から3時間後の日時をご入力ください") }
 
 		//お支払いエラー
 		if( !status ) {
@@ -147,38 +199,67 @@ export const BuyHistory = () => {
 
 
 		setErrors(allErrors);
+
+		if ( allErrors.length === 0 ) {
+			dispatch ( addData (
+				// orderDate,
+				userName,
+				mailAddress,
+				addressNumber,
+				address,
+				phoneNumber,
+				deliveryDate,
+				deliveryTime,
+				status) )
+			console.log('テスト')
+			handleLink('/orderFinish')
+		}
+		console.log(addData (
+			// orderDate,
+			userName,
+			mailAddress,
+			addressNumber,
+			address,
+			phoneNumber,
+			deliveryDate,
+			deliveryTime,
+			status));
 				
 	}
 	
 
 
 
-	const addFetchCartItem = () => {
+	// const addFetchCartItem = () => {
 
-			dispatch ( fetchCartItem ( ) )
+	// 		dispatch ( fetchCartItem ( ) )
 
-		console.log( fetchCartItem ( ));
-	}
+	// 	console.log( fetchCartItem ( ));
+	// }
 	
 	
-	// const displaysCart = cartItem.cartItemList.map( (item, index) => {
-	// 	return (
+	const displaysCart = cartItem[0].cartItem.cartItemList.map( (item, index) => {
+		return (
 			
-	// 		<div key={index}>
-	// 			<div> {item.id}</div>
-	// 			<div> {item.userName}</div>
-	// 			<div> {item.address}</div>
-	// 			<div> {item.addressNumber}</div>
-	// 			<div> {item.deliveryDate}</div>
-	// 			<div> {item.deliveryTime}</div>
-	// 			<div> {item.mailAddress}</div>
-	// 			<div> {item.deliveryDate}</div>
-	// 			<div> {item.deliveryTime}</div>
-	// 			<div> {item.mailAddress}</div>
-	// 		</div>
+			<tr key={index}>
+				<td> {item.name} <div><img src={item.pic} /></div></td>
+				<td> {item.size} </td>
+				<td> {item.number} </td>
+				<td> {item.topping} </td>
+				<td> {item.total} </td>
+				{/* <div> {item.userName}</div>
+				<div> {item.address}</div>
+				<div> {item.addressNumber}</div>
+				<div> {item.deliveryDate}</div>
+				<div> {item.deliveryTime}</div>
+				<div> {item.mailAddress}</div>
+				<div> {item.deliveryDate}</div>
+				<div> {item.deliveryTime}</div>
+				<div> {item.mailAddress}</div> */}
+			</tr>
 
-	// 	)
-	// })
+		)
+	})
 	
 
 
@@ -188,6 +269,7 @@ export const BuyHistory = () => {
         <div>
 
             <h1>注文確認画面</h1>
+
 
             <div>
                 <h3>ショッピングカート</h3>
@@ -225,8 +307,9 @@ export const BuyHistory = () => {
 							</th>
 						</tr>
 
-						<tr>
-							<th>
+						
+						{displaysCart}
+							{/* <th>
 								<div className="text-center">
 									かれーーー
 								</div>
@@ -250,8 +333,8 @@ export const BuyHistory = () => {
 								<div className="text-center">
 									2000円
 								</div>
-							</th>
-						</tr>
+							</th> */}
+						
 				
 					</tbody>
 				</table>
@@ -266,8 +349,6 @@ export const BuyHistory = () => {
 				<div>
 					<h3>お届け先情報</h3>
 				</div>
-
-				{/* <div>{displaysCart}</div> */}
 				
 				<div>
 					<table>
@@ -339,15 +420,15 @@ export const BuyHistory = () => {
 								    <input type="date" value={deliveryDate} onChange={inputDeliveryDate} />
 								</div>
 								<div>
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />10時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />11時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />12時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />13時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />14時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />15時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />16時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />17時
-									<input type="radio" name="time" value={deliveryTime} onClick={inputDeliveryTime} />18時
+									<input type="radio" name="time" value="10" onChange={inputDeliveryTime} />10時
+									<input type="radio" name="time" value="11" onChange={inputDeliveryTime} />11時
+									<input type="radio" name="time" value="12" onChange={inputDeliveryTime} />12時
+									<input type="radio" name="time" value="13" onChange={inputDeliveryTime} />13時
+									<input type="radio" name="time" value="14" onChange={inputDeliveryTime} />14時
+									<input type="radio" name="time" value="15" onChange={inputDeliveryTime} />15時
+									<input type="radio" name="time" value="16" onChange={inputDeliveryTime} />16時
+									<input type="radio" name="time" value="17" onChange={inputDeliveryTime} />17時
+									<input type="radio" name="time" value="18" onChange={inputDeliveryTime} />18時
 								</div>
 							</td>
 						</tr>
@@ -371,7 +452,7 @@ export const BuyHistory = () => {
 								代金引換
 							</td>
 							<td>
-								<input type="radio" name="pay" value={status} onClick={inputStatus} />代金引換
+								<input type="radio" name="pay" value="1" onChange={inputStatus} />代金引換
 							</td>
 						</tr>
 
@@ -380,7 +461,7 @@ export const BuyHistory = () => {
 								クレジットカード決済
 							</td>
 							<td>
-								<input type="radio" name="pay" value={status} onClick={inputStatus} />クレジットカード決済
+								<input type="radio" name="pay" value="2" onChange={inputStatus} />クレジットカード決済
 							</td>
 						</tr>
 						</tbody>
@@ -396,7 +477,7 @@ export const BuyHistory = () => {
 
 
 			<div>
-				<button onClick={()=>handleLink('/orderFinish'), Validation } >注文</button>
+				<button onClick={ Validation } >注文</button>
 				{/* <Link to='/orderFinish'>注文</Link> */}
 				{/* <OrderFinish/> */}
 			</div>
