@@ -20,7 +20,7 @@ import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions
 import {Detail} from './detail'
 import {Product} from './Product'
 
-import { BuyHistory } from "./BuyHistory";
+import { BuyHistory } from "./Buyhistory";
 import { OrderFinish } from './orderFinish';
 
 
