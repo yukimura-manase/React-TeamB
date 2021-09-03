@@ -68,8 +68,8 @@ const Header=()=>{
     <nav>
       <button onClick={()=>handleLink('/')}>一覧</button>
       <button onClick={()=>handleLink('/cart')}>ショッピングカートへ</button>
-      <button onClick={()=>handleLink('/buyHistory')}>確認画面</button>
       
+      {/* <button onClick={()=>handleLink('/buyHistory')}>確認画面</button> */}
       <Logbutton/>
     </nav>
   )

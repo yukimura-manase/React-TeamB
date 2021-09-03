@@ -21,7 +21,7 @@ import {Detail} from './detail'
 import {Product} from './Product'
 
 import { BuyHistory } from "./BuyHistory";
-import { OrderFinish } from './OrderFinish';
+import { OrderFinish } from './orderFinish';
 
 
 import {Cart} from './Cart'
