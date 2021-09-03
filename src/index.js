@@ -6,12 +6,14 @@ import reducer from './reducers'
 import './index.css';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+// import {Product} from './components/Product'
 
 const store = createStore(reducer)
 
 ReactDOM.render(
     <Provider store={store} >
-      <App />
+      <App>
+      </App>
     </Provider>,
   document.getElementById('root')
 );
