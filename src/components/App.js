@@ -121,9 +121,6 @@ const App = () => {
   }, []);
 
   return (
-    // <Router>
-
-    //   <div>
 
     <React.Fragment>
       <Router>
@@ -132,17 +129,6 @@ const App = () => {
       <Header/>
 
       {/* Switchでルーティング(アクセス経路)設定の世界 */}
-
-       {/* <Switch>
-
-         
-         
-       </Switch> */}
-      
-      {/* <Route path='/buyhistory' component={Buyhistory} /> */}
-        {/* </div>
-    </Router> */}
-  {/* ) */}
 
       <Switch>
         <Route path='/detail/:id' component={Detail}></Route>
