@@ -26,8 +26,6 @@ import { OrderFinish } from './OrderFinish';
 
 import {Cart} from './Cart'
 
-import Buyhistory from './Buyhistory'
-
 
 //const currySelector = state => state.StoreState.loginUser
 
