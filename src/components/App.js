@@ -7,6 +7,8 @@ import {
   Route,
   Link
 } from 'react-router-dom' // Router設定仮置き
+// import Product from './Product'
+
 
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
@@ -14,19 +16,22 @@ import 'firebase/compat/firestore'
 import  '../service/firebase'
 import Header from './Header'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
+import {Detail} from './detail'
+import {Product} from './Product'
 
 import { BuyHistory } from "./BuyHistory";
 import { OrderFinish } from './OrderFinish';
 
-const userSelector=state=>state.StoreState.loginUser
-const currySelector=state=>state.StoreState.Curry
-const cartSelector=state=>state.StoreState.Cart
+
+// const useSelector=state=>state.StoreState.setLoginUser
+// const currySelector=state=>state.StoreState.Curry
+// const cartSelector=state=>state.StoreState.Cart
 
 const App = ()=> {
   const dispatch = useDispatch()
-  const userinfo=useSelector(userSelector)
-  const curry=useSelector(currySelector)
-  const cart=useSelector(cartSelector)
+// const useinfo=useSelector(useSelector)
+// const curry=useSelector(currySelector)
+// const cart=useSelector(cartSelector)
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
@@ -39,26 +44,21 @@ const App = ()=> {
     })
     dispatch(fetchItem())
   }, []);
-    console.log(curry)
-    console.log(userinfo)
-    console.log(cart)
   return (
-    <Router>
-      <React.Fragment>
+    <React.Fragment>
+      <Router>
+      <h1>TeamBの制作物</h1>
+      <Header/>
 
-        <h1>TeamBの制作物</h1>
-        <Header/>
-{/* 
-        <BuyHistory /> */}
+      <Switch>
+        <Route path='/detail/:id' component={Detail}></Route>
+        <Route path='/' exact component={Product}></Route>
+        <Route path='/orderFinish' exact component={OrderFinish} />
+        <Route path='/buyHistory' exact component={BuyHistory} />
+      </Switch>
 
-
-        <Switch>
-          <Route path='/orderFinish' exact component={OrderFinish} />
-          <Route path='/buyHistory' exact component={BuyHistory} />
-        </Switch>
-
-      </React.Fragment>
-    </Router>
+      </Router>
+    </React.Fragment>
   );
 }
 

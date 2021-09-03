@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addData } from "../actions/ActionCreator";
@@ -10,14 +10,18 @@ import { addData } from "../actions/ActionCreator";
 // 	Link
 //   } from 'react-router-dom' // Router設定仮置き
 
-const cartSelector = state => state.StoreState.Cart;
+const cartSelector = state => {
+console.log(state.StoreState.Cart);
+
+	return state.StoreState.Cart;
+}
 
 export const BuyHistory = () => {
 
 	// const cartSelector = state => state.StoreState.Cart.cartItem;
 
-	const cartItem = useSelector (cartSelector)
-	console.log(cartItem);
+	const getCart = useSelector (cartSelector)
+	console.log(getCart);
 	const dispatch = useDispatch ()
 
     const history = useHistory();
@@ -34,10 +38,13 @@ export const BuyHistory = () => {
 	[ deliveryTime, setDeliveryTime ] = useState(""),
 	[ mailAddress, setMailAddress ] = useState(""),
 	[ status, setStatus ] = useState(""),
-	[ errors, setErrors ] = useState([]);
-
+	[ errors, setErrors ] = useState([]),
+	[ cart, setCart ] = useState([])
 	// [ first, setItems ] = useState ('');
-
+	useEffect(()=>{
+		console.log(getCart);
+		getCart.length !== 0 && setCart(getCart[0].cartItem.cartItemList)
+	}, [getCart])
 
 	//イベント発火時に値を持ってくるよ！
 	const inputUserName = (e) => {
@@ -238,7 +245,7 @@ export const BuyHistory = () => {
 	// }
 	
 	
-	const displaysCart = cartItem[0].cartItem.cartItemList.map( (item, index) => {
+	const displaysCart = cart.map( (item, index) => {
 		return (
 			
 			<tr key={index}>

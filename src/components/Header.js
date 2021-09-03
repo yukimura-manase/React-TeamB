@@ -1,13 +1,35 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {useSelector} from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+// import { useDispatch } from 'react-redux';
+// import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
+
+// const cartSelector = state=> state.StoreState.Curry
 
 const userSelector = state => state.StoreState.loginUser
 
 const Header=()=>{
+
+  // const dispatch = useDispatch()
+  // const cart =useSelector(cartSelector)
+  // console.log(cart)
+
+  // useEffect(() => {
+  //   firebase.auth().onAuthStateChanged(user => {
+  //     if (user) {
+  //       dispatch(setLoginUser(user))
+  //       dispatch(fetchCartItem())
+  //     } else {
+  //       dispatch(deleteLoginUser())
+  //     }
+  //     dispatch(fetchItem())
+  //   })
+  // },[]);
+
+
   const history=useHistory();
   const handleLink = path =>history.push(path);
   const user = useSelector(userSelector)
@@ -37,6 +59,7 @@ const Header=()=>{
     <nav>
       <button onClick={()=>handleLink('/')}>一覧</button>
       <button onClick={()=>handleLink('/cart')}>ショッピングカートへ</button>
+      <button onClick={()=>handleLink('/buyHistory')}>確認画面</button>
       <Logbutton/>
     </nav>
   )
