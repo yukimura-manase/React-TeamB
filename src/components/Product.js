@@ -12,30 +12,20 @@ export const curryItem = state =>{
 export const Product =()=>{
     const curry =useSelector(curryItem)
 
-    const [ curryList, setCurryList ] = useState([]);
-
-    useEffect(()=>{
-		console.log(curry);
-		setCurryList(curry)
-        console.log(curryList)
-	}, [curry])
-
     // const dispatch=useDispatch()
-    // useEffect(()=>{
-    
-
-    //     if(!curry){
-    //         const CurryItem = []
-    //   firebase
-    //     .firestore()
-    //     .collection(`product`)
-    //     .get().then(snapshot => {
-    //       snapshot.forEach(doc => {
-    //         CurryItem.push(doc.data())
-    //       })
-    //     })
-    //     }
-    // },[])//[]にすると、一回だけしか実行しない
+    useEffect(()=>{
+        if(!curry){
+            const CurryItem = []
+      firebase
+        .firestore()
+        .collection(`product`)
+        .get().then(snapshot => {
+          snapshot.forEach(doc => {
+            CurryItem.push(doc.data())
+          })
+        })
+        }
+    },[])
 
 
     const history=useHistory()
@@ -52,14 +42,13 @@ export const Product =()=>{
     console.log(curry)
     return(
         <div>
-            <button onClick={()=>console.log(curryList)}>curry</button>
             <h1>商品検索</h1>
             <input type='text' value={word} onChange={handleName} />
                 {/* 検索機能　絞り込み */}
             <button>検索</button>
             <h2>商品一覧</h2>
-            {curryList.map((curry,index)=>{
-                return<div key={index}>
+            {curry.map((curry,index)=>{
+                return<div key={curry.index}>
                     <div>商品名:{curry.name}</div>
                     <div><img src={curry.pic} alt='' width="100px"/></div>
                     <div>Lサイズ:{curry.lseziPrice}円</div>

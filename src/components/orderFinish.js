@@ -28,7 +28,7 @@ export const OrderFinish = () => {
 
                 <div>
                     <div>					
-                        <button  onClick={()=>handleLink('/product')}>トップ画面を表示する</button>			
+                        <button  onClick={()=>handleLink('/')}>トップ画面を表示する</button>			
                     </div>
                 </div>
             </div>
