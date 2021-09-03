@@ -10,24 +10,24 @@ const initialStateApp = {
     loginUser: {},
     Curry: [],
     Cart: [],
+    cartlist:[ 
+        {id:1,itemName:'ロボ玉試作1号機',size:'M',num:1,topping:'ラーメン',total:2150},
+        {id:2,itemName:'ロボ玉試作2号機',size:'S',num:5,topping:'ひまわり',total:3400},
+        {id:3,itemName:'ロボ玉試作3号機',size:'L',num:8,topping:'ひまわり',total:5500},
+    ]
+
 
   }
 
-const initialStateCart = { // 詳細から送られてくる情報
-    cartlist:[ 
-        {id:1,itemName:'ロボ玉試作1号機',size:'M',num:1,topping:'ラーメン',price:2000},
-        {id:2,itemName:'ロボ玉試作2号機',size:'S',num:5,topping:'ひまわり',price:3000},
-        {id:3,itemName:'ロボ玉試作3号機',size:'L',num:8,topping:'ひまわり',price:5000},
-    ]
-}
 
+export const StoreState = (state = initialStateApp, action) => {
 
-export const AppState = (state = initialStateApp, action) => {
     switch (action.type) {
       case SETLOGINUSER:
         let loginUser = Object.assign({},state.loginUser)
         loginUser = action.loginUser
         return { ...state, loginUser: loginUser }
+
       case DELETELOGINUSER:
         let deleteUser = Object.assign({},state.loginUser)
         let deleteCart = state.Cart.slice()
@@ -46,30 +46,49 @@ export const AppState = (state = initialStateApp, action) => {
           })
         })
         return {...state,Curry:CurryItem}
+
+        case REMOVECART:{
+            const copyCart = state.cartlist.concat() // コピー
+            copyCart.splice(action.index,1)
+            console.log('state.loginUser情報')
+            console.log(state.loginUser)
+
+            // firebase.firestore()
+            // .collection(`users/${state.loginUser.uid}/carts`)
+            // .doc('aMZz5VN4TEVzsBoZ3J5j') // 自動ID
+            // .update(copyCart) // documentの指定idのやつの中にある一部の値だけ更新
+
+            return {
+                cartlist:copyCart
+            }
+        }
+
       default:
         return state
     }
 }
 
 
+// deleteCartItem({getters},{cart}){
+//     if(getters.uid){
+//       firebase
+//       .firestore()
+//       .collection(`users/${getters.uid}/carts`)
+//       .doc(cart.id)
+//       .update(cart)
+//     }
+
 // eslint-disable-next-line import/no-anonymous-default-export
-export const Cartstate = (state = initialStateCart,action)=>{ // 1.Storeのstate & 2.dispatchで送られてきたActionsの情報を引数に取って、処理をする関数
+// export const Cartstate = (state = initialStateCart,action)=>{ // 1.Storeのstate & 2.dispatchで送られてきたActionsの情報を引数に取って、処理をする関数
 
-    switch(action.type){
+//     switch(action.type){
 
-        case REMOVECART:{
-            const copyTodoList2 = state.cartlist.concat() // コピー
-            copyTodoList2.splice(action.index,1)
+        
+//         default:
+//             return state
+//     }
 
-            return {
-                cartlist:copyTodoList2
-            }
-        }
-        default:
-            return state
-    }
-
-}
+// }
 
 
   

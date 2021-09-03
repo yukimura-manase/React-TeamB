@@ -12,16 +12,18 @@ import {
 import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
 
 import firebase from 'firebase/compat/app'
-import 'firebase/compat/auth'
-import 'firebase/compat/firestore'
+import 'firebase/compat/auth' // authentication code
+import 'firebase/compat/firestore' // firestore access
 import  '../service/firebase'
 import Header from './Header'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 
 import {Cart} from './Cart'
 
+import Buyhistory from './Buyhistory'
 
-const currySelector = state => state.AppState.loginUser
+
+const currySelector = state => state.StoreState.loginUser
 
 
 
@@ -55,7 +57,10 @@ const App = ()=> {
       {/* Switchでルーティング(アクセス経路)設定の世界 */}
 
        <Switch>
+
          <Route path='/cart' component={Cart} />
+
+         <Route path='/buyhistory' component={Buyhistory} />
          
        </Switch>
       
