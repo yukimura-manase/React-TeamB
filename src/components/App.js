@@ -17,12 +17,23 @@ import {Detail} from './detail'
 import {Product} from './Product'
 
 
-// const useSelector=state=>state.StoreState.setLoginUser
+const userSelector=state=>state.StoreState
 // const currySelector=state=>state.StoreState.Curry
 // const cartSelector=state=>state.StoreState.Cart
 
 const App = () => {
   const dispatch = useDispatch()
+  const state=useSelector(userSelector)
+
+  const setUser=(user)=>{
+    console.log(user)
+    dispatch(setLoginUser(user))
+  }
+
+  const deleteUser=()=>{
+    dispatch(deleteLoginUser())
+  }
+
   const fetchCart = (user) => {
     let cartItem = []
     firebase
@@ -65,8 +76,8 @@ const App = () => {
           cartItem.push({ id: doc.id, cartItem: doc.data() })
         }
         )
+        dispatch(fetchCartItem(cartItem))
       })
-    dispatch(fetchCartItem(cartItem))
   }
 
   const fetchCurry = () => {
@@ -78,17 +89,17 @@ const App = () => {
         snapshot.forEach(doc => {
           CurryItem.push(doc.data())
         })
+        dispatch(fetchItem(CurryItem))
       })
-    dispatch(fetchItem(CurryItem))
   }
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        dispatch(setLoginUser(user))
+        setUser(user)
         fetchCart(user)
       } else {
-        dispatch(deleteLoginUser())
+        deleteUser()
       }
     })
     fetchCurry()

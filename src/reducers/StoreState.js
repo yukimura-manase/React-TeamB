@@ -15,6 +15,7 @@ console.log(initialState)
 const StoreState = (state = initialState, action) => {
   switch (action.type) {
     case SETLOGINUSER:
+      console.log(action.loginUser)
       return { ...state, loginUser: action.loginUser }
 
     case DELETELOGINUSER:
@@ -23,11 +24,13 @@ const StoreState = (state = initialState, action) => {
     case FETCHCARTITEM:
       let cartItem = state.Cart.slice()
       cartItem = action.Cart
+      console.log(cartItem)
       return { ...state, Cart: cartItem }
 
     case FETCHITEM:
       let CurryItem = state.Curry.slice()
       CurryItem = action.Curry
+      console.log(CurryItem)
       return { ...state, Curry: CurryItem }
 
     default:
