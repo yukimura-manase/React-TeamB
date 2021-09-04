@@ -6,7 +6,7 @@ import firebase from 'firebase/compat/app'
 
 const initialStateApp = {
 
-    loginUser: {}, // null
+    loginUser: null,
     Curry: [],
     Cart: [
         { cartItem: {
