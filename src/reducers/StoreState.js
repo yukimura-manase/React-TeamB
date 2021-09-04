@@ -78,10 +78,10 @@ export const StoreState = (state = initialStateApp, action) => {
             console.log('state.loginUser情報')
             console.log(state.loginUser)
 
-            // firebase.firestore()
-            // .collection(`users/${state.loginUser.uid}/carts`)
-            // .doc('aMZz5VN4TEVzsBoZ3J5j') // 自動ID
-            // .update(copyCart) // documentの指定idのやつの中にある一部の値だけ更新
+            firebase.firestore()
+            .collection(`users/${state.loginUser.uid}/carts`)
+            .doc('1jQaF5Vc5fmvmtdmsjjw') // 自動ID => cartItemlist.id
+            .update({cartItemList:copyCart}) // documentの指定idのやつの中にある一部の値だけ更新
 
             return {
                 cartlist:copyCart

@@ -6,16 +6,6 @@ import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
-// 1.Redux-Storeのstateのカートに商品情報が入っていない場合
-// 「カートに商品がありません」というメッセージのみを表示する
-//   この時、カート内情報、消費税、ご注文金額合計、
-//    注文に進むボタンは全て非表示にする
-
-
-// 2.DBイベント処理「カート内の指定商品を削除」を発生させる。
- //=>DBのカート情報(cartsのcartItemList)そのものを更新(update)
-
-
 
  export const loginSelector = state=>{ // Storeのログインユーザー情報
      console.log('loginSelector')
@@ -36,6 +26,7 @@ export const cartSelector = state => { // Storeのカート情報
 
 export const Cart = ()=>{
 
+
     const user = useSelector(loginSelector)
 
     const cartlist = useSelector(cartSelector) // useSelectorの引数にcartSelector関数を渡す。 => Storeのstate情報の一部が引数に入る。
@@ -51,18 +42,23 @@ export const Cart = ()=>{
     console.log('ログインユーザーはいるか？');
     console.log(user)
 
+    const undefinedCheck = ()=>{  // undefinedだったら再度、user情報をsetしたい！
+        if(user === undefined){
+            console.log('undefinedCheck')
+            const google_auth_provider = new firebase.auth.GoogleAuthProvider()
+            firebase.auth().signInWithRedirect(google_auth_provider)
+        }
+    }
+
     
 
     useEffect(
         ()=>{
             console.log('useEffect')
-            // if(){
+            undefinedCheck()
+            
+        },[])
 
-            // }
-            
-            
-        },[]
-    )
     // const checkLogin = ()=>{
     //     if(!user){ return ( <button onClick={ ()=>{login()} }>まずはログイン！</button> ) }
     //      else { <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button> } 
@@ -195,7 +191,7 @@ export const Cart = ()=>{
                 <div>
                     {/* {checkLogin()} */}
                     {
-                        !user ?
+                        user === null ? 
                         <button onClick={ ()=>{login()} }>まずはログイン！</button>:
                         <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
                     }
