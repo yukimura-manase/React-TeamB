@@ -1,5 +1,6 @@
+
 import React,{useEffect} from 'react';
-import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
+
 import {
   useHistory,
   BrowserRouter as Router,
@@ -7,25 +8,39 @@ import {
   Route,
   Link
 } from 'react-router-dom' // Router設定仮置き
+
+import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
+
 import firebase from 'firebase/compat/app'
-import 'firebase/compat/auth'
-import 'firebase/compat/firestore'
-import '../service/firebase'
+import 'firebase/compat/auth' // authentication code
+import 'firebase/compat/firestore' // firestore access
+import  '../service/firebase'
 import Header from './Header'
-import Footer from './Footer';
+// import Footer from './Footer';
 import CurryDetail from './CurryDetail'
 import {Cart} from './Cart'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 import {Product} from './Product'
 
+// import { BuyHistory } from './Buyhistory';
+import { OrderFinish } from './orderFinish';
 
-const userSelector=state=>state.StoreState
+
+
+
+
+//const currySelector = state => state.StoreState.loginUser
+
+  
+const userSelector = state => state.StoreState
+
 // const currySelector=state=>state.StoreState.Curry
 // const cartSelector=state=>state.StoreState.Cart
 
 const App = () => {
   const dispatch = useDispatch()
-  const state=useSelector(userSelector)
+
+  const state = useSelector(userSelector)
 
   const setUser=(user)=>{
     console.log(user)
@@ -108,19 +123,25 @@ const App = () => {
   }, []);
 
   return (
+
     <React.Fragment>
       <Router>
       <Header/>
+
+      {/* Switchでルーティング(アクセス経路)設定の世界 */}
+
       <Switch>
-        {/* <Route path='/currydetail' component={CurryDetail}></Route> */}
         <Route path='/currydetail/:id' component={CurryDetail}></Route>
         <Route path='/' exact component={Product}></Route>
-        <Route path='/cart' exact component={Cart}></Route>
+        <Route path='/orderFinish' exact component={OrderFinish} />
+        {/* <Route path='/buyHistory' exact component={BuyHistory} /> */}
+        <Route path='/cart' exact component={Cart} />
       </Switch>
-        <Footer/>
+        {/* <Footer/> */}
       </Router>
     </React.Fragment>
   );
 }
 
 export default App;
+

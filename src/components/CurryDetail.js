@@ -17,30 +17,24 @@ const CurryDetail = () => {
 
     const dispatch = useDispatch()
 
-
-
     //useSelectorを使い参照したいデータを取得
     //値をcurryListに代入
     const curry =useSelector(curryItem)
     console.log(curry);
-    //サイズ
-    const [size,setSize] = useState('')
-    console.log(size);
-    //数量
-    const [quantity,setQuantity] = useState(1)
-    console.log(quantity);
-    
 
     //params
     const {id} = useParams()
-    console.log(id);
-
     const getCurryId = curry.find((curryid) => curryid.id === Number(id) )
     console.log(getCurryId);
-
     let setNumber = (e) => setQuantity(e.target.value)
 
+    //サイズ
+    const [size,setSize] = useState('')
+    console.log(size);
 
+    //数量
+    const [quantity,setQuantity] = useState(1)
+    console.log(quantity);
     
     //トッピングを入れる配列
     const [toppingItem,setToppingItem] = useState([]) 
@@ -53,7 +47,6 @@ const CurryDetail = () => {
         }        
     }
 
-
     //金額の計算 params入れる
     let totalPrice = () => {
         if(size === "M"){
@@ -63,7 +56,6 @@ const CurryDetail = () => {
         }
         }
 
-    
     //イベント発火時処理
     //ユーザーが選択商品情報をcurryListに追加
     const [sizeDecision,setsizeDecision] = useState('')
@@ -73,15 +65,13 @@ const CurryDetail = () => {
     
     let setErrors = ""
     const cartButton = () => {
+        //エラー文表示
         setsizeDecision("")
         if(size === ""){
             setErrors ="サイズを選択してください"
             setsizeDecision(setErrors)
-
-    
         }else{
             let curryList = ({id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()})
-            
             console.log(curryList);
             dispatch(curryCartItem(curryList))    
             handleLink('/cart')
