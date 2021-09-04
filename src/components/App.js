@@ -1,5 +1,5 @@
-import React,{useEffect} from 'react';
-import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux'; // 仮置きサンプル
 import {
   useHistory,
   BrowserRouter as Router,
@@ -12,25 +12,25 @@ import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 import '../service/firebase'
 import Header from './Header'
-import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
-import {Detail} from './detail'
-import {Product} from './Product'
+import { setLoginUser, deleteLoginUser, fetchCartItem, fetchItem } from '../actions/ActionCreator';
+import { Detail } from './detail'
+import { Product } from './Product'
 
 
-const userSelector=state=>state.StoreState
+const userSelector = state => state.StoreState
 // const currySelector=state=>state.StoreState.Curry
 // const cartSelector=state=>state.StoreState.Cart
 
 const App = () => {
   const dispatch = useDispatch()
-  const state=useSelector(userSelector)
+  const state = useSelector(userSelector)
 
-  const setUser=(user)=>{
+  const setUser = (user) => {
     console.log(user)
     dispatch(setLoginUser(user))
   }
 
-  const deleteUser=()=>{
+  const deleteUser = () => {
     dispatch(deleteLoginUser())
   }
 
@@ -57,25 +57,27 @@ const App = () => {
               cartItemList: []
             }).then(doc => {
               cartItem.push({
-                id: doc.id, cartItem: {
-                  orderDate: "",
-                  userName: "",
-                  mailAddress: "",
-                  addressNumber: "",
-                  address: "",
-                  phoneNumber: "",
-                  deliveryDate: "",
-                  deliveryTime: "",
-                  status: 0,
-                  cartItemList: []
-                }
-              })
+                id: doc.id,
+                orderDate: "",
+                userName: "",
+                mailAddress: "",
+                addressNumber: "",
+                address: "",
+                phoneNumber: "",
+                deliveryDate: "",
+                deliveryTime: "",
+                status: 0,
+                cartItemList: []
+              }
+              )
             })
         }
         snapshot.forEach(doc => {
-          cartItem.push({ id: doc.id, cartItem: doc.data() })
-        }
-        )
+          if (doc.data().status === 0) {
+            cartItem.push({ ...doc.data(), id: doc.id })
+          }
+        })
+        console.log(cartItem)
         dispatch(fetchCartItem(cartItem))
       })
   }
@@ -108,12 +110,12 @@ const App = () => {
   return (
     <React.Fragment>
       <Router>
-      <h1>TeamBの制作物</h1>
-      <Header/>
-      <Switch>
-        <Route path='/detail/:id' component={Detail}></Route>
-        <Route path='/' component={Product}></Route>
-      </Switch>
+        <h1>TeamBの制作物</h1>
+        <Header />
+        <Switch>
+          <Route path='/detail/:id' component={Detail}></Route>
+          <Route path='/' component={Product}></Route>
+        </Switch>
 
       </Router>
     </React.Fragment>
@@ -121,3 +123,10 @@ const App = () => {
 }
 
 export default App;
+
+
+// const CartList=state.Cart.slice()
+// const myCart=CurryList.filter((cart)=>{
+//   cart.cartItem.status===0
+// })
+// myCart[0]
