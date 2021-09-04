@@ -21,8 +21,7 @@ import CurryDetail from './CurryDetail'
 import {Cart} from './Cart'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 import {Product} from './Product'
-
-// import { BuyHistory } from './Buyhistory';
+import { BuyHistory } from './buyHistory';
 import { OrderFinish } from './orderFinish';
 
 

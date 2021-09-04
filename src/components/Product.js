@@ -37,9 +37,8 @@ export const Product =()=>{
         Setword(event.target.value)
         console.log(word)
 
-    }
-    console.log(word)
-    // console.log(curry)
+    }    
+
     return(
         <div>
             <h1>商品検索</h1>
@@ -47,7 +46,9 @@ export const Product =()=>{
                 {/* 検索機能　絞り込み */}
             <button>検索</button>
             <h2>商品一覧</h2>
-            {curry.map((curry)=>{
+
+            {
+                curry.map((curry)=>{
                 return<div key={curry.id}>
                     <div>商品名:{curry.name}</div>
                     <div><img src={curry.pic} alt='' width="100px"/></div>
@@ -55,10 +56,16 @@ export const Product =()=>{
                     <div>Lサイズ:{curry.lsizePrice}円</div>
                     <button onClick={()=> handleLink(`currydetail/${curry.id}`)}>商品詳細へ</button>
                 </div>
+
         })}
         </div>
     )
     }
+
+    
+
+
+
  // async function Newcurry(){
     //    const curry =useSelector(curryItem)
     //    console.log(curry)

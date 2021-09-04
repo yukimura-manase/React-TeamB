@@ -4,9 +4,6 @@ import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM ,REMOVECART, AD
 import firebase from 'firebase/compat/app'
 
 
-
-
-
 const initialState = {
   loginUser: null,
   Curry: [],

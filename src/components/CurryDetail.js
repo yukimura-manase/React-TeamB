@@ -59,6 +59,7 @@ const CurryDetail = () => {
     //イベント発火時処理
     //ユーザーが選択商品情報をcurryListに追加
     const [sizeDecision,setsizeDecision] = useState('')
+    //handleLink
     const history = useHistory()
     const handleLink = path => history.push(path)
 

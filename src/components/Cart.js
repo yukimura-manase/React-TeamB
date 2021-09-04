@@ -2,6 +2,9 @@ import React, {useState,useEffect} from 'react'
 import { removeCart } from '../actions/ActionCreator';
 import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
+import firebase from "firebase/compat/app";
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 // 1.Redux-Storeのstateのカートに商品情報が入っていない場合
 // 「カートに商品がありません」というメッセージのみを表示する
@@ -16,15 +19,15 @@ import {useHistory} from "react-router-dom";
 
  export const loginSelector = state=>{ // Storeのログインユーザー情報
      console.log('loginSelector')
-     console.log(state)
+     //console.log(state)
      console.log(state.StoreState.loginUser)
     return state.StoreState.loginUser
 }
 
 
 export const cartSelector = state => { // Storeのカート情報
-    console.log('cartSelector')
-    console.log(state)
+    // console.log('cartSelector')
+    // console.log(state)
     // console.log(state.StoreState.cartlist.length)
     return state.StoreState.cartlist
 } 
@@ -42,14 +45,27 @@ export const Cart = ()=>{
     console.log('ログインユーザーはいるか？');
     console.log(user)
 
+    
+
+    useEffect(
+        ()=>{
+            console.log('useEffect')
+            // if(){
+
+            // }
+            
+            
+        },[]
+    )
+    // const checkLogin = ()=>{
+    //     if(!user){ return ( <button onClick={ ()=>{login()} }>まずはログイン！</button> ) }
+    //      else { <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button> } 
+    // }
+
 
     //console.log(Object.keys(user).length)
 
-    //const [login_user , setUser] = useState({}) // ログインユーザーのstate
-
-
-
-    
+    //const [login_user , setUser] = useState(user) // ログインユーザーのデータを保持する！
 
     // const [carts ,setCart] = useState([])
     // console.log(cartlist)
@@ -76,28 +92,20 @@ export const Cart = ()=>{
 
     
     const totalTax = ()=>{ // 消費税の合計を計算
-        console.log('totalTax')
+        //console.log('totalTax')
         let tax = []
         cartlist.forEach(cart => {
-            // console.log('totalTaxのcart')
-            // console.log(cart)
             tax.push(cart.total * 0.1)
         })
-
-        // console.log('forEach完了後のtax配列')
-        // console.log(tax)
 
         let totalTax = tax.reduce( (sum,currentVal ) => {
             return sum + currentVal;
         },0) // 初期値を設定している。
-
-        // console.log('totalTax')
-        // console.log(totalTax)
         return totalTax
     }
 
      const sumTotalPlice = ()=>{ // 小計金額(total)ごとの消費税分を計算。
-        console.log('sumTotalPlice')
+        //console.log('sumTotalPlice')
         let taxInclude = []
         cartlist.forEach(cart => {
         taxInclude.push(cart.total * 1.1)
@@ -105,22 +113,12 @@ export const Cart = ()=>{
         let totalTaxIncludes = taxInclude.reduce( (sum,currentVal) => {
             return sum + currentVal;
         },0)
-
         return Math.floor(totalTaxIncludes)
 }
 
     // const [userState , setUser] = useState({})
 
-    // const checkLogin = (user) =>{
-        
-    //     if(!Object.keys(user).length){
-    //         console.log('home')
-    //        return <button onClick={ ()=>{handleLink('/')} }>注文に進む</button> 
-    //     } else if (user){
-    //         console.log('buyhistory')
-    //        return <button onClick={ ()=>{handleLink('/buyhistory')} }>注文に進む</button>
-    //     }
-    // }
+    
 
     const remove = (index)=>{
         
@@ -129,6 +127,12 @@ export const Cart = ()=>{
         dispatch(removeCart(index))
     
     }
+
+    const login=()=>{
+        const google_auth_provider = new firebase.auth.GoogleAuthProvider()
+        firebase.auth().signInWithRedirect(google_auth_provider)
+        console.log('ログイン')
+      }
 
 
     return(
@@ -182,25 +186,13 @@ export const Cart = ()=>{
 
                 <div>消費税：{ totalTax() }円</div>
                 <div>ご注文金額合計：{ sumTotalPlice() }円(税込)</div>
-                {/* {checkLogin()} */}
                 <div>
-                    {/* <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button> */}
-
-                    {/* {   (()=>{ // ログインしていれば、注文に進む！ ログインしていなければ、まずはログイン！
-                            if(user){
-                                return( <button onClick={ ()=>{handleLink('/buyhistory')} }>注文に進む！</button> )
-                            } else  {
-                                return( <button onClick={ ()=>{handleLink('/')} }>まずはログイン！</button>  )
-                            }
-                            }
-                        )()
-                    } */}
-
-                {   
-                     (user === null || user === undefined ) || !Object.keys(user).length ?
-                    <button onClick={ ()=>{handleLink('/')} }>まずはログイン！</button> :
-                    <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
-                }
+                    {/* {checkLogin()} */}
+                    {
+                        !user ?
+                        <button onClick={ ()=>{login()} }>まずはログイン！</button>:
+                        <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
+                    }
                 </div>
             
             </div>
@@ -209,12 +201,6 @@ export const Cart = ()=>{
     )
 }
 
-
-//if(user === undefined)
-
-// {carts ? : <h2>カートに商品がありません！</h2>}
-
-//checkLogin()
 
 
 
