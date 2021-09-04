@@ -1,6 +1,4 @@
-
 import React,{useEffect} from 'react';
-
 import {
   useHistory,
   BrowserRouter as Router,
@@ -8,7 +6,6 @@ import {
   Route,
   Link
 } from 'react-router-dom' // Router設定仮置き
-
 import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
 
 import firebase from 'firebase/compat/app'
@@ -38,15 +35,14 @@ const userSelector = state => state.StoreState
 
 const App = () => {
   const dispatch = useDispatch()
-
   const state = useSelector(userSelector)
 
-  const setUser=(user)=>{
+  const setUser = (user) => {
     console.log(user)
     dispatch(setLoginUser(user))
   }
 
-  const deleteUser=()=>{
+  const deleteUser = () => {
     dispatch(deleteLoginUser())
   }
 
@@ -73,25 +69,27 @@ const App = () => {
               cartItemList: []
             }).then(doc => {
               cartItem.push({
-                id: doc.id, cartItem: {
-                  orderDate: "",
-                  userName: "",
-                  mailAddress: "",
-                  addressNumber: "",
-                  address: "",
-                  phoneNumber: "",
-                  deliveryDate: "",
-                  deliveryTime: "",
-                  status: 0,
-                  cartItemList: []
-                }
-              })
+                id: doc.id,
+                orderDate: "",
+                userName: "",
+                mailAddress: "",
+                addressNumber: "",
+                address: "",
+                phoneNumber: "",
+                deliveryDate: "",
+                deliveryTime: "",
+                status: 0,
+                cartItemList: []
+              }
+              )
             })
         }
         snapshot.forEach(doc => {
-          cartItem.push({ id: doc.id, cartItem: doc.data() })
-        }
-        )
+          if (doc.data().status === 0) {
+            cartItem.push({ ...doc.data(), id: doc.id })
+          }
+        })
+        console.log(cartItem)
         dispatch(fetchCartItem(cartItem))
       })
   }
@@ -143,4 +141,3 @@ const App = () => {
 }
 
 export default App;
-
