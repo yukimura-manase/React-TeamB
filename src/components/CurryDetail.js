@@ -9,7 +9,6 @@ import {curryCartItem} from '../actions/ActionCreator'
 
 //store/stateのなかのCurryの値を取ってきてcurrydetailに代入
 export const curryItem = state =>{
-    console.log(state);
     return state.StoreState.Curry
 }
 
@@ -22,8 +21,8 @@ const CurryDetail = () => {
 
     //useSelectorを使い参照したいデータを取得
     //値をcurryListに代入
-    const curryList = useSelector(curryItem)
-    console.log(curryList);
+    const curry =useSelector(curryItem)
+    console.log(curry);
     //サイズ
     const [size,setSize] = useState('')
     console.log(size);
@@ -31,6 +30,17 @@ const CurryDetail = () => {
     const [quantity,setQuantity] = useState(1)
     console.log(quantity);
     
+
+    //params
+    const {id} = useParams()
+    console.log(id);
+
+    const getCurryId = curry.find((curryid) => curryid.id === Number(id) )
+    console.log(getCurryId);
+
+    let setNumber = (e) => setQuantity(e.target.value)
+
+
     
     //トッピングを入れる配列
     const [toppingItem,setToppingItem] = useState([]) 
@@ -47,9 +57,9 @@ const CurryDetail = () => {
     //金額の計算 params入れる
     let totalPrice = () => {
         if(size === "M"){
-            return curryList[0].msizePrice * quantity + toppingItem.length * 200 * quantity 
+            return curry[0].msizePrice * quantity + toppingItem.length * 200 * quantity 
         }else if(size === "L"){
-            return curryList[0].lsizePrice * quantity + toppingItem.length * 300 * quantity 
+            return curry[0].lsizePrice * quantity + toppingItem.length * 300 * quantity 
         }
         }
 
@@ -57,55 +67,42 @@ const CurryDetail = () => {
     //イベント発火時処理
     //ユーザーが選択商品情報をcurryListに追加
     const [sizeDecision,setsizeDecision] = useState('')
-    const [cartList,setCurryList] = useState({size:'',topping:'',number:'',total:''})
+    const history = useHistory()
+    const handleLink = path => history.push(path)
+
     
     let setErrors = ""
     const cartButton = () => {
-        // setsizeDecision("")
+        setsizeDecision("")
         if(size === ""){
             setErrors ="サイズを選択してください"
             setsizeDecision(setErrors)
-            //ページ遷移しないように止める e.preventDefault
-        }
-        console.log('カートボタン');
-        //stateの値をオブジェクトにして
-        setCurryList({size : size,topping : toppingItem,number : quantity,total : totalPrice})
-        console.log(cartList);
-        dispatch(curryCartItem(cartList))
 
+    
+        }else{
+            let curryList = ({id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()})
+            
+            console.log(curryList);
+            dispatch(curryCartItem(curryList))    
+            handleLink('/cart')
+        }    
     }
 
-
-    //params
-    // const {id} = useParams ()
-
-    // const getCurryId = curryList.find((curry_id) => curry_id.id === {id}*1)
-
-    // const id = {1}
-   
-    // const getCurryId = curryList.find((curry) => curry.id === 4)
-    // console.log(getCurryId);
-
-    let setNumber = (e) => setQuantity(e.target.value)
-
-    //path
-    const history = useHistory()
-    const handleLink = path => history.push(path)
 
     return(
         <div>
             <h1>商品詳細</h1>
 
             <div>
-                {/* <div>{getCurryId.name}</div>
+                <div>{getCurryId.name}</div>
                 <div>
                     <img src={getCurryId.pic}></img>
                 </div>
-                <div>{getCurryId.detail}</div> */}
+                <div>{getCurryId.detail}</div>
                 <div>
                     <div>サイズ</div>
-                    <label htmlFor="button"><input type="radio"  value="M"　name="button" onClick={()=> setSize('M')}/>M {/* {getCurryId.msizePrice}  */}(税抜)</label>
-                    <label htmlFor="button"><input type="radio"   value="L" name="button" onClick={()=> setSize('L')}/>L {/* {getCurryId.lsizePrice}  */}(税抜)</label>
+                    <label htmlFor="button"><input type="radio"  value="M"　name="button" onClick={()=> setSize('M')}/>M {getCurryId.msizePrice}  (税抜)</label>
+                    <label htmlFor="button"><input type="radio"   value="L" name="button" onClick={()=> setSize('L')}/>L  {getCurryId.lsizePrice}  (税抜)</label>
                     <div>{sizeDecision}</div>
                 </div>
 
@@ -164,7 +161,7 @@ const CurryDetail = () => {
             <div>この商品の合計金額：{totalPrice()}円(税抜)</div>
             <div>
                 {/* <button onClick={cartButton}>カートに入れる</button> */}
-                <button onClick={cartButton}><Link to="/cart">カートに入れる</Link></button>
+                <button onClick={cartButton}>カートに入れる</button>
             </div>
         </div>
 

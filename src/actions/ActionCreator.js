@@ -15,15 +15,17 @@ export const deleteLoginUser = () =>({
     type: DELETELOGINUSER,
 })
 
-export const fetchItem = () =>({
+export const fetchItem = (curryItem) =>({
     type: FETCHITEM,
+    Curry:curryItem
 })
 
-export const fetchCartItem = () =>({
+export const fetchCartItem = (cartItem) =>({
     type: FETCHCARTITEM,
+    Cart: cartItem
 })
 
 export const curryCartItem = (cartItem) => ({
     type: CURRYCARTITEM,
-    cart: cartItem
+    Cart: cartItem
 })
