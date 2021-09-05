@@ -71,8 +71,6 @@ export const StoreState = (state = initialState, action) => {
             return {...state,Cart: copyCart}
         }
 
-
-      //変更あり
       case CURRYCARTITEM:
         console.log(state)
         console.log('action.Cart')

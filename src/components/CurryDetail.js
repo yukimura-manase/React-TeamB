@@ -11,6 +11,70 @@ import { noLoginCart } from './App';
 // firebaseに追加
 // 詳細からカートへのルーティング
 
+//materialUI
+import { createStyles,makeStyles } from '@material-ui/styles';
+
+const useStyle = makeStyles(() =>
+    createStyles({
+        "style":{
+            textAlign:"center",
+            paddingBottom:"20px",
+            fontWeight:700
+        },
+        "picture":{
+            width:"500px",
+            height:"350px",
+            paddingTop:"15px",
+            paddingBottom:"15px"
+        },
+        "checkbox":{
+            padding: "0.5em 1em",
+            margin: "2em 0",
+            color: "#232323",
+            background: "#fff8e8",
+            borderLeft: "solid 10px #faa61a",
+            width:"85%",
+            display:"inline-block"
+        },
+        "text":{
+            fontSize:"25px",
+        },
+        "errortext":{
+            color:"red",
+            fontWeight:700
+        },
+        "button":{
+            borderColor:"#faa61a",
+            color:"#faa61a",
+            fontWeight:600,
+            marginBottom:"8px",
+            backgroundColor:"#fff",
+            padding:"10px",
+            "&:hover":{
+                backgroundColor:"#faa61a",
+                color:"#fff"
+            }
+        },
+        "size":{
+            paddingBottom:"15px",
+            paddingTop:"15px"
+        },
+        "number":{
+            fontSize:"18px",
+            paddingBottom:"15px"
+
+        },
+        "price":{
+            fontSize:"18px",
+            paddingBottom:"15px"
+        },
+        "u":{
+            textDecoration:"none",
+            borderBottom:"double 5px #faa61a",
+        }
+    }),
+);
+    
 
 //store/stateのなかのCurryの値を取ってきてcurrydetailに代入
 export const curryItem = state =>{
@@ -19,6 +83,7 @@ export const curryItem = state =>{
 
  
 const CurryDetail = () => {
+    const classes = useStyle();
 
     const dispatch = useDispatch()
 
@@ -80,6 +145,7 @@ const CurryDetail = () => {
         setsizeDecision("")
         if(size === ""){
             setErrors ="サイズを選択してください"
+
             setsizeDecision(setErrors)
         }else{
             let curryList = ( {id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()} )
@@ -91,27 +157,31 @@ const CurryDetail = () => {
 
 
     return(
-        <div>
-            <h1>商品詳細</h1>
+        <div className={classes.style}>
+            {/* <h2>商品詳細</h2> */}
 
             <div>
-                <div>{getCurryId.name}</div>
+                <div className={classes.text}><u className={classes.u}>{getCurryId.name}</u></div>
                 <div>
-                    <img src={getCurryId.pic}></img>
+                    <img src={getCurryId.pic} className={classes.picture}></img>
                 </div>
                 <div>{getCurryId.detail}</div>
                 <div>
-                    <div>サイズ</div>
-                    <label htmlFor="button"><input type="radio"  value="M"　name="button" onClick={()=> setSize('M')}/>M {getCurryId.msizePrice}  (税抜)</label>
-                    <label htmlFor="button"><input type="radio"   value="L" name="button" onClick={()=> setSize('L')}/>L  {getCurryId.lsizePrice}  (税抜)</label>
-                    <div>{sizeDecision}</div>
+                    <div className={classes.size}><u className={classes.u}>サイズ</u></div>
+                    <div>
+                        <label htmlFor="button"><input type="radio"  value="M"　name="button" onClick={()=> setSize('M')}/>M {getCurryId.msizePrice}  (税抜)</label>
+                    </div>
+                    <div>
+                        <label htmlFor="button"><input type="radio"   value="L" name="button" onClick={()=> setSize('L')}/>L  {getCurryId.lsizePrice}  (税抜)</label>
+                    </div>
+                    <div className={classes.errortext}>{sizeDecision}</div>
                 </div>
 
             </div>
 
             <div>
-                <div>トッピング：１つにつき M 200円(税抜) L 300円(税抜)</div>
-                <div name="topping">
+                <div name="topping" className={classes.checkbox}>    
+                    <div>トッピング：１つにつき M 200円(税抜) L 300円(税抜)</div>
                     <label htmlFor='オニオン'><input type="checkbox" id='オニオン' value="オニオン" onChange={setTopping}/>オニオン</label>&nbsp;&nbsp;
                     <label htmlFor='ツナマヨ'><input type="checkbox" id='ツナマヨ' value="ツナマヨ" onChange={setTopping}/>ツナマヨ</label>&nbsp;&nbsp;
                     <label htmlFor='イタリアントマト'><input type="checkbox" id='イタリアントマト' value="イタリアントマト"　onChange={setTopping}/>イタリアントマト</label>&nbsp;&nbsp;
@@ -143,8 +213,7 @@ const CurryDetail = () => {
                 </div>
             </div>
             <div>
-                <div>数量:</div>
-                <div><select name="number"　onChange={setNumber}>
+                <div className={classes.number}>数量:<select name="number"　onChange={setNumber} >
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
@@ -159,10 +228,10 @@ const CurryDetail = () => {
                     <option value="12">12</option>
                 </select></div>
             </div>
-            <div>この商品の合計金額：{totalPrice()}円(税抜)</div>
+            <div className={classes.price}><u className={classes.u}>この商品の合計金額：{totalPrice()}円(税抜)</u></div>
             <div>
                 {/* <button onClick={cartButton}>カートに入れる</button> */}
-                <button onClick={cartButton}>カートに入れる</button>
+                <button onClick={cartButton} className={classes.button}>カートに入れる</button>
             </div>
         </div>
 

@@ -6,6 +6,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 // import { useDispatch } from 'react-redux';
 // import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
+import { createStyles,makeStyles } from '@material-ui/styles';
 
 // const cartSelector = state=> state.StoreState.Curry
 
@@ -13,24 +14,29 @@ const userSelector=state=>state.StoreState.loginUser
 const currySelector=state=>state.StoreState.Curry
 const cartSelector=state=>state.StoreState.Cart
 
+const useStyle = makeStyles(() =>
+  createStyles({
+    "right":{
+      textAlign:"right",
+    },
+    "buttonStyle":{
+      fontWeight:700,
+      fontSize:"17px",
+      border:"none",  /* 枠線を消す */
+      outline: "none", /* クリックしたときに表示される枠線を消す */
+      background:"transparent", /* 背景の灰色を消す */
+      "&:hover":{
+        backgroundColor:"#faa61a",
+        color:"#fff"
+    }
+
+    }
+  }),
+);
+
 const Header=()=>{
-
-  // const dispatch = useDispatch()
-  // const cart =useSelector(cartSelector)
-  // console.log(cart)
-
-  // useEffect(() => {
-  //   firebase.auth().onAuthStateChanged(user => {
-  //     if (user) {
-  //       dispatch(setLoginUser(user))
-  //       dispatch(fetchCartItem())
-  //     } else {
-  //       dispatch(deleteLoginUser())
-  //     }
-  //     dispatch(fetchItem())
-  //   })
-  // },[]);
-
+  
+  const classes = useStyle();
 
   const history=useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
   const handleLink = path =>history.push(path);
@@ -39,7 +45,7 @@ const Header=()=>{
   const cart=useSelector(cartSelector)
   // console.log(curry)
   // console.log(user)
-  // console.log(cart)
+  console.log(cart)
 
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()
@@ -55,11 +61,11 @@ const Header=()=>{
   const Logbutton=()=>{
     if(user){
       return(
-        <button onClick={logout}>ログアウト</button>
+        <button onClick={logout} className={classes.buttonStyle}>ログアウト</button>
         )
       }else{
         return(
-        <button onClick={login}>ログイン</button>
+        <button onClick={login} className={classes.buttonStyle}>ログイン</button>
       )
     }
   }
@@ -67,11 +73,11 @@ const Header=()=>{
   return(
     <React.Fragment>
     <header>
-      <button onClick={()=>handleLink('/')}>一覧</button>
-      <button onClick={()=>handleLink('/cart')}>ショッピングカートへ</button>
-      
-      {/* <button onClick={()=>handleLink('/buyHistory')}>確認画面</button> */}
-      <Logbutton/>
+      <div className={classes.right}>
+        <button onClick={()=>handleLink('/')} className={classes.buttonStyle}>一覧</button>|
+        <button onClick={()=>handleLink('/cart')} className={classes.buttonStyle}>ショッピングカートへ</button>|
+        <Logbutton />
+      </div>
     </header>
     </React.Fragment>
   )
