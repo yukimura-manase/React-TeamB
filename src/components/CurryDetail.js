@@ -5,6 +5,12 @@ import { useSelector,useDispatch } from 'react-redux';
 import {useHistory, useParams} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import {curryCartItem} from '../actions/ActionCreator'
+import { noLoginCart } from './App';
+
+
+// firebaseに追加
+// 詳細からカートへのルーティング
+
 //materialUI
 import { createStyles,makeStyles } from '@material-ui/styles';
 
@@ -88,8 +94,13 @@ const CurryDetail = () => {
 
     //params
     const {id} = useParams()
+    // const getCurryId = ()=>{ // 関数Ver
+    //     console.log(curry);
+    //     return curry.find((curryid) => curryid.id === Number(id) )
+    // }
     const getCurryId = curry.find((curryid) => curryid.id === Number(id) )
-    console.log(getCurryId);
+    
+    //console.log(getCurryId);
     let setNumber = (e) => setQuantity(e.target.value)
 
     //サイズ
@@ -137,9 +148,9 @@ const CurryDetail = () => {
 
             setsizeDecision(setErrors)
         }else{
-            let curryList = ({id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()})
+            let curryList = ( {id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()} )
             console.log(curryList);
-            dispatch(curryCartItem(curryList))    
+            dispatch(curryCartItem(curryList))
             handleLink('/cart')
         }    
     }

@@ -70,25 +70,58 @@ export const StoreState = (state = initialState, action) => {
 
 
         case REMOVECART:{
-            const copyCart = state.cartlist.concat() // コピー
-            copyCart.splice(action.index,1)
-            console.log('state.loginUser情報')
-            console.log(state.loginUser)
+            const copyCart = state.Cart.concat() // コピー
+            //console.log(copyCart)
+            //copyCart.splice(action.index,1)
 
-            // firebase.firestore()
-            // .collection(`users/${state.loginUser.uid}/carts`)
-            // .doc('aMZz5VN4TEVzsBoZ3J5j') // 自動ID
-            // .update(copyCart) // documentの指定idのやつの中にある一部の値だけ更新
+            // console.log('state.loginUser情報')
+            // console.log(state.loginUser)
+            copyCart[0].cartItem.splice(action.index,1)
 
-            return {
-                cartlist:copyCart
-            }
+            firebase.firestore()
+            .collection(`users/${state.loginUser.uid}/carts`)
+            .doc(copyCart[0].id) // 自動ID => copyCart[0].id
+            .update( {cartItemList:copyCart[0].cartItemList} ) 
+
+            // documentの指定idのやつの中にある一部の値だけ更新
+
+            return {...state,Cart: copyCart}
         }
 
       case CURRYCARTITEM:
-        const curryCart = state.Cart.slice()
-        curryCart[0].cartItemList.push(action.Cart)
-        console.log(curryCart);
+        console.log(state)
+        console.log('action.Cart')
+        console.log(action.Cart)
+
+        //const curryCart = state.Cart.cartItemList.slice() // ノーログイン
+        const curryCart = state.Cart.slice() // ログイン
+
+        console.log('curryCart')
+        console.log(curryCart)
+
+        // console.log('curryCart[0].cartItem')
+        // console.log(curryCart[0].cartItem)
+
+        // console.log('curryCart[0].cartItem.cartItemList')
+        // console.log(curryCart[0].cartItem.cartItemList) // Cart情報
+        
+
+        //curryCart.push(action.Cart) // ノーログイン
+
+        curryCart[0].cartItemList.push(action.Cart) // ログイン
+
+        // console.log('Push後のcurryCart')
+        // console.log(curryCart);
+        // console.log(curryCart[0].id)
+
+        if(state.loginUser){
+            firebase.firestore()
+            .collection(`users/${state.loginUser.uid}/carts`)
+            .doc(curryCart[0].id) // curryCart[0].id
+            .update( {cartItemList:curryCart[0].cartItemList} )
+        }
+
+
         return {...state,Cart: curryCart}
 
 
@@ -98,6 +131,26 @@ export const StoreState = (state = initialState, action) => {
   }
 }
 
+// データ構造
+//     Cart[
+            // {
+                // cartItem: {
+                    //         cartItemList: [
+                        //             {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
+                        //     ],
+                    //          
+                    //         orderDate: "",
+                    //         userName: "",
+                    //         mailAddress: "",
+                    //         addressNumber: "",
+                    //         address: "",
+                    //         phoneNumber: "",
+                    //         deliveryDate: "",
+                    //         deliveryTime: "",
+                    //         status: 0,
 
-
+                    
+            //     }
+            // }
+    //  ]
 

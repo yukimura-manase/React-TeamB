@@ -67,9 +67,25 @@ export const curryItem = state =>{
 }
 
 export const Product =()=>{
+    const curry =useSelector(curryItem)
+    console.log(curry);
+    // const dispatch=useDispatch()
+    // useEffect(()=>{
+    //     if(!curry){
+    //         const CurryItem = []
+    //   firebase
+    //     .firestore()
+    //     .collection(`product`)
+    //     .get().then(snapshot => {
+    //       snapshot.forEach(doc => {
+    //         CurryItem.push(doc.data())
+    //       })
+    //     })
+    //     }
+    // },[])
+
     const classes = useStyle();
 
-    const curry =useSelector(curryItem)
     const history=useHistory()
 
     const handleLink = path =>history.push(path)

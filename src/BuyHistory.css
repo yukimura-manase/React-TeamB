@@ -37,7 +37,7 @@
 }
 
 .cart-title {
-    background: #ffab4c
+    background: #ffab4c;    
 
 }
 
@@ -46,7 +46,7 @@
 }
 
 .total-price {
-    width: 80%;
+    width: 100%;
     text-align: right;
 }
 
@@ -54,7 +54,7 @@
 .box2 {
     margin: 2em 0;
     background: #ffead6;
-    width: 70%;
+    width: 80%;
     margin-left: auto;
     margin-right: auto;
 }

@@ -1,11 +1,36 @@
 import { useHistory } from "react-router-dom";
 import '../../src/OrderFinish.css';
+import { createStyles,makeStyles } from '@material-ui/styles';
+import Button from '@material-ui/core/Button';
+
+
+const useStyle = makeStyles(() =>
+    createStyles({
+		"button":{
+            borderColor:"#faa61a",
+            color:"#302bla",
+            fontWeight:600,
+            marginTop: "3%",
+            marginBottom:"5%",
+            backgroundColor:"#fff",
+            padding:"10px",
+            "&:hover":{
+                backgroundColor:"#faa61a",
+                color:"#fff"
+            }
+        },
+	}),
+);
 
 
 export const OrderFinish = () => {
     
     const history = useHistory();
     const handleLink = path => history.push(path);
+
+
+    const classes = useStyle();
+
 
     return (
         <div>
@@ -35,7 +60,7 @@ export const OrderFinish = () => {
 
 
                     <div className="button-position">					
-                        <button className="button"  onClick={()=>handleLink('/')}><img src={ `${process.env.PUBLIC_URL}/img/home.png` } />&nbsp;&nbsp;戻る</button>			
+                        <Button variant="contained" className={classes.button}  onClick={()=>handleLink('/') }><img src={ `${process.env.PUBLIC_URL}/img/home.png` } />&nbsp;&nbsp;戻る</Button>			
                     </div>
 
                 <div>

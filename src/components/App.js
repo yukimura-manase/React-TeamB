@@ -60,6 +60,7 @@ const App = () => {
     dispatch(deleteLoginUser())
   }
 
+  // if(user)
   const fetchCart = (user) => {
     let cartItem = []
     firebase
@@ -108,6 +109,23 @@ const App = () => {
       })
   }
 
+  // const noLoginCart = ()=>{ // 追加
+  //   console.log('noLoginCart')
+  //   dispatch(fetchCartItem({
+  //     orderDate: "",
+  //     userName: "",
+  //     mailAddress: "",
+  //     addressNumber: "",
+  //     address: "",
+  //     phoneNumber: "",
+  //     deliveryDate: "",
+  //     deliveryTime: "",
+  //     status: 0,
+  //     cartItemList: []
+  //   })
+  //   )
+  // }
+
   const fetchCurry = () => {
     const CurryItem = []
     firebase
@@ -122,6 +140,8 @@ const App = () => {
   }
 
   useEffect(() => {
+    //noLoginCart() // 追加
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setUser(user)

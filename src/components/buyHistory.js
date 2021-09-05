@@ -13,7 +13,7 @@ const useStyle = makeStyles(() =>
     createStyles({
 		"button":{
             borderColor:"#faa61a",
-            color:"#faa61a",
+            color:"#302bla",
             fontWeight:600,
             marginBottom:"8px",
             backgroundColor:"#fff",
@@ -62,13 +62,10 @@ export const BuyHistory = () => {
 	[ cart, setCart ] = useState([])
 	// [ first, setItems ] = useState ('');
 
-	// console.log(getCart);
 	// useEffect(()=>{
 	// 	console.log(getCart);
-	// 	getCart.length !== 0 && setCart(getCart[0].cartItem.cartItemList)
+	// 	getCart.length !== 0 && setCart(getCart[0].cartItemList)
 	// }, [getCart])
-
-	// console.log(getCart);
 
 	//イベント発火時に値を持ってくるよ！
 	const inputUserName = (e) => {
