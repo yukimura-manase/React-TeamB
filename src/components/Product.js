@@ -11,23 +11,6 @@ export const curryItem = state =>{
 
 export const Product =()=>{
     const curry =useSelector(curryItem)
-
-    // const dispatch=useDispatch()
-    useEffect(()=>{
-        if(!curry){
-            const CurryItem = []
-      firebase
-        .firestore()
-        .collection(`product`)
-        .get().then(snapshot => {
-          snapshot.forEach(doc => {
-            CurryItem.push(doc.data())
-          })
-        })
-        }
-    },[])
-
-
     const history=useHistory()
 
     const handleLink = path =>history.push(path)
@@ -35,11 +18,7 @@ export const Product =()=>{
     const [word,Setword]=useState('')
     const handleName=(event)=>{
         Setword(event.target.value)
-        console.log(word)
-
     }
-    console.log(word)
-    console.log(curry)
     return(
         <div>
             <h1>商品検索</h1>
@@ -47,18 +26,26 @@ export const Product =()=>{
                 {/* 検索機能　絞り込み */}
             <button>検索</button>
             <h2>商品一覧</h2>
-            {curry.map((curry,index)=>{
-                return<div key={curry.index}>
+
+            {
+                curry.map((curry)=>{
+                return<div key={curry.id}>
                     <div>商品名:{curry.name}</div>
                     <div><img src={curry.pic} alt='' width="100px"/></div>
-                    <div>Lサイズ:{curry.lseziPrice}円</div>
-                    <div>Mサイズ:{curry.mseziPrice}円</div>
-                    <button onClick={()=> handleLink(`detail/${curry.id}`)}>商品詳細へ</button>
+                    <div>Mサイズ:{curry.msizePrice}円</div>
+                    <div>Lサイズ:{curry.lsizePrice}円</div>
+                    <button onClick={()=> handleLink(`currydetail/${curry.id}`)}>商品詳細へ</button>
                 </div>
+
         })}
         </div>
     )
     }
+
+    
+
+
+
  // async function Newcurry(){
     //    const curry =useSelector(curryItem)
     //    console.log(curry)

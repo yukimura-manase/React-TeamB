@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
+import firebase from 'firebase/compat/app'
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addData } from "../actions/ActionCreator";
 import '../../src/BuyHistory.css';
+import Button from '@material-ui/core/Button';
+import AcUnitIcon from '@material-ui/icons/AcUnit'; // importの後のこ指定   ex:) <AcUnitIcon/>
 
 
 const cartSelector = state => {
@@ -36,10 +39,14 @@ export const BuyHistory = () => {
 	[ errors, setErrors ] = useState([]),
 	[ cart, setCart ] = useState([])
 	// [ first, setItems ] = useState ('');
-	useEffect(()=>{
-		console.log(getCart);
-		getCart.length !== 0 && setCart(getCart[0].cartItem.cartItemList)
-	}, [getCart])
+
+	// console.log(getCart);
+	// useEffect(()=>{
+	// 	console.log(getCart);
+	// 	getCart.length !== 0 && setCart(getCart[0].cartItem.cartItemList)
+	// }, [getCart])
+
+	// console.log(getCart);
 
 	//イベント発火時に値を持ってくるよ！
 	const inputUserName = (e) => {
@@ -263,6 +270,9 @@ export const BuyHistory = () => {
 
             <div className="main-title">注文確認画面</div>
 
+			{/* <Button variant="contained" color="primary"> Primary </Button>
+			<div><AcUnitIcon /></div> */}
+
 
             <div>
                 <h3>ショッピングカート</h3>
@@ -283,7 +293,7 @@ export const BuyHistory = () => {
 						</tr>
 
 						
-						{displaysCart}
+						{/* {displaysCart} */}
 
 						
 				
@@ -333,7 +343,7 @@ export const BuyHistory = () => {
 								<div>
 									<div>郵便番号<span class="must"/></div>
 									<div>
-										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />&nbsp;&nbsp;<button>住所検索</button>
+										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />
 									</div>
 								</div>
 
