@@ -59,12 +59,12 @@ export const StoreState = (state = initialState, action) => {
 
             // console.log('state.loginUser情報')
             // console.log(state.loginUser)
-            copyCart[0].cartItem.cartItemList.splice(action.index,1)
+            copyCart[0].cartItem.splice(action.index,1)
 
             firebase.firestore()
             .collection(`users/${state.loginUser.uid}/carts`)
             .doc(copyCart[0].id) // 自動ID => copyCart[0].id
-            .update( {cartItemList:copyCart[0].cartItem.cartItemList} ) 
+            .update( {cartItemList:copyCart[0].cartItemList} ) 
 
             // documentの指定idのやつの中にある一部の値だけ更新
 
@@ -91,7 +91,7 @@ export const StoreState = (state = initialState, action) => {
 
         //curryCart.push(action.Cart) // ノーログイン
 
-        curryCart[0].cartItem.cartItemList.push(action.Cart) // ログイン
+        curryCart[0].cartItemList.push(action.Cart) // ログイン
 
         // console.log('Push後のcurryCart')
         // console.log(curryCart);
@@ -101,7 +101,7 @@ export const StoreState = (state = initialState, action) => {
             firebase.firestore()
             .collection(`users/${state.loginUser.uid}/carts`)
             .doc(curryCart[0].id) // curryCart[0].id
-            .update( {cartItemList:curryCart[0].cartItem.cartItemList} )
+            .update( {cartItemList:curryCart[0].cartItemList} )
         }
 
 

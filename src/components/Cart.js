@@ -71,8 +71,7 @@ export const Cart = ()=>{
 
             currylist.length !==0 && setCurry(currylist)
 
-            cartlist.length !== 0 &&  setCart(cartlist[0].cartItem.cartItemList)
-            console.log(cartlist[0].cartItem.cartItemList)
+            cartlist.length !== 0 &&  setCart(cartlist[0].cartItemList)
 
 
             //無限レンダリングが起きてしまっている・・・

@@ -41,10 +41,10 @@ export const BuyHistory = () => {
 	[ errors, setErrors ] = useState([]),
 	[ cart, setCart ] = useState([])
 	// [ first, setItems ] = useState ('');
-	
+
 	useEffect(()=>{
 		console.log(getCart);
-		getCart.length !== 0 && setCart(getCart[0].cartItem.cartItemList)
+		getCart.length !== 0 && setCart(getCart[0].cartItemList)
 	}, [getCart])
 
 	//イベント発火時に値を持ってくるよ！
