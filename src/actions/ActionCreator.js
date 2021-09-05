@@ -5,6 +5,7 @@ export const SETLOGINUSER = 'setLoginUser';
 export const DELETELOGINUSER = 'deleteLoginUser';
 export const FETCHITEM = 'fetchItem';
 export const FETCHCARTITEM = 'fetchCartItem';
+export const CURRYCARTITEM = 'curryCartItem'
 export const REMOVECART = 'removeCart';
 export const ADDDATA = 'addData';
 
@@ -27,6 +28,10 @@ export const fetchCartItem = (cartItem) =>({
     Cart: cartItem
 })
 
+export const curryCartItem = (cartItem) => ({
+    type: CURRYCARTITEM,
+    Cart: cartItem
+})
 export const removeCart = (index)=>{
     return {
         type:REMOVECART,

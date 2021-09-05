@@ -65,13 +65,15 @@ const Header=()=>{
   }
 
   return(
-    <nav>
+    <React.Fragment>
+    <header>
       <button onClick={()=>handleLink('/')}>一覧</button>
       <button onClick={()=>handleLink('/cart')}>ショッピングカートへ</button>
       
       {/* <button onClick={()=>handleLink('/buyHistory')}>確認画面</button> */}
       <Logbutton/>
-    </nav>
+    </header>
+    </React.Fragment>
   )
 
 }

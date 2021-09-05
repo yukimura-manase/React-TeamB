@@ -16,15 +16,13 @@ import 'firebase/compat/auth' // authentication code
 import 'firebase/compat/firestore' // firestore access
 import  '../service/firebase'
 import Header from './Header'
+// import Footer from './Footer';
+import CurryDetail from './CurryDetail'
+import {Cart} from './Cart'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
-import {Detail} from './detail'
 import {Product} from './Product'
-
 import { BuyHistory } from './buyHistory';
 import { OrderFinish } from './orderFinish';
-
-
-import {Cart} from './Cart'
 
 
 //const currySelector = state => state.StoreState.loginUser
@@ -49,6 +47,7 @@ const App = () => {
     dispatch(deleteLoginUser())
   }
 
+  // if(user)
   const fetchCart = (user) => {
     let cartItem = []
     firebase
@@ -95,6 +94,23 @@ const App = () => {
       })
   }
 
+  // const noLoginCart = ()=>{ // 追加
+  //   console.log('noLoginCart')
+  //   dispatch(fetchCartItem({
+  //     orderDate: "",
+  //     userName: "",
+  //     mailAddress: "",
+  //     addressNumber: "",
+  //     address: "",
+  //     phoneNumber: "",
+  //     deliveryDate: "",
+  //     deliveryTime: "",
+  //     status: 0,
+  //     cartItemList: []
+  //   })
+  //   )
+  // }
+
   const fetchCurry = () => {
     const CurryItem = []
     firebase
@@ -109,6 +125,8 @@ const App = () => {
   }
 
   useEffect(() => {
+    //noLoginCart() // 追加
+
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         setUser(user)
@@ -124,20 +142,18 @@ const App = () => {
 
     <React.Fragment>
       <Router>
-      <h1>TeamBの制作物</h1>
-
       <Header/>
 
       {/* Switchでルーティング(アクセス経路)設定の世界 */}
 
       <Switch>
-        <Route path='/detail/:id' component={Detail}></Route>
+        <Route path='/currydetail/:id' component={CurryDetail}></Route>
         <Route path='/' exact component={Product}></Route>
         <Route path='/orderFinish' exact component={OrderFinish} />
         <Route path='/buyHistory' exact component={BuyHistory} />
         <Route path='/cart' exact component={Cart} />
       </Switch>
-
+        {/* <Footer/> */}
       </Router>
     </React.Fragment>
   );

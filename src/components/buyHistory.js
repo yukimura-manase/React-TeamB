@@ -41,6 +41,7 @@ export const BuyHistory = () => {
 	[ errors, setErrors ] = useState([]),
 	[ cart, setCart ] = useState([])
 	// [ first, setItems ] = useState ('');
+	
 	useEffect(()=>{
 		console.log(getCart);
 		getCart.length !== 0 && setCart(getCart[0].cartItem.cartItemList)
