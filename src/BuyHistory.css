@@ -24,23 +24,43 @@
     margin-top: 5%; 
 } */
 
+.cart-item {
+    background: #ffead6;
+
+}
+
 .main-title{
-    margin-top: 15%;
+    margin-top: 5%;
     margin-bottom: 5%;
     text-align: center;
     font-size: 200%;
 }
 
+.cart-title {
+    background: #ffab4c
+
+}
+
+.tax {
+
+}
+
+.total-price {
+    width: 80%;
+    text-align: right;
+}
+
+
 .box2 {
     margin: 2em 0;
-    background: #e2f1ff;
+    background: #ffead6;
     width: 70%;
     margin-left: auto;
     margin-right: auto;
 }
 .box2 .box2-title {
     font-size: 1.2em;
-    background: #6e9ed6;
+    background: #ffab4c;
     padding: 4px;
     text-align: center;
     color: #FFF;
@@ -101,11 +121,16 @@
     width: 100%;
 }
 
+.error {
+    color: red;
+    margin-left: 10%;
+}
+
 .order-button {
     border: none; 
     text-align: right;
     margin-top: 3%;
     margin-right: 10%;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
     cursor: pointer;
 }

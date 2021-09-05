@@ -4,8 +4,27 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addData } from "../actions/ActionCreator";
 import '../../src/BuyHistory.css';
+import { createStyles,makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
 import AcUnitIcon from '@material-ui/icons/AcUnit'; // importの後のこ指定   ex:) <AcUnitIcon/>
+
+
+const useStyle = makeStyles(() =>
+    createStyles({
+		"button":{
+            borderColor:"#faa61a",
+            color:"#faa61a",
+            fontWeight:600,
+            marginBottom:"8px",
+            backgroundColor:"#fff",
+            padding:"10px",
+            "&:hover":{
+                backgroundColor:"#faa61a",
+                color:"#fff"
+            }
+        },
+	}),
+);
 
 
 const cartSelector = state => {
@@ -24,6 +43,9 @@ export const BuyHistory = () => {
 
     const history = useHistory();
     const handleLink = path => history.push(path);
+
+
+	const classes = useStyle();
 
 
 //支払い情報の変数たち
@@ -250,7 +272,7 @@ export const BuyHistory = () => {
 	const displaysCart = cart.map( (item, index) => {
 		return (
 			
-			<tr key={index}>
+			<tr className="cart-item" key={index}>
 				<td> {item.name} <div><img src={item.pic} /></div></td>
 				<td> {item.size} </td>
 				<td> {item.number} </td>
@@ -270,12 +292,8 @@ export const BuyHistory = () => {
 
             <div className="main-title">注文確認画面</div>
 
-			{/* <Button variant="contained" color="primary"> Primary </Button>
-			<div><AcUnitIcon /></div> */}
-
-
-            <div>
-                <h3>ショッピングカート</h3>
+			<div className="container">
+            <div className="box1-title">ショッピングカート</div>
 			</div>
 
 
@@ -284,7 +302,7 @@ export const BuyHistory = () => {
 
 				<table>
 					<tbody>
-						<tr>
+						<tr className="cart-title">
 							<th>商品名</th>
 							<th>サイズ</th>
                             <th>数量</th>
@@ -302,13 +320,17 @@ export const BuyHistory = () => {
 			</div>
 			</div>
 
+			<div className="container">
+				<div className="tax">消費税 : 200 円</div>
+			</div>
 
 
-			<div>
-                <div>消費税 : 200 円</div>
-				<div>注文金額 (税込) : 2200 円</div>
+
+
+			<div className="container">
+				<div className="total-price">注文金額 (税込) : 2200 円</div>
             </div>
-			
+
 
 
 
@@ -318,13 +340,14 @@ export const BuyHistory = () => {
 
 				<div className="box2-title">お届け先情報</div>
 
+
 				<div className="container">
 
 					<table>
 						<tbody>
 								<tr>
 									<td>
-									<div>お名前<span class="must"/></div>
+									<div>お名前<span className="must"/></div>
 									<div>
 										<input className="input" type="text" value={userName} onChange={inputUserName} placeholder="カレー太郎" />
 									</div>
@@ -332,40 +355,49 @@ export const BuyHistory = () => {
 								</tr>
 
 
-								<div>
-									<div>メールアドレス<span class="must"/></div>
+								<tr>
+									<td>
+									<div>メールアドレス<span className="must"/></div>
 									<div>
 										<input className="input" type="text" value={mailAddress} onChange={inputMailAddress} placeholder="curry@xxxx.com"  />
 									</div>
-								</div>
+									</td>
+								</tr>
 
 
-								<div>
-									<div>郵便番号<span class="must"/></div>
+								<tr>
+									<td>
+									<div>郵便番号<span className="must"/></div>
 									<div>
 										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />
 									</div>
-								</div>
+									</td>
+								</tr>
 
 
-								<div>
-									<div>住所<span class="must"/></div>
+								<tr>
+									<td>
+									<div>住所<span className="must"/></div>
 									<div>
 										<input className="input" type="text" value={address} onChange={inputAddress} placeholder="○○県○○市○○ 0-0-0"  />
 									</div>
-								</div>
+									</td>
+								</tr>
 								
 
-								<div>
-									<div>電話番号<span class="must"/></div>
+								<tr>
+									<td>
+									<div>電話番号<span className="must"/></div>
 									<div>
 										<input className="input" type="text" value={phoneNumber} onChange={inputPhoneNumber} placeholder="000-0000-0000"  />
 									</div>
-								</div>
+									</td>
+								</tr>
 
 
-								<div>
-									<div>配達日時<span class="must"/></div>
+								<tr>
+									<td>
+									<div>配達日時<span className="must"/></div>
 									<div>
 										<input className="input" type="date" value={deliveryDate} onChange={inputDeliveryDate} />
 									</div>
@@ -382,7 +414,8 @@ export const BuyHistory = () => {
 										<div className="time-item"><input type="radio" name="time" value="17" onChange={inputDeliveryTime} id="r17"/><label htmlFor="r17">&nbsp;17時</label></div>
 										<div className="time-item"><input type="radio" name="time" value="18" onChange={inputDeliveryTime} id="r18"/><label htmlFor="r18">&nbsp;18時</label></div>
 									</div>
-								</div>
+									</td>
+								</tr>
 
 						</tbody>
 					</table>
@@ -404,7 +437,7 @@ export const BuyHistory = () => {
 
 						<tr>
 							<td>
-								お支払い方法を選択してください。<span class="must"/>
+								お支払い方法を選択してください。<span className="must"/>
 							</td>
 						</tr>
 						<tr>
@@ -423,16 +456,17 @@ export const BuyHistory = () => {
 				</div>
 			</div>
 
-			<div>
-				{ errors.map( (error) => (
+			<div className="container">
+			<div className="error">
+					{ errors.map( (error) => (
 					<div key={error.id}>{error}</div>
-				))}
+					))}
+			</div>
 			</div>
 
 
-
 			<div className="order-button">
-				<button className="order-button" onClick={ Validation } >注文</button>
+				<Button　className={classes.button} onClick={ Validation } variant="contained" > 注文 </Button>
 			</div>
 
 		</div>

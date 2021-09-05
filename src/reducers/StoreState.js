@@ -85,11 +85,9 @@ export const StoreState = (state = initialState, action) => {
             }
         }
 
-
-      //変更あり
       case CURRYCARTITEM:
         const curryCart = state.Cart.slice()
-        curryCart[0].cartItem.cartItemList.push(action.Cart)
+        curryCart[0].cartItemList.push(action.Cart)
         console.log(curryCart);
         return {...state,Cart: curryCart}
 

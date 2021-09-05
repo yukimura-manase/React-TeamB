@@ -13,18 +13,29 @@ import 'firebase/compat/auth' // authentication code
 import 'firebase/compat/firestore' // firestore access
 import  '../service/firebase'
 import Header from './Header'
-// import Footer from './Footer';
+import Footer from './Footer';
 import CurryDetail from './CurryDetail'
 import {Cart} from './Cart'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 import {Product} from './Product'
 import { BuyHistory } from './BuyHistory';
 import { OrderFinish } from './OrderFinish';
+//materialUI
+import { createStyles,makeStyles } from '@material-ui/styles';
 
 
-
-
-
+const useStyle = makeStyles(() =>
+    createStyles({
+      "header":{
+        width:"35%",
+      },
+      "pic":{
+        textAlign:"center",
+        backgroundColor:"#faa61a"
+      }
+    }),
+  );
+    
 //const currySelector = state => state.StoreState.loginUser
 
   
@@ -34,6 +45,9 @@ const userSelector = state => state.StoreState
 // const cartSelector=state=>state.StoreState.Cart
 
 const App = () => {
+  const classes = useStyle();
+
+
   const dispatch = useDispatch()
   const state = useSelector(userSelector)
 
@@ -123,6 +137,9 @@ const App = () => {
 
     <React.Fragment>
       <Router>
+        <div className={classes.pic}>
+          <img src={`${process.env.PUBLIC_URL}/pic/header_logo.png`} alt="Logo" className={classes.header}/>
+        </div>
       <Header/>
 
       {/* Switchでルーティング(アクセス経路)設定の世界 */}
@@ -134,7 +151,7 @@ const App = () => {
         <Route path='/buyHistory' exact component={BuyHistory} />
         <Route path='/cart' exact component={Cart} />
       </Switch>
-        {/* <Footer/> */}
+        <Footer/>
       </Router>
     </React.Fragment>
   );
