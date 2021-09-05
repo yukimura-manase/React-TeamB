@@ -2,13 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
 import { addData } from "../actions/ActionCreator";
-// import { OrderFinish } from "./OrderFinish";
-// import {
-// 	BrowserRouter as Router,
-// 	Switch,
-// 	Route,
-// 	Link
-//   } from 'react-router-dom' // Router設定仮置き
+import '../../src/BuyHistory.css';
+
 
 const cartSelector = state => {
 console.log(state.StoreState.Cart);
@@ -158,7 +153,7 @@ export const BuyHistory = () => {
 
 
 		//お名前エラー
-		if ( userName == "" ) {
+		if ( userName === "" ) {
 			allErrors.push("名前を入力してください")
 		}
 
@@ -254,15 +249,6 @@ export const BuyHistory = () => {
 				<td> {item.number} </td>
 				<td> {item.topping} </td>
 				<td> {item.total} </td>
-				{/* <div> {item.userName}</div>
-				<div> {item.address}</div>
-				<div> {item.addressNumber}</div>
-				<div> {item.deliveryDate}</div>
-				<div> {item.deliveryTime}</div>
-				<div> {item.mailAddress}</div>
-				<div> {item.deliveryDate}</div>
-				<div> {item.deliveryTime}</div>
-				<div> {item.mailAddress}</div> */}
 			</tr>
 
 		)
@@ -275,202 +261,153 @@ export const BuyHistory = () => {
 
         <div>
 
-            <h1>注文確認画面</h1>
+            <div className="main-title">注文確認画面</div>
 
 
             <div>
                 <h3>ショッピングカート</h3>
 			</div>
 
+
+			<div className="container">
 			<div>
 
 				<table>
 					<tbody>
 						<tr>
-							<th>
-								<div className="text-center">
-									商品名
-								</div>
-							</th>
-							<th>
-								<div className="text-center">
-									サイズ
-								</div>
-							</th>
-                            <th>
-								<div className="text-center">
-									数量
-								</div>
-							</th>
-							<th>
-								<div className="text-center">
-									トッピング
-								</div>
-							</th>
-                            <th>
-								<div className="text-center">
-									価格(税抜)
-								</div>
-							</th>
+							<th>商品名</th>
+							<th>サイズ</th>
+                            <th>数量</th>
+							<th>トッピング</th>
+                            <th>価格(税抜)</th>
 						</tr>
 
 						
 						{displaysCart}
-							{/* <th>
-								<div className="text-center">
-									かれーーー
-								</div>
-							</th>
-							<th>
-								<div className="text-center">
-									M
-								</div>
-							</th>
-                            <th>
-								<div className="text-center">
-									1
-								</div>
-							</th>
-							<th>
-								<div className="text-center">
-									チース
-								</div>
-							</th>
-                            <th>
-								<div className="text-center">
-									2000円
-								</div>
-							</th> */}
+
 						
 				
 					</tbody>
 				</table>
 			</div>
+			</div>
+
+
 
 			<div>
                 <div>消費税 : 200 円</div>
 				<div>注文金額 (税込) : 2200 円</div>
             </div>
+			
 
-			<div>
-				<div>
-					<h3>お届け先情報</h3>
-				</div>
-				
-				<div>
+
+
+
+			
+			<div className="box2">
+
+				<div className="box2-title">お届け先情報</div>
+
+				<div className="container">
+
 					<table>
-						<tbody>				
-					
-						<tr>
-							<td>
-								<div className="text-center">
-									お名前
-								</div>
-							</td>
-							<td>
-								<input type="text" value={userName} onChange={inputUserName} />
-							</td>
-						</tr>
+						<tbody>
+								<tr>
+									<td>
+									<div>お名前<span class="must"/></div>
+									<div>
+										<input className="input" type="text" value={userName} onChange={inputUserName} placeholder="カレー太郎" />
+									</div>
+									</td>
+								</tr>
 
-						<tr>
-							<td>
-								メールアドレス
-							</td>
-							<td>
-								<input type="text" value={mailAddress} onChange={inputMailAddress} />
-							</td>
-						</tr>
 
-						<tr>
-                            <td>
-								<div className="text-center">
-									郵便番号
-								</div>
-							</td>
-							<td>
-								<input type="text" value={addressNumber} onChange={inputAddressNumber}/>&nbsp;&nbsp;<button>住所検索</button>
-							</td>
-						</tr>
-
-						<tr>
-							<td>
-								<div className="text-center">
-									住所
-								</div>
-							</td>
-							<td>
-								<input type="text" value={address} onChange={inputAddress} />
-							</td>
-						</tr>
-							
-
-						<tr>
-						    <td>
-								<div className="text-center">
-									電話番号
-								</div>
-							</td>
-							<td>
-								<input type="text" value={phoneNumber} onChange={inputPhoneNumber} />
-							</td>
-						</tr>
-
-						
-                        <tr>
-						    <td>
-								<div className="text-center">
-									配達日時
-								</div>
-							</td>
-							<td>
 								<div>
-								    <input type="date" value={deliveryDate} onChange={inputDeliveryDate} />
+									<div>メールアドレス<span class="must"/></div>
+									<div>
+										<input className="input" type="text" value={mailAddress} onChange={inputMailAddress} placeholder="curry@xxxx.com"  />
+									</div>
 								</div>
+
+
 								<div>
-									<input type="radio" name="time" value="10" onChange={inputDeliveryTime} />10時
-									<input type="radio" name="time" value="11" onChange={inputDeliveryTime} />11時
-									<input type="radio" name="time" value="12" onChange={inputDeliveryTime} />12時
-									<input type="radio" name="time" value="13" onChange={inputDeliveryTime} />13時
-									<input type="radio" name="time" value="14" onChange={inputDeliveryTime} />14時
-									<input type="radio" name="time" value="15" onChange={inputDeliveryTime} />15時
-									<input type="radio" name="time" value="16" onChange={inputDeliveryTime} />16時
-									<input type="radio" name="time" value="17" onChange={inputDeliveryTime} />17時
-									<input type="radio" name="time" value="18" onChange={inputDeliveryTime} />18時
+									<div>郵便番号<span class="must"/></div>
+									<div>
+										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />&nbsp;&nbsp;<button>住所検索</button>
+									</div>
 								</div>
-							</td>
-						</tr>
-						
+
+
+								<div>
+									<div>住所<span class="must"/></div>
+									<div>
+										<input className="input" type="text" value={address} onChange={inputAddress} placeholder="○○県○○市○○ 0-0-0"  />
+									</div>
+								</div>
+								
+
+								<div>
+									<div>電話番号<span class="must"/></div>
+									<div>
+										<input className="input" type="text" value={phoneNumber} onChange={inputPhoneNumber} placeholder="000-0000-0000"  />
+									</div>
+								</div>
+
+
+								<div>
+									<div>配達日時<span class="must"/></div>
+									<div>
+										<input className="input" type="date" value={deliveryDate} onChange={inputDeliveryDate} />
+									</div>
+									<div className="time">
+										<div className="time-item"><input type="radio" name="time" value="10" onChange={inputDeliveryTime} id="r10"/><label htmlFor="r10">&nbsp;10時</label></div>
+										<div className="time-item"><input type="radio" name="time" value="11" onChange={inputDeliveryTime} id="r11"/><label htmlFor="r11">&nbsp;11時</label></div>
+										<div className="time-item"><input type="radio" name="time" value="12" onChange={inputDeliveryTime} id="r12"/><label htmlFor="r12">&nbsp;12時</label></div>
+										<div className="spacer"></div>
+										<div className="time-item"><input type="radio" name="time" value="13" onChange={inputDeliveryTime} id="r13"/><label htmlFor="r13">&nbsp;13時</label></div>
+										<div className="time-item"><input type="radio" name="time" value="14" onChange={inputDeliveryTime} id="r14"/><label htmlFor="r14">&nbsp;14時</label></div>
+										<div className="time-item"><input type="radio" name="time" value="15" onChange={inputDeliveryTime} id="r15"/><label htmlFor="r15">&nbsp;15時</label></div>
+										<div className="spacer"></div>
+										<div className="time-item"><input type="radio" name="time" value="16" onChange={inputDeliveryTime} id="r16"/><label htmlFor="r16">&nbsp;16時</label></div>
+										<div className="time-item"><input type="radio" name="time" value="17" onChange={inputDeliveryTime} id="r17"/><label htmlFor="r17">&nbsp;17時</label></div>
+										<div className="time-item"><input type="radio" name="time" value="18" onChange={inputDeliveryTime} id="r18"/><label htmlFor="r18">&nbsp;18時</label></div>
+									</div>
+								</div>
+
 						</tbody>
 					</table>
+
 				</div>
 			</div>
 
 
-			<div>
-				<div>
-					<h3>お支払い方法</h3>
-				</div>
 
-				<div>
+
+
+			<div className="box2">
+
+				<div className="box2-title">お支払い方法</div>
+
+				<div className="container">
 					<table>
 						<tbody>
-						<tr>
-							<td>
-								代金引換
-							</td>
-							<td>
-								<input type="radio" name="pay" value="1" onChange={inputStatus} />代金引換
-							</td>
-						</tr>
 
 						<tr>
 							<td>
-								クレジットカード決済
-							</td>
-							<td>
-								<input type="radio" name="pay" value="2" onChange={inputStatus} />クレジットカード決済
+								お支払い方法を選択してください。<span class="must"/>
 							</td>
 						</tr>
+						<tr>
+							<td>
+								<input type="radio" name="pay" value="1" onChange={inputStatus} id="cashOnDelivery"/><label htmlFor="cashOnDelivery">代金引換</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="radio" name="pay" value="2" onChange={inputStatus} id="credit" /><label htmlFor="credit">クレジットカード決済</label>
+							</td>
+						</tr>
+
 						</tbody>
 					</table>
 				</div>
@@ -483,17 +420,15 @@ export const BuyHistory = () => {
 			</div>
 
 
-			<div>
-				<button onClick={ Validation } >注文</button>
-				{/* <Link to='/orderFinish'>注文</Link> */}
-				{/* <OrderFinish/> */}
+
+			<div className="order-button">
+				<button className="order-button" onClick={ Validation } >注文</button>
 			</div>
 
-			{/* <Switch>
-				<Route path='/orderFinish' exact><OrderFinish /></Route>
-			</Switch>
- */}
-	</div>
+		</div>
+
+
+
 
     )
 

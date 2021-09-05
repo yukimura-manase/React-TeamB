@@ -1,11 +1,6 @@
-import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Link
-  } from 'react-router-dom' // Router設定仮置き
+import '../../src/OrderFinish.css';
+
 
 export const OrderFinish = () => {
     
@@ -17,25 +12,50 @@ export const OrderFinish = () => {
 
             <div className="container">		
                 <div>
-                    <div>
-                    <h1>ThankYou</h1>
-                    <h3>決済が完了しました。</h3>
+
+
+                    <div className='message-title'>Thank You</div>
+                    <div className='icon-line'>
+                        <img src={ `${process.env.PUBLIC_URL}/img/onion.png` } />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src={ `${process.env.PUBLIC_URL}/img/carrot.png` } />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src={ `${process.env.PUBLIC_URL}/img/potato.png` } />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src={ `${process.env.PUBLIC_URL}/img/meat.png` } />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src={ `${process.env.PUBLIC_URL}/img/curry.png` } />&nbsp;&nbsp;&nbsp;&nbsp;
+                        <img src={ `${process.env.PUBLIC_URL}/img/kok.png` } />&nbsp;&nbsp;&nbsp;&nbsp;
+                        
+                    </div>
+
+
+                    <div className='message'>
                         <div>
-                            <p>この度はご注文ありがとうございます。</p>
+                            <p>らくらくカレーをご利用頂きましてありがとうございます。</p>
+                            <p>決済は正常に完了しました。</p>
                         </div>
                     </div>
-                </div>
+
+
+                    <div className="button-position">					
+                        <button className="button"  onClick={()=>handleLink('/')}><img src={ `${process.env.PUBLIC_URL}/img/home.png` } />&nbsp;&nbsp;戻る</button>			
+                    </div>
 
                 <div>
-                    <div>					
-                        <button  onClick={()=>handleLink('/')}>トップ画面を表示する</button>			
-                    </div>
+                    <img className="town-line" src={ `${process.env.PUBLIC_URL}/img/town.png` } />
+                </div>
+
+
                 </div>
             </div>
 
 
         </div>
+        
+
+        
     )
 }
+
+
+
+
 
 // export default OrderFinish;

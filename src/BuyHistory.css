@@ -1,0 +1,111 @@
+/* .box2 {
+    position: relative;
+    margin-top: 5% ;
+    margin-right: 10%;
+    margin-bottom: 10%;
+    border: solid 3px #ffa341;
+    width: 70%;
+}
+.box2 .box2-title {
+    position: absolute;
+    display: inline-block;
+    top: -27px;
+    left: -3px;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 17px;
+    background: #ffa341;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+.box2 .container {
+    margin-top: 5%; 
+} */
+
+.main-title{
+    margin-top: 5%;
+    margin-bottom: 5%;
+    text-align: center;
+    font-size: 200%;
+}
+
+.box2 {
+    margin: 2em 0;
+    background: #e2f1ff;
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.box2 .box2-title {
+    font-size: 1.2em;
+    background: #6e9ed6;
+    padding: 4px;
+    text-align: center;
+    color: #FFF;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+}
+.must::after {
+    content: "必須";
+    background-color: #f0564e;
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 10px;
+    padding: 3px 7px;
+    margin: 0px 5px;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 10px;
+    display: inline-block;
+}
+.box2 .container {
+    padding: 15px 20px;
+    margin: 0;
+}
+
+.input {
+    border: none; 
+    margin-bottom: 2%;
+}
+
+.input:hover {
+    border: 1px solid #0094ff;
+}
+
+
+
+
+
+.time {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+.time-item {
+    margin-bottom: 1%;
+    margin-right: 2%;
+}
+
+
+  /* width: 100%;で残りスペースを埋める */
+.spacer {
+    width: 100%;
+}
+
+.order-button {
+    border: none; 
+    text-align: right;
+    margin-top: 3%;
+    margin-right: 10%;
+    margin-bottom: 10%;
+    cursor: pointer;
+}

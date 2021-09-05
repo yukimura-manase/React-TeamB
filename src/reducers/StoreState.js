@@ -19,7 +19,7 @@ const initialState = {
       status: 0,
       //カートのカレー情報 仮置き
       cartItemList: [
-        {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
+        {name: 'カツカレー', pic:'/pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
       ]
     }}
   ],
