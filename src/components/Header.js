@@ -17,9 +17,10 @@ const cartSelector=state=>state.StoreState.Cart
 const useStyle = makeStyles(() =>
   createStyles({
     "right":{
-      textAlign:"right"
+      textAlign:"right",
     },
     "buttonStyle":{
+      fontWeight:700,
       fontSize:"17px",
       border:"none",  /* 枠線を消す */
       outline: "none", /* クリックしたときに表示される枠線を消す */

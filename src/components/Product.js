@@ -43,10 +43,14 @@ const useStyle = makeStyles(() =>
         },
         "card-content":{
             padding: "20px",
-            textAlign:"center"
+            textAlign:"center",
+            fontWeight:700,
+
         },
         "card-title":{
             fontSize:"20px",
+            fontWeight:700,
+            marginTop:"20px",
             marginBottom:"20px",
             textAlign:"center"
         },
