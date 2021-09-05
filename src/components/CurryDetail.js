@@ -5,7 +5,34 @@ import { useSelector,useDispatch } from 'react-redux';
 import {useHistory, useParams} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import {curryCartItem} from '../actions/ActionCreator'
+//materialUI
+import { createStyles,makeStyles } from '@material-ui/styles';
 
+const useStyle = makeStyles(() =>
+    createStyles({
+        "style":{
+            textAlign:"center",
+            paddingBottom:"20px"
+        },
+        "picture":{
+            width:"400px",
+            height:"250px"
+        },
+        "checkbox":{
+            padding: "0.5em 1em",
+            margin: "2em 0",
+            color: "#232323",
+            background: "#fff8e8",
+            borderLeft: "solid 10px #ffc06e",
+            width:"85%",
+            display:"inline-block"
+        },
+        "text":{
+            
+        }
+    }),
+);
+    
 
 //store/stateのなかのCurryの値を取ってきてcurrydetailに代入
 export const curryItem = state =>{
@@ -14,6 +41,7 @@ export const curryItem = state =>{
 
  
 const CurryDetail = () => {
+    const classes = useStyle();
 
     const dispatch = useDispatch()
 
@@ -81,13 +109,13 @@ const CurryDetail = () => {
 
 
     return(
-        <div>
-            <h1>商品詳細</h1>
+        <div className={classes.style}>
+            <h2>商品詳細</h2>
 
             <div>
                 <div>{getCurryId.name}</div>
                 <div>
-                    <img src={getCurryId.pic}></img>
+                    <img src={getCurryId.pic} className={classes.picture}></img>
                 </div>
                 <div>{getCurryId.detail}</div>
                 <div>
@@ -99,9 +127,9 @@ const CurryDetail = () => {
 
             </div>
 
-            <div>
-                <div>トッピング：１つにつき M 200円(税抜) L 300円(税抜)</div>
-                <div name="topping">
+            <div className={classes.text}>
+                <div name="topping" className={classes.checkbox}>    
+                    <div>トッピング：１つにつき M 200円(税抜) L 300円(税抜)</div>
                     <label htmlFor='オニオン'><input type="checkbox" id='オニオン' value="オニオン" onChange={setTopping}/>オニオン</label>&nbsp;&nbsp;
                     <label htmlFor='ツナマヨ'><input type="checkbox" id='ツナマヨ' value="ツナマヨ" onChange={setTopping}/>ツナマヨ</label>&nbsp;&nbsp;
                     <label htmlFor='イタリアントマト'><input type="checkbox" id='イタリアントマト' value="イタリアントマト"　onChange={setTopping}/>イタリアントマト</label>&nbsp;&nbsp;
@@ -133,8 +161,7 @@ const CurryDetail = () => {
                 </div>
             </div>
             <div>
-                <div>数量:</div>
-                <div><select name="number"　onChange={setNumber}>
+                <div>数量:<select name="number"　onChange={setNumber}>
                     <option value="1">1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
