@@ -18,9 +18,8 @@ import CurryDetail from './CurryDetail'
 import {Cart} from './Cart'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 import {Product} from './Product'
-import { BuyHistory } from './buyHistory';
-import { OrderFinish } from './orderFinish';
-
+import { BuyHistory } from './BuyHistory';
+import { OrderFinish } from './OrderFinish';
 //materialUI
 import { createStyles,makeStyles } from '@material-ui/styles';
 

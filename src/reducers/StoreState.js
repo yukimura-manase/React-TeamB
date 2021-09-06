@@ -7,7 +7,24 @@ import firebase from 'firebase/compat/app'
 const initialState = {
   loginUser: null,
   Curry: [],
-  Cart: []
+  Cart: [
+    { cartItem: {
+      orderDate: "",
+      userName: "",
+      mailAddress: "",
+      addressNumber: "",
+      address: "",
+      phoneNumber: "",
+      deliveryDate: "",
+      deliveryTime: "",
+      status: 0,
+      //カートのカレー情報 仮置き
+      cartItemList: [
+        {name: 'カツカレー', pic:'/pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
+      ]
+    }}
+  ],
+
 }
 console.log(initialState)
 
