@@ -29,9 +29,15 @@ const useStyle = makeStyles(() =>
 
 const cartSelector = state => {
 console.log(state.StoreState.Cart);
-
 	return state.StoreState.Cart;
 }
+
+//ここ
+const userSelector = state => {
+	console.log(state.StoreState.loginUser);
+		return state.StoreState.loginUser;
+	}
+
 
 export const BuyHistory = () => {
 
@@ -40,6 +46,10 @@ export const BuyHistory = () => {
 	const getCart = useSelector (cartSelector)
 	console.log(getCart);
 	const dispatch = useDispatch ()
+
+//ここ
+	const getUser = useSelector (userSelector)
+
 
     const history = useHistory();
     const handleLink = path => history.push(path);
@@ -169,6 +179,72 @@ export const BuyHistory = () => {
 	// 	let time = deliveryTime.orderTime - hours
 
 
+//ここ
+
+// const dataObject = {
+// 	userName: userName,
+// 	mailAddress: mailAddress,
+// 	addressNumber: addressNumber,
+// 	address: address,
+// 	phoneNumber: phoneNumber,
+// 	deliveryDate: deliveryDate,
+// 	deliveryTime: deliveryTime,
+// 	status: status,
+// }
+
+const updateCart = () => {
+	
+		firebase.firestore()
+		.collection (`users/${getUser.uid}/carts`)
+		.doc (getCart[0].id)
+		.update ( {...getCart[0],
+			userName: userName,
+			mailAddress: mailAddress,
+			addressNumber: addressNumber,
+			address: address,
+			phoneNumber: phoneNumber,
+			deliveryDate: deliveryDate,
+			deliveryTime: deliveryTime,
+			status: status,} )
+	
+
+}
+
+const addCart = () => {
+	
+	firebase
+	.firestore()
+	.collection(`users/${getUser.uid}/carts`)
+	.add({
+	  orderDate: "",
+	  userName: "",
+	  mailAddress: "",
+	  addressNumber: "",
+	  address: "",
+	  phoneNumber: "",
+	  deliveryDate: "",
+	  deliveryTime: "",
+	  status: 0,
+	  cartItemList: []
+	})
+	// .then(doc => {
+	//   cartItem.push({
+	// 	id: doc.id,
+	// 	orderDate: "",
+	// 	userName: "",
+	// 	mailAddress: "",
+	// 	addressNumber: "",
+	// 	address: "",
+	// 	phoneNumber: "",
+	// 	deliveryDate: "",
+	// 	deliveryTime: "",
+	// 	status: 0,
+	// 	cartItemList: []
+	//   }
+	//   )
+	// })
+
+}
 
 
 
@@ -228,30 +304,49 @@ export const BuyHistory = () => {
 
 		setErrors(allErrors);
 
-		if ( allErrors.length === 0 ) {
-			dispatch ( addData (
-				// orderDate,
-				userName,
-				mailAddress,
-				addressNumber,
-				address,
-				phoneNumber,
-				deliveryDate,
-				deliveryTime,
-				status) )
-			console.log('テスト')
-			handleLink('/orderFinish')
-		}
-		console.log(addData (
-			// orderDate,
-			userName,
-			mailAddress,
-			addressNumber,
-			address,
-			phoneNumber,
-			deliveryDate,
-			deliveryTime,
-			status));
+
+//ここ
+// console.log(dataObject);
+console.log(getCart)
+
+if ( allErrors.length === 0 ) {
+	// dispatch ( addData () )
+
+	updateCart();
+	addCart();
+
+	console.log(getCart)
+	handleLink('/orderFinish')
+}
+// console.log(addData ());
+		
+
+
+
+		// if ( allErrors.length === 0 ) {
+		// 	dispatch ( addData (
+		// 		// orderDate,
+		// 		userName,
+		// 		mailAddress,
+		// 		addressNumber,
+		// 		address,
+		// 		phoneNumber,
+		// 		deliveryDate,
+		// 		deliveryTime,
+		// 		status) )
+		// 	console.log('テスト')
+		// 	handleLink('/orderFinish')
+		// }
+		// console.log(addData (
+		// 	// orderDate,
+		// 	userName,
+		// 	mailAddress,
+		// 	addressNumber,
+		// 	address,
+		// 	phoneNumber,
+		// 	deliveryDate,
+		// 	deliveryTime,
+		// 	status));
 				
 	}
 	

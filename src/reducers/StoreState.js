@@ -27,22 +27,27 @@ export const StoreState = (state = initialState, action) => {
       CurryItem = action.Curry
       return { ...state, Curry: CurryItem }
 
-    case ADDDATA:
-      const data = state.Cart.slice()
-      const dataObject = {
-        // orderDate: action.orderDate,
-        userName: action.userName,
-        mailAddress: action.mailAddress,
-        addressNumber: action.addressNumber,
-        address: action.address,
-        phoneNumber: action.phoneNumber,
-        deliveryDate: action.deliveryDate,
-        deliveryTime: action.deliveryTime,
-        status: action.status,
-      }
+    // case ADDDATA:
 
-      const dataArray = [...data, dataObject]
-      return { cartItem: dataArray }
+    //   const data = state.Cart.slice()
+    //   return {...state, cartItem: data }
+
+    
+      // const data = state.Cart.slice()
+      // const dataObject = {
+      //   // orderDate: action.orderDate,
+      //   userName: action.userName,
+      //   mailAddress: action.mailAddress,
+      //   addressNumber: action.addressNumber,
+      //   address: action.address,
+      //   phoneNumber: action.phoneNumber,
+      //   deliveryDate: action.deliveryDate,
+      //   deliveryTime: action.deliveryTime,
+      //   status: action.status,
+      // }
+
+      // const dataArray = [...data, dataObject]
+      // return { cartItem: dataArray }
 
     case REMOVECART: {
       const copyCart = state.cartlist.concat() // コピー

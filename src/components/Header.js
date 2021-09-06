@@ -44,7 +44,7 @@ const Header=()=>{
   const curry=useSelector(currySelector)
   const cart=useSelector(cartSelector)
   // console.log(curry)
-  // console.log(user)
+  console.log(user)
   console.log(cart)
 
   const login=()=>{
