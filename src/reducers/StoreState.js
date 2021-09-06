@@ -59,7 +59,7 @@ export const StoreState = (state = initialState, action) => {
 
             // console.log('state.loginUser情報')
             // console.log(state.loginUser)
-            copyCart[0].cartItem.splice(action.index,1)
+            copyCart[0].cartItemList.splice(action.index,1)
 
             firebase.firestore()
             .collection(`users/${state.loginUser.uid}/carts`)

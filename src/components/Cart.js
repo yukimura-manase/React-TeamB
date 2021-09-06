@@ -74,18 +74,15 @@ export const Cart = ()=>{
             cartlist.length !== 0 &&  setCart(cartlist[0].cartItemList)
 
 
-            //無限レンダリングが起きてしまっている・・・
             if( cartlist.length !== 0 && currylist.length !==0 ){
 
                 console.log('cartIdList');
+
                 const cartIdList =  carts.map( cart => cart.id) //カート内の商品のIDの配列を生成
                 console.log(cartIdList) // [10, 13, 11] idのリストを作る！
 
-                let newCurry = currys.filter( curry => {
-
-                    let idMatch = cartIdList.find(id => id === curry.id) // idリストの中身と一つ一つ
-
-                    return curry.id === idMatch
+                let newCurry = cartIdList.map( cartid => {
+                    return currys.find(curry => cartid === curry.id) // idリストの中身と一つ一つ
                 })
 
                 console.log('newCurry')
@@ -111,96 +108,9 @@ export const Cart = ()=>{
 
             }
 
-            
-
-            
-            // console.log(carts)
-            // console.log(carts[0])
-            // console.log(currys)
-
-            // cartsとcurrysのidを比較、一致するオブジェクトをcurrysから取り出して、cartsの該当オブジェクトと合成する。
-            // =>  スプレッド構文
-
-            
-
         },[cartlist,currylist,carts,currys])
 
 
-
-            
-
-
-
-
-
-            //  //カート内の商品のIDと一致する値を取り出す。
-            // console.log(cartId)
-
-            // const getCurryId = currys.find( curry => curry.id === cartId)
-            // console.log(getCurryId)
-
-
-            // ---------------------------------------------------------------
-            // const cartId =  carts.find( cart => cart.id)
-            // console.log('cartId');
-            // console.log(cartId);
-            // //console.log(cartId.id);
-
-            // const newCurryList = currys.filter( (curry) => {
-            //     const cartId =  carts.find( cart => cart.id)
-
-            //     return curry.id === cartId.id
-            // })
-            // console.log('newCurryList')
-            // console.log(newCurryList)
-            // ----------------------------------------------------------------
-
-
-
-            // let curryId = currys.forEach(curry => {
-            //    return curry.id
-            // })
-            // console.log(curryId)
-
-
-            // const nameImageGet = currys.filter(curry => {
-            //     if(curry.id === Number(cartId) ){
-            //         return curry.name
-            //     } 
-            // })
-            // console.log(nameImageGet)
-            
-        
-
-        // idが一致するものの名前と商品イメージが欲しい。
-
-        
-
-
-
-        // 
-        // const getCurryId = curry.find((curryid) => curryid.id === Number(id) )
-        // console.log(getCurryId);
-
-
-    //     {   cartItem: {
-    //         orderDate: "",
-    //         userName: "",
-    //         mailAddress: "",
-    //         addressNumber: "",
-    //         address: "",
-    //         phoneNumber: "",
-    //         deliveryDate: "",
-    //         deliveryTime: "",
-    //         status: 0,
-    //         //カートのカレー情報 仮置き
-    //         cartItemList: [
-    //             {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
-    //         ]
-    //     }
-    // }
-
-        //undefinedCheck()
 
     // const checkLogin = ()=>{
     //     if(!user){ return ( <button onClick={ ()=>{login()} }>まずはログイン！</button> ) }
@@ -208,32 +118,7 @@ export const Cart = ()=>{
     // }
 
 
-    //console.log(Object.keys(user).length)
-
     //const [login_user , setUser] = useState(user) // ログインユーザーのデータを保持する！
-
-    // const [carts ,setCart] = useState([])
-    // console.log(cartlist)
-    //         setCart(cartlist)
-    //         console.log(carts)
-    //const [cartObject,setCart2] = useState({})
-
-
-
-    // useEffect( 
-    //     ()=>{
-    //         console.log('useEffect')
-
-    //         if(!Object.keys(login_user).length){
-    //             console.log('ログインしていない')
-    //             setUser({})
-    //         } else if (Object.keys(login_user).length){
-    //             console.log('ログインしている')
-    //             setUser(user)
-    //         }
-
-
-    //     },[])
 
     
     const totalTax = ()=>{ // 消費税の合計を計算
@@ -260,10 +145,6 @@ export const Cart = ()=>{
         },0)
         return Math.floor(totalTaxIncludes)
 }
-
-    // const [userState , setUser] = useState({})
-
-    
 
     const remove = (removeIndex)=>{
         
