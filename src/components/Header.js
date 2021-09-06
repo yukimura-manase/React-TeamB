@@ -44,12 +44,10 @@ const Header=()=>{
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()
     firebase.auth().signInWithRedirect(google_auth_provider)
-    console.log('ログイン')
   }
 
   const logout=()=>{
     firebase.auth().signOut();
-    console.log('ログアウト')
   }
 
   const Logbutton=()=>{

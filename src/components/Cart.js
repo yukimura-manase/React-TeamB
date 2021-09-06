@@ -11,28 +11,16 @@ import 'firebase/compat/firestore';
 //   この時、カート内情報、消費税、ご注文金額合計、
 //    注文に進むボタンは全て非表示にする
 
-
 // 2.DBイベント処理「カート内の指定商品を削除」を発生させる。
  //=>DBのカート情報(cartsのcartItemList)そのものを更新(update)
 
-
-
  export const loginSelector = state=>{ // Storeのログインユーザー情報
-     console.log('loginSelector')
-     //console.log(state)
-     console.log(state.StoreState.loginUser)
     return state.StoreState.loginUser
 }
 
-
 export const cartSelector = state => { // Storeのカート情報
-    // console.log('cartSelector')
-    // console.log(state)
-    // console.log(state.StoreState.cartlist.length)
-    return state.StoreState.cartlist
+    return state.StoreState.Cart
 } 
-
-
 
 export const Cart = ()=>{
     const user = useSelector(loginSelector)
@@ -41,20 +29,14 @@ export const Cart = ()=>{
     const handleLink = path =>history.push(path);
     const dispatch = useDispatch() // useDispatchを呼び出して変数dispatchに格納する。
 
-
-    console.log('ログインユーザーはいるか？');
     console.log(user)
-
-    
+    console.log(cartlist)
 
     useEffect(
         ()=>{
             console.log('useEffect')
             // if(){
-
-            // }
-            
-            
+            // }                        
         },[]
     )
     // const checkLogin = ()=>{
@@ -139,7 +121,7 @@ export const Cart = ()=>{
         <React.Fragment>
             <h2>ショッピングカート</h2>
 
-            { !Object.keys(cartlist).length ? 'カートに商品がありません！':
+            { !Object.keys(cartlist.cartItemList).length ? 'カートに商品がありません！':
             <div>
             
                 <table border='1'>

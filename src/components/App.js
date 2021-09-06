@@ -21,24 +21,14 @@ import {Product} from './Product'
 import { BuyHistory } from './buyHistory';
 import { OrderFinish } from './orderFinish';
 
-
-
-
-
 //const currySelector = state => state.StoreState.loginUser
-
-  
-const userSelector = state => state.StoreState
-
 // const currySelector=state=>state.StoreState.Curry
 // const cartSelector=state=>state.StoreState.Cart
 
 const App = () => {
   const dispatch = useDispatch()
-  const state = useSelector(userSelector)
 
   const setUser = (user) => {
-    console.log(user)
     dispatch(setLoginUser(user))
   }
 
@@ -89,7 +79,6 @@ const App = () => {
             cartItem.push({ ...doc.data(), id: doc.id })
           }
         })
-        console.log(cartItem)
         dispatch(fetchCartItem(cartItem))
       })
   }
@@ -107,6 +96,23 @@ const App = () => {
       })
   }
 
+  const setCart=()=>{
+    let cartItem = []
+    cartItem.push({
+      orderDate: "",
+      userName: "",
+      mailAddress: "",
+      addressNumber: "",
+      address: "",
+      phoneNumber: "",
+      deliveryDate: "",
+      deliveryTime: "",
+      status: 0,
+      cartItemList: []
+    })
+    dispatch(fetchCartItem(cartItem))
+  }
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -114,6 +120,7 @@ const App = () => {
         fetchCart(user)
       } else {
         deleteUser()
+        setCart()
       }
     })
     fetchCurry()
