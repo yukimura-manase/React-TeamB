@@ -92,11 +92,7 @@ export const BuyHistory = () => {
 	// [ first, setItems ] = useState ('');
 
 	useEffect(()=>{
-		//console.log('getCart');
-		// console.log(getCart);
-		// console.log(getCart[0]);
-		// let cartlist = getCart[0]
-
+		
 		currylist.length !==0 && setCurry(currylist)
 
 		getCart.length !== 0 && setCart(getCart[0].cartItemList)
@@ -105,26 +101,20 @@ export const BuyHistory = () => {
 
 			console.log('cartIdList');
 
-			const cartIdList =  carts.map( cart => cart.id) //カート内の商品のIDの配列を生成
-			console.log(cartIdList) // [10, 13, 11] idのリストを作る！
+			const cartIdList =  carts.map( cart => cart.id)
+			console.log(cartIdList) 
 
-			let newCurry = cartIdList.map( cartid => {
-				return currys.find(curry => cartid === curry.id) // idリストの中身と一つ一つ
+			let matchCurry = cartIdList.map( cartid => {
+				return currys.find(curry => cartid === curry.id)
 			})
-
-			console.log('newCurry')
-			console.log(newCurry) // idが一致する商品情報 => 名前・写真 を取り出してCartに追加 or newCurryにCartをconcatまたはスプレッド構文
 
 			const mergeArray = [] // 入れ物用意
 
-			newCurry.forEach(curry => {
+			carts.forEach(cart => {
 
-				let idMatch = carts.find( cart => cart.id === curry.id) // idが一致するものを一つ格納！
-				console.log(idMatch)
+				let Match = matchCurry.find( curry => curry.id === cart.id) // idが一致するものを一つ格納！
 				
-				const merged = {...curry,...idMatch}
-				console.log(merged)
-			
+				const merged = {...cart,...Match}
 				
 				mergeArray.push(merged)
 			})

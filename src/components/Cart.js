@@ -119,19 +119,6 @@ export const Cart = ()=>{
         //console.log('ログイン')
       }
 
-    // const order = (carts2)=>{
-
-    //     console.log(carts2)
-
-    //     // let orderList = ( {id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()} )
-    //     // console.log('orderList');
-    //     // console.log(orderList);
-
-    //     dispatch(addOrder(carts2))
-
-    //     handleLink('/buyHistory')
-    // }
-
     return(
         <React.Fragment>
 
