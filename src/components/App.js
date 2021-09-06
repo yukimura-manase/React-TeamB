@@ -18,8 +18,8 @@ import CurryDetail from './CurryDetail'
 import {Cart} from './Cart'
 import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 import {Product} from './Product'
-import { BuyHistory } from './BuyHistory';
-import { OrderFinish } from './OrderFinish';
+import { BuyHistory } from './buyHistory';
+import { OrderFinish } from './orderFinish';
 //materialUI
 import { createStyles,makeStyles } from '@material-ui/styles';
 
@@ -35,12 +35,8 @@ const useStyle = makeStyles(() =>
       }
     }),
   );
-    
+
 //const currySelector = state => state.StoreState.loginUser
-
-  
-const userSelector = state => state.StoreState
-
 // const currySelector=state=>state.StoreState.Curry
 // const cartSelector=state=>state.StoreState.Cart
 
@@ -49,10 +45,8 @@ const App = () => {
 
 
   const dispatch = useDispatch()
-  const state = useSelector(userSelector)
 
   const setUser = (user) => {
-    console.log(user)
     dispatch(setLoginUser(user))
   }
 
@@ -104,7 +98,6 @@ const App = () => {
             cartItem.push({ ...doc.data(), id: doc.id })
           }
         })
-        console.log(cartItem)
         dispatch(fetchCartItem(cartItem))
       })
   }
@@ -139,6 +132,23 @@ const App = () => {
       })
   }
 
+  const setCart=()=>{
+    let cartItem = []
+    cartItem.push({
+      orderDate: "",
+      userName: "",
+      mailAddress: "",
+      addressNumber: "",
+      address: "",
+      phoneNumber: "",
+      deliveryDate: "",
+      deliveryTime: "",
+      status: 0,
+      cartItemList: []
+    })
+    dispatch(fetchCartItem(cartItem))
+  }
+
   useEffect(() => {
     //noLoginCart() // 追加
 
@@ -148,6 +158,7 @@ const App = () => {
         fetchCart(user)
       } else {
         deleteUser()
+        setCart()
       }
     })
     fetchCurry()

@@ -44,8 +44,6 @@ export const Cart = ()=>{
     const handleLink = path =>history.push(path);
     const dispatch = useDispatch() // useDispatchを呼び出して変数dispatchに格納する。
 
-
-    console.log('ログインユーザーはいるか？');
     console.log(user)
 
     const undefinedCheck = ()=>{  // undefinedだったら再度、user情報をsetしたい！
@@ -57,6 +55,7 @@ export const Cart = ()=>{
     }
 
     
+    console.log(cartlist)
 
    const 
    [ currys, setCurry] = useState([]),
@@ -201,6 +200,9 @@ export const Cart = ()=>{
     // }
 
         //undefinedCheck()
+
+            // if(){
+            // }                        
 
     // const checkLogin = ()=>{
     //     if(!user){ return ( <button onClick={ ()=>{login()} }>まずはログイン！</button> ) }
