@@ -6,7 +6,7 @@ import { addData } from "../actions/ActionCreator";
 import '../../src/BuyHistory.css';
 import { createStyles,makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
-import AcUnitIcon from '@material-ui/icons/AcUnit'; // importの後のこ指定   ex:) <AcUnitIcon/>
+//import AcUnitIcon from '@material-ui/icons/AcUnit'; // importの後のこ指定   ex:) <AcUnitIcon/>
 
 
 const useStyle = makeStyles(() =>
@@ -28,9 +28,17 @@ const useStyle = makeStyles(() =>
 
 
 const cartSelector = state => {
-console.log(state.StoreState.Cart);
+console.log('buyHistoryのcartSelector');
+// console.log(state)
+// console.log(state.StoreState.Cart);
 
 	return state.StoreState.Cart;
+}
+
+const currySelector = state => {
+    console.log('currySelector')
+    // console.log(state.StoreState.Curry)
+    return state.StoreState.Curry
 }
 
 export const BuyHistory = () => {
@@ -38,7 +46,14 @@ export const BuyHistory = () => {
 	// const cartSelector = state => state.StoreState.Cart.cartItem;
 
 	const getCart = useSelector (cartSelector)
-	console.log(getCart);
+	// console.log('getCart');
+	// console.log(getCart);
+	// console.log(getCart[0])
+
+	const currylist = useSelector(currySelector)
+    console.log('currylist')
+    console.log(currylist)
+
 	const dispatch = useDispatch ()
 
     const history = useHistory();
@@ -59,14 +74,60 @@ export const BuyHistory = () => {
 	[ mailAddress, setMailAddress ] = useState(""),
 	[ status, setStatus ] = useState(""),
 	[ errors, setErrors ] = useState([]),
-	[ cart, setCart ] = useState([])
+	[ currys, setCurry] = useState([]),
+	[ carts, setCart ] = useState([]),
+	[ carts2 , setCart2] = useState([])
+
 	// [ first, setItems ] = useState ('');
 
-	// useEffect(()=>{
-	// 	console.log(getCart);
-	// 	getCart.length !== 0 && setCart(getCart[0].cartItemList)
-	// }, [getCart])
+	useEffect(()=>{
+		//console.log('getCart');
+		// console.log(getCart);
+		// console.log(getCart[0]);
+		// let cartlist = getCart[0]
 
+		currylist.length !==0 && setCurry(currylist)
+
+		getCart.length !== 0 && setCart(getCart[0].cartItemList)
+
+		if( getCart.length !== 0 && currylist.length !==0 ){
+
+			console.log('cartIdList');
+
+			const cartIdList =  carts.map( cart => cart.id) //カート内の商品のIDの配列を生成
+			console.log(cartIdList) // [10, 13, 11] idのリストを作る！
+
+			let newCurry = cartIdList.map( cartid => {
+				return currys.find(curry => cartid === curry.id) // idリストの中身と一つ一つ
+			})
+
+			console.log('newCurry')
+			console.log(newCurry) // idが一致する商品情報 => 名前・写真 を取り出してCartに追加 or newCurryにCartをconcatまたはスプレッド構文
+
+			const mergeArray = [] // 入れ物用意
+
+			newCurry.forEach(curry => {
+
+				let idMatch = carts.find( cart => cart.id === curry.id) // idが一致するものを一つ格納！
+				console.log(idMatch)
+				
+				const merged = {...curry,...idMatch}
+				console.log(merged)
+			
+				
+				mergeArray.push(merged)
+			})
+			console.log('mergeArray')
+			console.log(mergeArray)
+
+			getCart.length !== 0 && setCart2(mergeArray)
+
+		}
+
+
+	}, [getCart,currylist,carts,currys])
+
+	
 	//イベント発火時に値を持ってくるよ！
 	const inputUserName = (e) => {
 		setUserName(e.target.value);
@@ -264,9 +325,35 @@ export const BuyHistory = () => {
 
 	// 	console.log( fetchCartItem ( ));
 	// }
+
+	const totalTax = ()=>{ // 消費税の合計を計算
+        //console.log('totalTax')
+        let tax = []
+        carts.forEach(cart => {
+            tax.push(cart.total * 0.1)
+        })
+
+        let totalTax = tax.reduce( (sum,currentVal ) => {
+            return sum + currentVal;
+        },0) // 初期値を設定している。
+        return totalTax
+    }
+
+     const sumTotalPlice = ()=>{ // 小計金額(total)ごとの消費税分を計算。
+        //console.log('sumTotalPlice')
+        let taxInclude = []
+        carts.forEach(cart => {
+        taxInclude.push(cart.total * 1.1)
+        })
+        let totalTaxIncludes = taxInclude.reduce( (sum,currentVal) => {
+            return sum + currentVal;
+        },0)
+        return Math.floor(totalTaxIncludes)
+}
 	
-	
-	const displaysCart = cart.map( (item, index) => {
+
+
+	const displaysCart = carts2.map( (item, index) => {
 		return (
 			
 			<tr className="cart-item" key={index}>
@@ -279,6 +366,7 @@ export const BuyHistory = () => {
 
 		)
 	})
+
 	
 
 
@@ -308,24 +396,23 @@ export const BuyHistory = () => {
 						</tr>
 
 						
-						{/* {displaysCart} */}
+						{displaysCart}
 
 						
-				
 					</tbody>
 				</table>
 			</div>
 			</div>
 
 			<div className="container">
-				<div className="tax">消費税 : 200 円</div>
+				<div className="tax">消費税 : {totalTax()} 円</div>
 			</div>
 
 
 
 
 			<div className="container">
-				<div className="total-price">注文金額 (税込) : 2200 円</div>
+				<div className="total-price">注文金額 (税込) : {sumTotalPlice()} 円</div>
             </div>
 
 

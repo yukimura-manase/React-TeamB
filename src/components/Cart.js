@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import { removeCart } from '../actions/ActionCreator';
+import { removeCart , addOrder} from '../actions/ActionCreator';
 import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
@@ -66,8 +66,8 @@ export const Cart = ()=>{
 
     useEffect(
         ()=>{
-            console.log('useEffect')
-            console.log(cartlist)
+            // console.log('useEffect')
+            // console.log(cartlist)
 
             currylist.length !==0 && setCurry(currylist)
 
@@ -112,12 +112,6 @@ export const Cart = ()=>{
 
 
 
-    // const checkLogin = ()=>{
-    //     if(!user){ return ( <button onClick={ ()=>{login()} }>まずはログイン！</button> ) }
-    //      else { <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button> } 
-    // }
-
-
     //const [login_user , setUser] = useState(user) // ログインユーザーのデータを保持する！
 
     
@@ -160,15 +154,10 @@ export const Cart = ()=>{
         //     console.log(idMatch)
         // })
         
-
-
-
         // 画面の削除処理
         const copyCart = carts2.concat()
         copyCart.splice(removeIndex,1)
         setCart2(copyCart)
-
-
 
         dispatch(removeCart(removeIndex))
     
@@ -180,12 +169,25 @@ export const Cart = ()=>{
         console.log('ログイン')
       }
 
+    // const order = (carts2)=>{
+
+    //     console.log(carts2)
+
+    //     // let orderList = ( {id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()} )
+    //     // console.log('orderList');
+    //     // console.log(orderList);
+
+    //     dispatch(addOrder(carts2))
+
+    //     handleLink('/buyHistory')
+    // }
 
     return(
         <React.Fragment>
             <h2>ショッピングカート</h2>
 
-            { !Object.keys(carts).length ? 'カートに商品がありません！':
+           
+            { !cartlist.length === 0 ? 'カートに商品がありません！':
             <div>
 
                 {/* <h3></h3>
@@ -245,7 +247,7 @@ export const Cart = ()=>{
                     {
                         user === null ? 
                         <button onClick={ ()=>{login()} }>まずはログイン！</button>:
-                        <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
+                        <button onClick={ ()=>{ handleLink('/buyHistory')} }>注文に進む！</button>
                     }
                 </div>
             

@@ -1,29 +1,14 @@
 // Stateを管理するStore => Actionsを受け取ったStateの変更処理をする部門を内部に持っている。
 // StateとStateの更新処理 => ファイル単位のuseStateのようなもの。
-import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM ,REMOVECART, ADDDATA,CURRYCARTITEM} from '../actions/ActionCreator'
+import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM ,REMOVECART, ADDDATA,CURRYCARTITEM,ADDORDER} from '../actions/ActionCreator'
 import firebase from 'firebase/compat/app'
 
 
 const initialState = {
   loginUser: null,
   Curry: [],
-  Cart: [
-    { cartItem: {
-      orderDate: "",
-      userName: "",
-      mailAddress: "",
-      addressNumber: "",
-      address: "",
-      phoneNumber: "",
-      deliveryDate: "",
-      deliveryTime: "",
-      status: 0,
-      //カートのカレー情報 仮置き
-      cartItemList: [
-        {name: 'カツカレー', pic:'/pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
-      ]
-    }}
-  ],
+  Cart: [],
+  //orderCart:[]
 
 }
 console.log(initialState)
@@ -89,15 +74,15 @@ export const StoreState = (state = initialState, action) => {
         }
 
       case CURRYCARTITEM:
-        console.log(state)
-        console.log('action.Cart')
-        console.log(action.Cart)
+        // console.log(state)
+        // console.log('action.Cart')
+        // console.log(action.Cart)
 
         //const curryCart = state.Cart.cartItemList.slice() // ノーログイン
         const curryCart = state.Cart.slice() // ログイン
 
-        console.log('curryCart')
-        console.log(curryCart)
+        // console.log('curryCart')
+        // console.log(curryCart)
 
         // console.log('curryCart[0].cartItem')
         // console.log(curryCart[0].cartItem)
@@ -123,6 +108,19 @@ export const StoreState = (state = initialState, action) => {
 
 
         return {...state,Cart: curryCart}
+    
+    
+        // case ADDORDER: {
+        //     console.log('StoreStateのaddOreder')
+        //     console.log(action.orderCart) // {orderCart:carts2}
+
+        //     console.log(state)
+        //     const copyOrderCart = state.orderCart.slice() 
+        //     copyOrderCart.push(action.orderCart)
+        //     console.log(copyOrderCart)
+
+        //     return {...state,orderCart:copyOrderCart}
+        // }
 
 
 
@@ -131,26 +129,4 @@ export const StoreState = (state = initialState, action) => {
   }
 }
 
-// データ構造
-//     Cart[
-            // {
-                // cartItem: {
-                    //         cartItemList: [
-                        //             {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
-                        //     ],
-                    //          
-                    //         orderDate: "",
-                    //         userName: "",
-                    //         mailAddress: "",
-                    //         addressNumber: "",
-                    //         address: "",
-                    //         phoneNumber: "",
-                    //         deliveryDate: "",
-                    //         deliveryTime: "",
-                    //         status: 0,
-
-                    
-            //     }
-            // }
-    //  ]
 
