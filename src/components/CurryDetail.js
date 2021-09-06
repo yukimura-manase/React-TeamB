@@ -1,9 +1,8 @@
-import React,{Component,useState} from 'react'
+import React,{Component,useState,useEffect} from 'react'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore';
 import { useSelector,useDispatch } from 'react-redux';
 import {useHistory, useParams} from 'react-router-dom';
-import { Link } from 'react-router-dom';
 import {curryCartItem} from '../actions/ActionCreator'
 import { noLoginCart } from './App';
 
@@ -77,20 +76,18 @@ const useStyle = makeStyles(() =>
     
 
 //store/stateのなかのCurryの値を取ってきてcurrydetailに代入
-export const curryItem = state =>{
-    return state.StoreState.Curry
-}
 
- 
 const CurryDetail = () => {
     const classes = useStyle();
 
     const dispatch = useDispatch()
-
     //useSelectorを使い参照したいデータを取得
+    const curryItem = state =>{
+        return state.StoreState.Curry
+    }
     //値をcurryListに代入
     const curry =useSelector(curryItem)
-    console.log(curry);
+    //console.log(curry);
 
     //params
     const {id} = useParams()
@@ -105,7 +102,7 @@ const CurryDetail = () => {
 
     //サイズ
     const [size,setSize] = useState('')
-    console.log(size);
+    //console.log(size);
 
     //数量
     const [quantity,setQuantity] = useState(1)
@@ -113,7 +110,7 @@ const CurryDetail = () => {
     
     //トッピングを入れる配列
     const [toppingItem,setToppingItem] = useState([]) 
-    console.log(toppingItem);
+    //console.log(toppingItem);
     const setTopping = (e) => {
         if(toppingItem.includes(e.target.value)){
             setToppingItem(toppingItem.filter(item => item !== e.target.value ))
@@ -125,9 +122,9 @@ const CurryDetail = () => {
     //金額の計算 params入れる
     let totalPrice = () => {
         if(size === "M"){
-            return curry[0].msizePrice * quantity + toppingItem.length * 200 * quantity 
+            return getCurryId.msizePrice * quantity + toppingItem.length * 200 * quantity 
         }else if(size === "L"){
-            return curry[0].lsizePrice * quantity + toppingItem.length * 300 * quantity 
+            return getCurryId.lsizePrice * quantity + toppingItem.length * 300 * quantity 
         }
         }
 
@@ -149,7 +146,7 @@ const CurryDetail = () => {
             setsizeDecision(setErrors)
         }else{
             let curryList = ( {id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()} )
-            console.log(curryList);
+            //console.log(curryList);
             dispatch(curryCartItem(curryList))
             handleLink('/cart')
         }    

@@ -3,6 +3,7 @@ export const SETLOGINUSER = 'setLoginUser';
 export const DELETELOGINUSER = 'deleteLoginUser';
 export const FETCHITEM = 'fetchItem';
 export const FETCHCARTITEM = 'fetchCartItem';
+export const SETCART = 'setCart';
 export const CURRYCARTITEM = 'curryCartItem'
 export const REMOVECART = 'removeCart';
 export const ADDDATA = 'addData';
@@ -31,6 +32,7 @@ export const curryCartItem = (cartItem) => ({
     type: CURRYCARTITEM,
     Cart: cartItem
 })
+
 export const removeCart = (index)=>{
     return {
         type:REMOVECART,
@@ -38,34 +40,31 @@ export const removeCart = (index)=>{
     }
 }
 
-export const addData = ( 
-    // orderDate,
-    userName,
-    mailAddress,
-    addressNumber,
-    address,
-    phoneNumber,
-    deliveryDate,
-    deliveryTime,
-    status
-    ) => ({
 
-        type: ADDDATA,
-        // orderDate: orderDate,
-        userName: userName,
-        mailAddress: mailAddress,
-        addressNumber: addressNumber,
-        address: address,
-        phoneNumber: phoneNumber,
-        deliveryDate: deliveryDate,
-        deliveryTime: deliveryTime,
-        status: status,
-})
+// export const addData = (cartItem) => ({
+//     type: ADDDATA,
+//     Cart: cartItem
 
-// export const addOrder = (carts2) =>{
-//      return {
-//         type:ADDORDER,
-//         orderCart:carts2
-//     }
-// }
+// })
 
+// export const addData = ( 
+//     userName,
+//     mailAddress,
+//     addressNumber,
+//     address,
+//     phoneNumber,
+//     deliveryDate,
+//     deliveryTime,
+//     status
+//     ) => ({
+
+//         type: ADDDATA,
+//         userName: userName,
+//         mailAddress: mailAddress,
+//         addressNumber: addressNumber,
+//         address: address,
+//         phoneNumber: phoneNumber,
+//         deliveryDate: deliveryDate,
+//         deliveryTime: deliveryTime,
+//         status: status,
+// })

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector,useDispatch } from 'react-redux';
-import {useHistory} from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { fetchItem } from '../actions/ActionCreator';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore'
@@ -62,13 +62,12 @@ const useStyle = makeStyles(() =>
     }),
 );
 
-export const curryItem = state =>{
+export const curryItem = state => {
     return state.StoreState.Curry
 }
 
 export const Product =()=>{
     const curry =useSelector(curryItem)
-    console.log(curry);
     // const dispatch=useDispatch()
     // useEffect(()=>{
     //     if(!curry){
@@ -88,13 +87,67 @@ export const Product =()=>{
 
     const history=useHistory()
 
-    const handleLink = path =>history.push(path)
+    const handleLink = path => history.push(path)
 
-    const [word,Setword]=useState('')
-    const handleName=(event)=>{
+    const [word, Setword] = useState('')
+    const handleName = (event) => {
         Setword(event.target.value)
     }
-    return(
+
+    const [searchCurry, setSearchCurry] = useState([])
+    const search = () => {
+            let currys=curry.filter(
+                (item) => {
+                    if (item.name.indexOf(word) > -1) {
+                        return 1
+                    }else{
+                        return 0
+                    }
+                }
+            )
+            if(currys.length===0){
+                alert('該当する商品はありません')
+            }
+            setSearchCurry(currys)
+    }
+
+    const displayCurry = () => {
+        if (searchCurry.length === 0) {
+            return (
+                <div>
+                    {
+                        curry.map((curry) => {
+                            return <div key={curry.id}>
+                                <div>商品名:{curry.name}</div>
+                                <div><img src={curry.pic} alt='' width="100px" /></div>
+                                <div>Mサイズ:{curry.msizePrice}円</div>
+                                <div>Lサイズ:{curry.lsizePrice}円</div>
+                                <button onClick={() => handleLink(`currydetail/${curry.id}`)}>商品詳細へ</button>
+                            </div>
+                        })
+                    }
+                </div>
+            )
+        } else if (searchCurry.length !== 0) {
+            return (
+                <div>
+                    {
+                        searchCurry.map((curry) => {
+                            return <div key={curry.id}>
+                                <div>商品名:{curry.name}</div>
+                                <div><img src={curry.pic} alt='' width="100px" /></div>
+                                <div>Mサイズ:{curry.msizePrice}円</div>
+                                <div>Lサイズ:{curry.lsizePrice}円</div>
+                                <button onClick={() => handleLink(`currydetail/${curry.id}`)}>商品詳細へ</button>
+                            </div>
+                        })
+                    }
+                </div>
+            )
+        }
+    }
+
+    return (
         <div>
             <div className={classes.search}>
                 <h2>商品検索</h2>
