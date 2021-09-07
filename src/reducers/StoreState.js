@@ -26,8 +26,6 @@ export const StoreState = (state = initialState, action) => {
         case FETCHCARTITEM:
             let cartItem = state.Cart.slice()
             cartItem = action.Cart
-            console.log('fetchcartitem')
-            console.log(action);
             return { ...state, Cart: cartItem }
 
         case FETCHITEM:

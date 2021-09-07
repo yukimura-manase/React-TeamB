@@ -429,13 +429,16 @@ if ( allErrors.length === 0 ) {
 	const displaysCart = carts2.map( (item, index) => {
 		return (
 			
+
 			<tr className="cart-item" key={index}>
-				<td> {item.name} <div><img src={item.pic} /></div></td>
+				<td className="cartName"> {item.name} </td>
+				<td className="imgPosition"><img className="img" src={item.pic} /></td>
 				<td> {item.size} </td>
 				<td> {item.number} </td>
-				<td> {item.topping} </td>
+				<td className="cartTopping"> {item.topping} </td>
 				<td> {item.total} </td>
 			</tr>
+
 
 		)
 	})
@@ -450,17 +453,13 @@ if ( allErrors.length === 0 ) {
             <div className="main-title">注文確認画面</div>
 
 			<div className="container">
-            <div className="box1-title">ショッピングカート</div>
-			</div>
-
-
-			<div className="container">
 			<div>
 
 				<table>
 					<tbody>
 						<tr className="cart-title">
 							<th>商品名</th>
+							<th>商品イメージ</th>
 							<th>サイズ</th>
                             <th>数量</th>
 							<th>トッピング</th>
@@ -486,6 +485,7 @@ if ( allErrors.length === 0 ) {
 			<div className="container">
 				<div className="total-price">注文金額 (税込) : {sumTotalPlice()} 円</div>
             </div>
+			<div className="border"></div>
 
 
 
