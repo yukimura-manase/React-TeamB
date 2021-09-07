@@ -23,6 +23,34 @@ const useStyle = makeStyles(() =>
                 color:"#fff"
             }
         },
+		"pic":{
+			width: "350px",
+            height: "200px",
+			display: "block",
+			marginLeft: "auto",
+			marginRight: "auto"
+
+		},
+		"text":{
+			fontWeight:600,
+		
+		},
+		"cart":{
+			width:"100%",
+		},
+		"tableText":{
+			textAlign:"center"
+		},
+		"u":{
+            textDecoration:"none",
+            borderBottom:"double 5px #faa61a",
+        },
+		"price":{
+            fontSize:"18px",
+            paddingBottom:"15px"
+        }
+
+		
 	}),
 );
 
@@ -443,11 +471,12 @@ if ( allErrors.length === 0 ) {
 		return (
 			
 			<tr className="cart-item" key={index}>
-				<td> {item.name} <div><img src={item.pic} /></div></td>
-				<td> {item.size} </td>
-				<td> {item.number} </td>
-				<td> {item.topping} </td>
-				<td> {item.total} </td>
+				<td　className={classes.tableText}> {item.name} </td>
+				<td><img src={item.pic} className={classes.pic}/></td>
+				<td className={classes.tableText}> {item.size} </td>
+				<td className={classes.tableText}> {item.number} </td>
+				<td className={classes.tableText}> {item.topping} </td>
+				<td className={classes.tableText}> {item.total} </td>
 			</tr>
 
 		)
@@ -459,9 +488,9 @@ if ( allErrors.length === 0 ) {
 
     return (
 
-        <div>
+        <div className={classes.text}>
 
-            <div className="main-title">注文確認画面</div>
+            <div className="main-title"><u className={classes.u}>注文確認画面</u></div>
 
 			<div className="container">
             <div className="box1-title">ショッピングカート</div>
@@ -469,12 +498,13 @@ if ( allErrors.length === 0 ) {
 
 
 			<div className="container">
-			<div>
+		
 
-				<table>
+				<table className={classes.cart}>
 					<tbody>
 						<tr className="cart-title">
 							<th>商品名</th>
+							<th>商品イメージ</th>
 							<th>サイズ</th>
                             <th>数量</th>
 							<th>トッピング</th>
@@ -487,7 +517,7 @@ if ( allErrors.length === 0 ) {
 						
 					</tbody>
 				</table>
-			</div>
+		
 			</div>
 
 			<div className="container">
@@ -498,7 +528,7 @@ if ( allErrors.length === 0 ) {
 
 
 			<div className="container">
-				<div className="total-price">注文金額 (税込) : {sumTotalPlice()} 円</div>
+				<div className="total-price"><u className={classes.u}>注文金額 (税込) : {sumTotalPlice()} 円</u></div>
             </div>
 
 

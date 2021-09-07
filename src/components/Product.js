@@ -107,17 +107,17 @@ export const Product =()=>{
     if(newCurry.length===0){
         return(
             curry.map((curry)=>{
-            return<div className={classes['card-list']}>
+            return<div>
             <div>
-            <div key={curry.id} className={classes.card}>
-            <div className={classes['card-title']}>{curry.name}</div>
-            <div><img src={curry.pic} alt='' onClick={()=>handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
-            <div className={classes['card-content']}>
-            <div>Mサイズ:{curry.msizePrice}円</div>
-            <div>Lサイズ:{curry.lsizePrice}円</div>
-            <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
-            </div>
-            </div>
+                <div key={curry.id} className={classes.card}>
+                    <div className={classes['card-title']}>{curry.name}</div>
+                    <div><img src={curry.pic} alt='' onClick={()=>handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
+                    <div className={classes['card-content']}>
+                        <div>Mサイズ:{curry.msizePrice}円</div>
+                        <div>Lサイズ:{curry.lsizePrice}円</div>
+                        <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+                    </div>
+                </div>
             </div>
             </div>
             })
@@ -125,16 +125,16 @@ export const Product =()=>{
     } else {
         return(
             newCurry.map((curry)=>{
-            return <div className={classes['card-list']}>
-            <div key={curry.id} className={classes.card}>
-            <div className={classes['card-title']}>{curry.name}</div>
-            <div><img src={curry.pic} alt='' onClick={()=>handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
-            <div className={classes['card-content']}>
-            <div>Mサイズ:{curry.msizePrice}円</div>
-            <div>Lサイズ:{curry.lsizePrice}円</div>
-            <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
-            </div>
-            </div>
+            return <div>
+                <div key={curry.id} className={classes.card}>
+                    <div className={classes['card-title']}>{curry.name}</div>
+                    <div><img src={curry.pic} alt='' onClick={()=>handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
+                    <div className={classes['card-content']}>
+                        <div>Mサイズ:{curry.msizePrice}円</div>
+                        <div>Lサイズ:{curry.lsizePrice}円</div>
+                        <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+                    </div>
+                </div>
             </div>
             })
         )
@@ -146,9 +146,7 @@ export const Product =()=>{
             <input type='text'value={word} onChange={handleName} placeholder='商品名を入力'/>
             <button className={classes.button} onClick={serchCurry} >検索</button>
             <h2>商品一覧</h2>
-            <div className={classes['card-list']}>
-            <div>{ChangeCurry()}</div>
-            </div>
+            <div 　className={classes['card-list']}>{ChangeCurry()}</div>
             </div>
     )
 }
