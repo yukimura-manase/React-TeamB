@@ -7,6 +7,7 @@ export const SETCART = 'setCart';
 export const CURRYCARTITEM = 'curryCartItem'
 export const REMOVECART = 'removeCart';
 export const ADDDATA = 'addData';
+//export const ADDORDER = 'addOrder';
 
 export const setLoginUser = (user) =>({ // ログインユーザー情報のセット
     type: SETLOGINUSER,
@@ -67,4 +68,3 @@ export const removeCart = (index)=>{
 //         deliveryTime: deliveryTime,
 //         status: status,
 // })
-

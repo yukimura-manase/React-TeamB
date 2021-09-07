@@ -87,7 +87,7 @@ const CurryDetail = () => {
     }
     //値をcurryListに代入
     const curry =useSelector(curryItem)
-    console.log(curry);
+    //console.log(curry);
 
     //params
     const {id} = useParams()
@@ -102,7 +102,7 @@ const CurryDetail = () => {
 
     //サイズ
     const [size,setSize] = useState('')
-    console.log(size);
+    //console.log(size);
 
     //数量
     const [quantity,setQuantity] = useState(1)
@@ -110,7 +110,7 @@ const CurryDetail = () => {
     
     //トッピングを入れる配列
     const [toppingItem,setToppingItem] = useState([]) 
-    console.log(toppingItem);
+    //console.log(toppingItem);
     const setTopping = (e) => {
         if(toppingItem.includes(e.target.value)){
             setToppingItem(toppingItem.filter(item => item !== e.target.value ))
@@ -124,7 +124,7 @@ const CurryDetail = () => {
         if(size === "M"){
             return getCurryId.msizePrice * quantity + toppingItem.length * 200 * quantity 
         }else if(size === "L"){
-            return curry[0].lsizePrice * quantity + toppingItem.length * 300 * quantity 
+            return getCurryId.lsizePrice * quantity + toppingItem.length * 300 * quantity 
         }
         }
 
@@ -146,7 +146,7 @@ const CurryDetail = () => {
             setsizeDecision(setErrors)
         }else{
             let curryList = ( {id : Number(id),size : size,topping : toppingItem,number : quantity,total : totalPrice()} )
-            console.log(curryList);
+            //console.log(curryList);
             dispatch(curryCartItem(curryList))
             handleLink('/cart')
         }    

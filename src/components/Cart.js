@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import { removeCart } from '../actions/ActionCreator';
+import { removeCart , addOrder} from '../actions/ActionCreator';
 import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
@@ -8,234 +8,70 @@ import 'firebase/compat/firestore';
 
 
 const loginSelector = state=>{ // Storeのログインユーザー情報
-     console.log('loginSelector')
-     //console.log(state)
-     console.log(state.StoreState.loginUser)
     return state.StoreState.loginUser
 }
 
 
 const cartSelector = state => { // Storeのカート情報
-    console.log('cartSelector')
-    console.log(state)
-    console.log(state.StoreState.Cart)
     return state.StoreState.Cart
 }
 
 const currySelector = state => {
-    console.log('currySelector')
-    console.log(state.StoreState.Curry)
     return state.StoreState.Curry
 }
 
 export const Cart = ()=>{
 
     const user = useSelector(loginSelector)
+    console.log(user);
 
     const cartlist = useSelector(cartSelector) // useSelectorの引数にcartSelector関数を渡す。 => Storeのstate情報の一部が引数に入る。
-    console.log('cartlist')
-    console.log(cartlist)
 
     const currylist = useSelector(currySelector)
-    console.log('currylist')
-    console.log(currylist)
 
     const history = useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
     const handleLink = path =>history.push(path);
     const dispatch = useDispatch() // useDispatchを呼び出して変数dispatchに格納する。
 
-    console.log(user)
-
-    const undefinedCheck = ()=>{  // undefinedだったら再度、user情報をsetしたい！
-        if(user === undefined){
-            console.log('undefinedCheck')
-            const google_auth_provider = new firebase.auth.GoogleAuthProvider()
-            firebase.auth().signInWithRedirect(google_auth_provider)
-        }
-    }
-
-    
-    console.log(cartlist)
 
    const 
    [ currys, setCurry] = useState([]),
    [ carts, setCart ] = useState([]),
-   [ carts2 , setCart2] = useState([])
+   [ carts2 , setCart2 ] = useState([])
+   //[ userData, setUser ] = useState(null)
 
 
     useEffect(
         ()=>{
-            console.log('useEffect')
-            console.log(cartlist)
 
             currylist.length !==0 && setCurry(currylist)
 
             cartlist.length !== 0 &&  setCart(cartlist[0].cartItemList)
 
-
-            //無限レンダリングが起きてしまっている・・・
             if( cartlist.length !== 0 && currylist.length !==0 ){
 
-                console.log('cartIdList');
                 const cartIdList =  carts.map( cart => cart.id) //カート内の商品のIDの配列を生成
-                console.log(cartIdList) // [10, 13, 11] idのリストを作る！
 
-                let newCurry = currys.filter( curry => {
-
-                    let idMatch = cartIdList.find(id => id === curry.id) // idリストの中身と一つ一つ
-
-                    return curry.id === idMatch
+                let macthCurryData = cartIdList.map( cartid => {
+                    return currys.find(curry => cartid === curry.id) // idリストの中身と一つ一つ
                 })
-
-                console.log('newCurry')
-                console.log(newCurry) // idが一致する商品情報 => 名前・写真 を取り出してCartに追加 or newCurryにCartをconcatまたはスプレッド構文
 
                 const mergeArray = [] // 入れ物用意
 
-                newCurry.forEach(curry => {
+                carts.forEach(cart => {
 
-                    let idMatch = carts.find( cart => cart.id === curry.id) // idが一致するものを一つ格納！
-                    console.log(idMatch)
+                    let idMatchCurry = macthCurryData.find( currydata => currydata.id === cart.id) // idが一致するものを一つ格納！
                     
-                    const merged = {...curry,...idMatch}
-                    console.log(merged)
-                
+                    const merged = {...cart,...idMatchCurry}
                     
                     mergeArray.push(merged)
                 })
-                console.log('mergeArray')
-                console.log(mergeArray)
-
                 cartlist.length !== 0 && setCart2(mergeArray)
 
             }
 
-            
-
-            
-            // console.log(carts)
-            // console.log(carts[0])
-            // console.log(currys)
-
-            // cartsとcurrysのidを比較、一致するオブジェクトをcurrysから取り出して、cartsの該当オブジェクトと合成する。
-            // =>  スプレッド構文
-
-            
-
         },[cartlist,currylist,carts,currys])
 
-
-
-            
-
-
-
-
-
-            //  //カート内の商品のIDと一致する値を取り出す。
-            // console.log(cartId)
-
-            // const getCurryId = currys.find( curry => curry.id === cartId)
-            // console.log(getCurryId)
-
-
-            // ---------------------------------------------------------------
-            // const cartId =  carts.find( cart => cart.id)
-            // console.log('cartId');
-            // console.log(cartId);
-            // //console.log(cartId.id);
-
-            // const newCurryList = currys.filter( (curry) => {
-            //     const cartId =  carts.find( cart => cart.id)
-
-            //     return curry.id === cartId.id
-            // })
-            // console.log('newCurryList')
-            // console.log(newCurryList)
-            // ----------------------------------------------------------------
-
-
-
-            // let curryId = currys.forEach(curry => {
-            //    return curry.id
-            // })
-            // console.log(curryId)
-
-
-            // const nameImageGet = currys.filter(curry => {
-            //     if(curry.id === Number(cartId) ){
-            //         return curry.name
-            //     } 
-            // })
-            // console.log(nameImageGet)
-            
-        
-
-        // idが一致するものの名前と商品イメージが欲しい。
-
-        
-
-
-
-        // 
-        // const getCurryId = curry.find((curryid) => curryid.id === Number(id) )
-        // console.log(getCurryId);
-
-
-    //     {   cartItem: {
-    //         orderDate: "",
-    //         userName: "",
-    //         mailAddress: "",
-    //         addressNumber: "",
-    //         address: "",
-    //         phoneNumber: "",
-    //         deliveryDate: "",
-    //         deliveryTime: "",
-    //         status: 0,
-    //         //カートのカレー情報 仮置き
-    //         cartItemList: [
-    //             {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
-    //         ]
-    //     }
-    // }
-
-        //undefinedCheck()
-
-            // if(){
-            // }                        
-
-    // const checkLogin = ()=>{
-    //     if(!user){ return ( <button onClick={ ()=>{login()} }>まずはログイン！</button> ) }
-    //      else { <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button> } 
-    // }
-
-
-    //console.log(Object.keys(user).length)
-
-    //const [login_user , setUser] = useState(user) // ログインユーザーのデータを保持する！
-
-    // const [carts ,setCart] = useState([])
-    // console.log(cartlist)
-    //         setCart(cartlist)
-    //         console.log(carts)
-    //const [cartObject,setCart2] = useState({})
-
-
-
-    // useEffect( 
-    //     ()=>{
-    //         console.log('useEffect')
-
-    //         if(!Object.keys(login_user).length){
-    //             console.log('ログインしていない')
-    //             setUser({})
-    //         } else if (Object.keys(login_user).length){
-    //             console.log('ログインしている')
-    //             setUser(user)
-    //         }
-
-
-    //     },[])
 
     
     const totalTax = ()=>{ // 消費税の合計を計算
@@ -263,33 +99,15 @@ export const Cart = ()=>{
         return Math.floor(totalTaxIncludes)
 }
 
-    // const [userState , setUser] = useState({})
-
-    
-
     const remove = (removeIndex)=>{
         
         console.log('dispatch!removeTodo')
         console.log(removeIndex)
-
-        // Storeの削除処理の準備
-        // const rmIndex = carts.find((cart,index) => cart.index === removeIndex)
-        // console.log(rmIndex)
-
-        // const removeCart = carts2.forEach(cart2 =>{
-        //     const idMatch = carts.find(cart => cart.id === cart2.id)
-        //     console.log(idMatch)
-        // })
         
-
-
-
         // 画面の削除処理
-        const copyCart = carts2.concat()
-        copyCart.splice(removeIndex,1)
-        setCart2(copyCart)
-
-
+        const copyCart2 = carts2.concat()
+        copyCart2.splice(removeIndex,1)
+        setCart2(copyCart2)
 
         dispatch(removeCart(removeIndex))
     
@@ -298,20 +116,28 @@ export const Cart = ()=>{
     const login=()=>{
         const google_auth_provider = new firebase.auth.GoogleAuthProvider()
         firebase.auth().signInWithRedirect(google_auth_provider)
-        console.log('ログイン')
+        //console.log('ログイン')
       }
-
 
     return(
         <React.Fragment>
-            <h2>ショッピングカート</h2>
 
-            { !Object.keys(carts).length ? 'カートに商品がありません！':
+            {
+                user === null ? 
+                <h2>ショッピングカート</h2>:
+                <div>
+                    <h2>{user.displayName}さんのショッピングカート</h2>
+                    <span><img src={user.photoURL}></img></span>
+                </div>
+                
+            }
+            
+
+           
+            { carts.length === 0 ? 'カートに商品がありません！':
             <div>
 
-                {/* <h3></h3>
-
-                <div></div> */}
+               
 
                 <table border='1'>
                     <thead>
@@ -366,7 +192,7 @@ export const Cart = ()=>{
                     {
                         user === null ? 
                         <button onClick={ ()=>{login()} }>まずはログイン！</button>:
-                        <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
+                        <button onClick={ ()=>{ handleLink('/buyHistory')} }>注文に進む！</button>
                     }
                 </div>
             
