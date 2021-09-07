@@ -23,7 +23,6 @@ const currySelector = state => {
 export const Cart = ()=>{
 
     const user = useSelector(loginSelector)
-    console.log(user);
 
     const cartlist = useSelector(cartSelector) // useSelectorの引数にcartSelector関数を渡す。 => Storeのstate情報の一部が引数に入る。
 
@@ -75,7 +74,6 @@ export const Cart = ()=>{
 
     
     const totalTax = ()=>{ // 消費税の合計を計算
-        //console.log('totalTax')
         let tax = []
         carts.forEach(cart => {
             tax.push(cart.total * 0.1)
@@ -88,7 +86,6 @@ export const Cart = ()=>{
     }
 
      const sumTotalPlice = ()=>{ // 小計金額(total)ごとの消費税分を計算。
-        //console.log('sumTotalPlice')
         let taxInclude = []
         carts.forEach(cart => {
         taxInclude.push(cart.total * 1.1)
@@ -101,10 +98,6 @@ export const Cart = ()=>{
 
     const remove = (removeIndex)=>{
         
-        console.log('dispatch!removeTodo')
-        console.log(removeIndex)
-        
-        // 画面の削除処理
         const copyCart2 = carts2.concat()
         copyCart2.splice(removeIndex,1)
         setCart2(copyCart2)
@@ -116,7 +109,6 @@ export const Cart = ()=>{
     const login=()=>{
         const google_auth_provider = new firebase.auth.GoogleAuthProvider()
         firebase.auth().signInWithRedirect(google_auth_provider)
-        //console.log('ログイン')
       }
 
     return(
@@ -188,7 +180,6 @@ export const Cart = ()=>{
                 <div>消費税：{ totalTax() }円</div>
                 <div>ご注文金額合計：{ sumTotalPlice() }円(税込)</div>
                 <div>
-                    {/* {checkLogin()} */}
                     {
                         user === null ? 
                         <button onClick={ ()=>{login()} }>まずはログイン！</button>:

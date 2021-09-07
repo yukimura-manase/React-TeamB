@@ -53,7 +53,7 @@ const App = () => {
   const deleteUser = () => {
     dispatch(deleteLoginUser())
   }
-
+  
   // if(user)
   const fetchCart = (user) => {
     let cartItem = []
@@ -168,8 +168,8 @@ const App = () => {
 
     <React.Fragment>
       <Router>
-        <div className={classes.pic}>
-          <img src={`${process.env.PUBLIC_URL}/pic/header_logo.png`} alt="Logo" className={classes.header}/>
+        <div className={classes.pic} >
+          <img src={`${process.env.PUBLIC_URL}/pic/header_logo.png`} alt="Logo" className={classes.header} />
         </div>
       <Header/>
 

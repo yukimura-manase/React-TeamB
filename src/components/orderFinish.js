@@ -2,6 +2,7 @@ import { useHistory } from "react-router-dom";
 import '../../src/OrderFinish.css';
 import { createStyles,makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
+import { useSelector } from "react-redux";
 
 
 const useStyle = makeStyles(() =>
@@ -22,6 +23,10 @@ const useStyle = makeStyles(() =>
 	}),
 );
 
+const loginSelector = state=>{ // Storeのログインユーザー情報
+    return state.StoreState.loginUser
+}
+
 
 export const OrderFinish = () => {
     
@@ -30,6 +35,8 @@ export const OrderFinish = () => {
 
 
     const classes = useStyle();
+
+    const user = useSelector(loginSelector)
 
 
     return (
@@ -52,10 +59,18 @@ export const OrderFinish = () => {
 
 
                     <div className='message'>
-                        <div>
-                            <p>らくらくカレーをご利用頂きましてありがとうございます。</p>
-                            <p>決済は正常に完了しました。</p>
+                        {
+                             user === null ? 
+                             <div>
+                                <h2>らくらくカレーをご利用頂きましてありがとうございます。</h2>
+                                <h3>決済は正常に完了しました。</h3>
+                            </div>:
+                            <div>
+                                <h2>{user.displayName}さん、らくらくカレーをご利用頂きましてありがとうございます。</h2>
+                                <span><img src={user.photoURL}></img></span>
+                            <h3>決済は正常に完了しました。</h3>
                         </div>
+                        }
                     </div>
 
 
