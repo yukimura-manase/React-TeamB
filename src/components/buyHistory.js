@@ -9,6 +9,9 @@ import Button from '@material-ui/core/Button';
 //import AcUnitIcon from '@material-ui/icons/AcUnit'; // importの後のこ指定   ex:) <AcUnitIcon/>
 
 
+
+
+
 const useStyle = makeStyles(() =>
     createStyles({
 		"button":{
@@ -87,9 +90,26 @@ export const BuyHistory = () => {
 	[ errors, setErrors ] = useState([]),
 	[ currys, setCurry] = useState([]),
 	[ carts, setCart ] = useState([]),
-	[ carts2 , setCart2] = useState([])
+	[ carts2 , setCart2] = useState([]);
 
-	// [ first, setItems ] = useState ('');
+
+// 郵便番号入力後、住所自動入力
+// 郵便番号検索API
+    useEffect(() => {
+		if (addressNumber) {
+			fetch(`https://api.zipaddress.net/?zipcode=${addressNumber}`, {
+				mode: 'cors',
+			})
+			.then((result) => {
+				return result.json();
+			})
+			.then((result) => {
+				setAddress(result.data?.fullAddress || '');
+			});
+		}
+    }, [addressNumber]);
+
+
 
 	useEffect(()=>{
 		
@@ -374,43 +394,10 @@ if ( allErrors.length === 0 ) {
 		
 
 
-
-		// if ( allErrors.length === 0 ) {
-		// 	dispatch ( addData (
-		// 		// orderDate,
-		// 		userName,
-		// 		mailAddress,
-		// 		addressNumber,
-		// 		address,
-		// 		phoneNumber,
-		// 		deliveryDate,
-		// 		deliveryTime,
-		// 		status) )
-		// 	console.log('テスト')
-		// 	handleLink('/orderFinish')
-		// }
-		// console.log(addData (
-		// 	// orderDate,
-		// 	userName,
-		// 	mailAddress,
-		// 	addressNumber,
-		// 	address,
-		// 	phoneNumber,
-		// 	deliveryDate,
-		// 	deliveryTime,
-		// 	status));
 				
 	}
 	
 
-
-
-	// const addFetchCartItem = () => {
-
-	// 		dispatch ( fetchCartItem ( ) )
-
-	// 	console.log( fetchCartItem ( ));
-	// }
 
 	const totalTax = ()=>{ // 消費税の合計を計算
         //console.log('totalTax')
@@ -453,7 +440,6 @@ if ( allErrors.length === 0 ) {
 		)
 	})
 
-	
 
 
 
@@ -544,12 +530,11 @@ if ( allErrors.length === 0 ) {
 									</td>
 								</tr>
 
-
 								<tr>
 									<td>
 									<div>住所<span className="must"/></div>
 									<div>
-										<input className="input" type="text" value={address} onChange={inputAddress} placeholder="○○県○○市○○ 0-0-0"  />
+										<input className="input" type="text" value={address} onChange={inputAddress} placeholder="東京都新宿区新宿4-3-23 TOKYU REIT  新宿ビル8F"  />
 									</div>
 									</td>
 								</tr>

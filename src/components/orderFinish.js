@@ -1,7 +1,16 @@
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import '../../src/OrderFinish.css';
 import { createStyles,makeStyles } from '@material-ui/styles';
 import Button from '@material-ui/core/Button';
+import {
+    useHistory,
+    BrowserRouter as Router,
+} from 'react-router-dom' 
+import { TextField } from '@material-ui/core';
+
+
+
+
 
 
 const useStyle = makeStyles(() =>
@@ -32,7 +41,26 @@ export const OrderFinish = () => {
     const classes = useStyle();
 
 
+
+    const [zipCode, setZipCode] = useState('');
+    const [address, setAddress] = useState('');
+    useEffect(() => {
+      if (zipCode) {
+        fetch(`https://api.zipaddress.net/?zipcode=${zipCode}`, {
+          mode: 'cors',
+        })
+          .then((result) => {
+            return result.json();
+          })
+          .then((result) => {
+            setAddress(result.data?.fullAddress || '');
+          });
+      }
+    }, [zipCode]);
+
+
     return (
+        
         <div>
 
             <div className="container">		
@@ -53,7 +81,7 @@ export const OrderFinish = () => {
 
                     <div className='message'>
                         <div>
-                            <p>らくらくカレーをご利用頂きましてありがとうございます。</p>
+                            <p>ラクラクカリーをご利用頂きましてありがとうございます。</p>
                             <p>決済は正常に完了しました。</p>
                         </div>
                     </div>
@@ -68,18 +96,49 @@ export const OrderFinish = () => {
                 </div>
 
 
+                <div style={{ padding: 10 }}>
+        <TextField
+          id="zipcode"
+          label="郵便番号"
+          variant="outlined"
+          placeholder="XXX-XXXX"
+          value={zipCode}
+          onChange={(e) => {
+            setZipCode(e.target.value);
+          }}
+        />
+      </div>
+      <div style={{ padding: 10 }}>
+        <TextField
+          id="address"
+          label="住所"
+          variant="outlined"
+          value={address}
+          onChange={(e) => {
+            setAddress(e.target.value);
+          }}
+        />
+      </div>
+
+
                 </div>
             </div>
 
 
+
+        
+
+
         </div>
+
+        
         
 
         
     )
 }
 
-
+<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
 
 
