@@ -39,7 +39,7 @@ const useStyle = makeStyles(() =>
             height:"auto",
             width:"auto",
             padding: "5%",
-        
+
         },
         "card-content":{
             padding: "20px",
@@ -57,31 +57,21 @@ const useStyle = makeStyles(() =>
         "card-picutre":{
             width: "350px",
             height: "200px"
-              
+
         }
     }),
 );
 
-export const curryItem = state => {
+// export const curryItem = state => {
+// import { StoreState } from '../reducers/StoreState';
+
+export const curryItem = state =>{
     return state.StoreState.Curry
 }
 
 export const Product =()=>{
     const curry =useSelector(curryItem)
-    // const dispatch=useDispatch()
-    // useEffect(()=>{
-    //     if(!curry){
-    //         const CurryItem = []
-    //   firebase
-    //     .firestore()
-    //     .collection(`product`)
-    //     .get().then(snapshot => {
-    //       snapshot.forEach(doc => {
-    //         CurryItem.push(doc.data())
-    //       })
-    //     })
-    //     }
-    // },[])
+
 
     const classes = useStyle();
 
@@ -89,91 +79,76 @@ export const Product =()=>{
 
     const handleLink = path => history.push(path)
 
-    const [word, Setword] = useState('')
-    const handleName = (event) => {
-        Setword(event.target.value)
+    const [word,Setword]=useState('')
+
+    const handleName=(e)=>{
+        Setword(e.target.value)
     }
 
-    const [searchCurry, setSearchCurry] = useState([])
-    const search = () => {
-            let currys=curry.filter(
-                (item) => {
-                    if (item.name.indexOf(word) > -1) {
-                        return 1
-                    }else{
-                        return 0
-                    }
-                }
-            )
-            if(currys.length===0){
-                alert('該当する商品はありません')
+    const [newCurry,setNewCurry]=useState([])
+    console.log(newCurry);
+
+    const serchCurry=()=>{
+    let currys=(curry.filter(
+        function(value){
+            if(value.name.indexOf(word)>-1){
+                return 1
             }
-            setSearchCurry(currys)
+        },
+    ))
+    if(currys.length===0){
+        alert('該当する商品はありません')
+        Setword('')
+    }
+    setNewCurry(currys)
     }
 
-    const displayCurry = () => {
-        if (searchCurry.length === 0) {
-            return (
-                <div>
-                    {
-                        curry.map((curry) => {
-                            return <div key={curry.id}>
-                                <div>商品名:{curry.name}</div>
-                                <div><img src={curry.pic} alt='' width="100px" /></div>
-                                <div>Mサイズ:{curry.msizePrice}円</div>
-                                <div>Lサイズ:{curry.lsizePrice}円</div>
-                                <button onClick={() => handleLink(`currydetail/${curry.id}`)}>商品詳細へ</button>
-                            </div>
-                        })
-                    }
-                </div>
-            )
-        } else if (searchCurry.length !== 0) {
-            return (
-                <div>
-                    {
-                        searchCurry.map((curry) => {
-                            return <div key={curry.id}>
-                                <div>商品名:{curry.name}</div>
-                                <div><img src={curry.pic} alt='' width="100px" /></div>
-                                <div>Mサイズ:{curry.msizePrice}円</div>
-                                <div>Lサイズ:{curry.lsizePrice}円</div>
-                                <button onClick={() => handleLink(`currydetail/${curry.id}`)}>商品詳細へ</button>
-                            </div>
-                        })
-                    }
-                </div>
-            )
-        }
-    }
-
-    return (
-        <div>
-            <div className={classes.search}>
-                <h2>商品検索</h2>
-                <input type='text' value={word} onChange={handleName} />
-                    {/* 検索機能　絞り込み */}
-                <button　className={classes.button} >検索</button>
-            <h1>商品一覧</h1>
+    const ChangeCurry=()=>{
+    if(newCurry.length===0){
+        return(
+            curry.map((curry)=>{
+            return<div className={classes['card-list']}>
+            <div>
+            <div key={curry.id} className={classes.card}>
+            <div className={classes['card-title']}>{curry.name}</div>
+            <div><img src={curry.pic} alt='' onClick={()=>handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
+            <div className={classes['card-content']}>
+            <div>Mサイズ:{curry.msizePrice}円</div>
+            <div>Lサイズ:{curry.lsizePrice}円</div>
+            <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
             </div>
+            </div>
+            </div>
+            </div>
+            })
+        )
+    } else {
+        return(
+            newCurry.map((curry)=>{
+            return <div className={classes['card-list']}>
+            <div key={curry.id} className={classes.card}>
+            <div className={classes['card-title']}>{curry.name}</div>
+            <div><img src={curry.pic} alt='' onClick={()=>handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
+            <div className={classes['card-content']}>
+            <div>Mサイズ:{curry.msizePrice}円</div>
+            <div>Lサイズ:{curry.lsizePrice}円</div>
+            <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+            </div>
+            </div>
+            </div>
+            })
+        )
+    }
+    }
+    return(
+        <div className={classes.search}>
+            <h1>商品検索</h1>
+            <input type='text'value={word} onChange={handleName} placeholder='商品名を入力'/>
+            <button className={classes.button} onClick={serchCurry} >検索</button>
+            <h2>商品一覧</h2>
             <div className={classes['card-list']}>
-            {
-                curry.map((curry)=>{
-                    return<div key={curry.id} className={classes.card} >
-                        <div className={classes['card-title']}>{curry.name}</div>
-                        <div><img src={curry.pic} alt='' onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']}/></div>
-                        <div className={classes['card-content']}>
-                            <div>Mサイズ:{curry.msizePrice}円</div>
-                            <div>Lサイズ:{curry.lsizePrice}円</div>
-                            <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
-                        </div>
-                    </div>
-                })
-            }
-
+            <div>{ChangeCurry()}</div>
             </div>
-        </div>
+            </div>
     )
-    }
-
-    
+}
