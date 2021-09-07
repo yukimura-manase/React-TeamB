@@ -203,27 +203,3 @@ export const Cart = ()=>{
 }
 
 
-// データ構造
-//     Cart[
-            // {
-                // cartItem: {
-                    //         cartItemList: [
-                        //             {name: 'カツカレー', pic:' /pic/1.jpg', size: 'M', topping: 'チーズ', number: 1, total:1490}
-                        //     ],
-                    //          
-                    //         orderDate: "",
-                    //         userName: "",
-                    //         mailAddress: "",
-                    //         addressNumber: "",
-                    //         address: "",
-                    //         phoneNumber: "",
-                    //         deliveryDate: "",
-                    //         deliveryTime: "",
-                    //         status: 0,
-
-                    
-            //     }
-            // }
-    //  ]
-
-
