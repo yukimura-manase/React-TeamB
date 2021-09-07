@@ -279,7 +279,7 @@ const addCart = () => {
 		if ( phoneNumber === "" ) {
 			allErrors.push("電話番号を入力してください")
 		} else if (!denwa(phoneNumber)) {
-			allErrors.push("電話番号はXXXX-XXXX-XXXXの形式で入力してください")
+			allErrors.push("電話番号はXXX-XXXX-XXXXの形式で入力してください")
 		}
 
 		//お届け日エラー
