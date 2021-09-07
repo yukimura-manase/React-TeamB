@@ -23,21 +23,74 @@ const useStyle = makeStyles(() =>
 				color: "#fff"
 			}
 		},
+		"pic": {
+			width: "350px",
+			height: "200px",
+			display: "block",
+			marginLeft: "auto",
+			marginRight: "auto"
+
+		},
+		"text": {
+			fontWeight: 600,
+
+		},
+		"cart": {
+			width: "100%",
+		},
+		"tableText": {
+			textAlign: "center"
+		},
+		"u": {
+			textDecoration: "none",
+			borderBottom: "double 5px #faa61a",
+		},
+		"price": {
+			fontSize: "18px",
+			paddingBottom: "15px"
+		}
+
+
 	}),
 );
 
 
 const cartSelector = state => {
-	console.log(state.StoreState.Cart);
 	return state.StoreState.Cart;
 }
 
+const currySelector = state => {
+	return state.StoreState.Curry
+}
+
+const userSelector = state => {
+	return state.StoreState.loginUser;
+}
+
+
 export const BuyHistory = () => {
+
+	// const cartSelector = state => state.StoreState.Cart.cartItem;
+
 	const getCart = useSelector(cartSelector)
-	console.log(getCart);
+	// console.log('getCart');
+	// console.log(getCart);
+	// console.log(getCart[0])
+
+	const currylist = useSelector(currySelector)
+	console.log('currylist')
+	console.log(currylist)
+
 	const dispatch = useDispatch()
+
+	//ここ
+	const getUser = useSelector(userSelector)
+
+
 	const history = useHistory();
 	const handleLink = path => history.push(path);
+
+
 	const classes = useStyle();
 
 
@@ -52,13 +105,33 @@ export const BuyHistory = () => {
 		[mailAddress, setMailAddress] = useState(""),
 		[status, setStatus] = useState(""),
 		[errors, setErrors] = useState([]),
-		[cart, setCart] = useState([])
+		[currys, setCurry] = useState([]),
+		[carts, setCart] = useState([]),
+		[carts2, setCart2] = useState([])
+
 	// [ first, setItems ] = useState ('');
 
-	// useEffect(()=>{
-	// 	console.log(getCart);
-	// 	getCart.length !== 0 && setCart(getCart[0].cartItemList)
-	// }, [getCart])
+	useEffect(() => {
+		currylist.length !== 0 && setCurry(currylist)
+		getCart.length !== 0 && setCart(getCart[0].cartItemList)
+		if (getCart.length !== 0 && currylist.length !== 0) {
+			const cartIdList = carts.map(cart => cart.id)
+			let matchCurry = cartIdList.map(cartid => {
+				return currys.find(curry => cartid === curry.id)
+			})
+
+			const mergeArray = [] // 入れ物用意
+			carts.forEach(cart => {
+				let Match = matchCurry.find(curry => curry.id === cart.id) // idが一致するものを一つ格納！
+				const merged = { ...cart, ...Match }
+				mergeArray.push(merged)
+			})
+			getCart.length !== 0 && setCart2(mergeArray)
+		}
+
+
+	}, [getCart, currylist, carts, currys])
+
 
 	//イベント発火時に値を持ってくるよ！
 	const inputUserName = (e) => {
@@ -150,22 +223,10 @@ export const BuyHistory = () => {
 			return true
 		}
 	}
-	// const dt = new Date();
-	// 	let hours = dt.getHours();		
-	const curryItem=getCart[0].cartItemList.map((item) => {
-		return (
-			<div>
-				<div> {item.name} </div>
-				<div> {item.size} </div>
-				<div> {item.number} 個</div>
-				<div> {item.topping} </div>
-				<div> {item.total} 円</div>
-			</div>
-		)
-	})
+
 	// 	let dateDiff = new Date(deliveryTime.orderDate).getDate() - dt.getDate();				
 	// 	let time = deliveryTime.orderTime - hours
-console.log(getCart[0].cartItemList)
+	console.log(getCart[0].cartItemList)
 	const sendEmail = () => {
 		init("user_jpdRPu7bxuzn1NncH5rfe");
 		// 環境変数からService_IDとTemplate_IDを取得する。
@@ -177,12 +238,83 @@ console.log(getCart[0].cartItemList)
 			to_email: mailAddress,
 			to_name: userName,
 			date: `${deliveryDate} ${deliveryTime}時`,
-			currys: curryItem
+			price:sumTotalPlice()
 		};
 
 		// ServiceId,Template_ID,テンプレートに渡すパラメータを引数にemailjsを呼び出し
 		send(emailjsServiceId, emailjsTemplateId, templateParams)
 	}
+
+
+	//ここ
+
+	// const dataObject = {
+	// 	userName: userName,
+	// 	mailAddress: mailAddress,
+	// 	addressNumber: addressNumber,
+	// 	address: address,
+	// 	phoneNumber: phoneNumber,
+	// 	deliveryDate: deliveryDate,
+	// 	deliveryTime: deliveryTime,
+	// 	status: status,
+	// }
+
+	const updateCart = () => {
+
+		firebase.firestore()
+			.collection(`users/${getUser.uid}/carts`)
+			.doc(getCart[0].id)
+			.update({
+				...getCart[0],
+				userName: userName,
+				mailAddress: mailAddress,
+				addressNumber: addressNumber,
+				address: address,
+				phoneNumber: phoneNumber,
+				deliveryDate: deliveryDate,
+				deliveryTime: deliveryTime,
+				status: status,
+			})
+
+
+	}
+
+	const addCart = () => {
+
+		firebase
+			.firestore()
+			.collection(`users/${getUser.uid}/carts`)
+			.add({
+				orderDate: "",
+				userName: "",
+				mailAddress: "",
+				addressNumber: "",
+				address: "",
+				phoneNumber: "",
+				deliveryDate: "",
+				deliveryTime: "",
+				status: 0,
+				cartItemList: []
+			})
+		// .then(doc => {
+		//   cartItem.push({
+		// 	id: doc.id,
+		// 	orderDate: "",
+		// 	userName: "",
+		// 	mailAddress: "",
+		// 	addressNumber: "",
+		// 	address: "",
+		// 	phoneNumber: "",
+		// 	deliveryDate: "",
+		// 	deliveryTime: "",
+		// 	status: 0,
+		// 	cartItemList: []
+		//   }
+		//   )
+		// })
+
+	}
+
 
 
 	//エラーの処理
@@ -247,9 +379,43 @@ console.log(getCart[0].cartItemList)
 		setErrors(allErrors);
 
 		if (allErrors.length === 0) {
-			sendEmail()
+			// dispatch ( addData () )
+
+			updateCart();
+			addCart();
+			sendEmail();
 			handleLink('/orderFinish')
 		}
+		// console.log(addData ());
+
+
+
+
+		// if ( allErrors.length === 0 ) {
+		// 	dispatch ( addData (
+		// 		// orderDate,
+		// 		userName,
+		// 		mailAddress,
+		// 		addressNumber,
+		// 		address,
+		// 		phoneNumber,
+		// 		deliveryDate,
+		// 		deliveryTime,
+		// 		status) )
+		// 	console.log('テスト')
+		// 	handleLink('/orderFinish')
+		// }
+		// console.log(addData (
+		// 	// orderDate,
+		// 	userName,
+		// 	mailAddress,
+		// 	addressNumber,
+		// 	address,
+		// 	phoneNumber,
+		// 	deliveryDate,
+		// 	deliveryTime,
+		// 	status));
+
 	}
 
 
@@ -262,14 +428,40 @@ console.log(getCart[0].cartItemList)
 	// 	console.log( fetchCartItem ( ));
 	// }
 
-	const displaysCart = cart.map((item, index) => {
+	const totalTax = () => { // 消費税の合計を計算
+		//console.log('totalTax')
+		let tax = []
+		carts.forEach(cart => {
+			tax.push(cart.total * 0.1)
+		})
+
+		let totalTax = tax.reduce((sum, currentVal) => {
+			return sum + currentVal;
+		}, 0) // 初期値を設定している。
+		return totalTax
+	}
+
+	const sumTotalPlice = () => { // 小計金額(total)ごとの消費税分を計算。
+		//console.log('sumTotalPlice')
+		let taxInclude = []
+		carts.forEach(cart => {
+			taxInclude.push(cart.total * 1.1)
+		})
+		let totalTaxIncludes = taxInclude.reduce((sum, currentVal) => {
+			return sum + currentVal;
+		}, 0)
+		return Math.floor(totalTaxIncludes)
+	}
+
+	const displaysCart = carts2.map((item, index) => {
 		return (
 			<tr className="cart-item" key={index}>
-				<td> {item.name} <div><img src={item.pic} /></div></td>
-				<td> {item.size} </td>
-				<td> {item.number} </td>
-				<td> {item.topping} </td>
-				<td> {item.total} </td>
+				<td className={classes.tableText}> {item.name} </td>
+				<td><img src={item.pic} className={classes.pic} /></td>
+				<td className={classes.tableText}> {item.size} </td>
+				<td className={classes.tableText}> {item.number} </td>
+				<td className={classes.tableText}> {item.topping} </td>
+				<td className={classes.tableText}> {item.total} </td>
 			</tr>
 
 		)
@@ -278,20 +470,23 @@ console.log(getCart[0].cartItemList)
 	return (
 		<div>
 
-			<div className="main-title">注文確認画面</div>
+			<div className={classes.text}>
 
-			<div className="container">
-				<div className="box1-title">ショッピングカート</div>
-			</div>
+				<div className="main-title"><u className={classes.u}>注文確認画面</u></div>
+
+				<div className="container">
+					<div className="box1-title">ショッピングカート</div>
+				</div>
 
 
-			<div className="container">
-				<div>
+				<div className="container">
 
-					<table>
+
+					<table className={classes.cart}>
 						<tbody>
 							<tr className="cart-title">
 								<th>商品名</th>
+								<th>商品イメージ</th>
 								<th>サイズ</th>
 								<th>数量</th>
 								<th>トッピング</th>
@@ -299,164 +494,163 @@ console.log(getCart[0].cartItemList)
 							</tr>
 
 
-							{/* {displaysCart} */}
-
+							{displaysCart}
 
 
 						</tbody>
 					</table>
+
 				</div>
-			</div>
 
-			<div className="container">
-				<div className="tax">消費税 : 200 円</div>
-			</div>
-
+				<div className="container">
+					<div className="tax">消費税 : {totalTax()} 円</div>
+				</div>
 
 
-
-			<div className="container">
-				<div className="total-price">注文金額 (税込) : 2200 円</div>
-			</div>
-
-
-
-
-
-
-			<div className="box2">
-
-				<div className="box2-title">お届け先情報</div>
 
 
 				<div className="container">
-
-					<table>
-						<tbody>
-							<tr>
-								<td>
-									<div>お名前<span className="must" /></div>
-									<div>
-										<input className="input" type="text" value={userName} onChange={inputUserName} placeholder="カレー太郎" />
-									</div>
-								</td>
-							</tr>
-
-
-							<tr>
-								<td>
-									<div>メールアドレス<span className="must" /></div>
-									<div>
-										<input className="input" type="text" value={mailAddress} onChange={inputMailAddress} placeholder="curry@xxxx.com" />
-									</div>
-								</td>
-							</tr>
-
-
-							<tr>
-								<td>
-									<div>郵便番号<span className="must" /></div>
-									<div>
-										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />
-									</div>
-								</td>
-							</tr>
-
-
-							<tr>
-								<td>
-									<div>住所<span className="must" /></div>
-									<div>
-										<input className="input" type="text" value={address} onChange={inputAddress} placeholder="○○県○○市○○ 0-0-0" />
-									</div>
-								</td>
-							</tr>
-
-
-							<tr>
-								<td>
-									<div>電話番号<span className="must" /></div>
-									<div>
-										<input className="input" type="text" value={phoneNumber} onChange={inputPhoneNumber} placeholder="000-0000-0000" />
-									</div>
-								</td>
-							</tr>
-
-
-							<tr>
-								<td>
-									<div>配達日時<span className="must" /></div>
-									<div>
-										<input className="input" type="date" value={deliveryDate} onChange={inputDeliveryDate} />
-									</div>
-									<div className="time">
-										<div className="time-item"><input type="radio" name="time" value="10" onChange={inputDeliveryTime} id="r10" /><label htmlFor="r10">&nbsp;10時</label></div>
-										<div className="time-item"><input type="radio" name="time" value="11" onChange={inputDeliveryTime} id="r11" /><label htmlFor="r11">&nbsp;11時</label></div>
-										<div className="time-item"><input type="radio" name="time" value="12" onChange={inputDeliveryTime} id="r12" /><label htmlFor="r12">&nbsp;12時</label></div>
-										<div className="spacer"></div>
-										<div className="time-item"><input type="radio" name="time" value="13" onChange={inputDeliveryTime} id="r13" /><label htmlFor="r13">&nbsp;13時</label></div>
-										<div className="time-item"><input type="radio" name="time" value="14" onChange={inputDeliveryTime} id="r14" /><label htmlFor="r14">&nbsp;14時</label></div>
-										<div className="time-item"><input type="radio" name="time" value="15" onChange={inputDeliveryTime} id="r15" /><label htmlFor="r15">&nbsp;15時</label></div>
-										<div className="spacer"></div>
-										<div className="time-item"><input type="radio" name="time" value="16" onChange={inputDeliveryTime} id="r16" /><label htmlFor="r16">&nbsp;16時</label></div>
-										<div className="time-item"><input type="radio" name="time" value="17" onChange={inputDeliveryTime} id="r17" /><label htmlFor="r17">&nbsp;17時</label></div>
-										<div className="time-item"><input type="radio" name="time" value="18" onChange={inputDeliveryTime} id="r18" /><label htmlFor="r18">&nbsp;18時</label></div>
-									</div>
-								</td>
-							</tr>
-
-						</tbody>
-					</table>
-
+					<div className="total-price"><u className={classes.u}>注文金額 (税込) : {sumTotalPlice()} 円</u></div>
 				</div>
-			</div>
 
 
 
 
 
-			<div className="box2">
+				<div className="box2">
 
-				<div className="box2-title">お支払い方法</div>
+					<div className="box2-title">お届け先情報</div>
+
+
+					<div className="container">
+
+						<table>
+							<tbody>
+								<tr>
+									<td>
+										<div>お名前<span className="must" /></div>
+										<div>
+											<input className="input" type="text" value={userName} onChange={inputUserName} placeholder="カレー太郎" />
+										</div>
+									</td>
+								</tr>
+
+
+								<tr>
+									<td>
+										<div>メールアドレス<span className="must" /></div>
+										<div>
+											<input className="input" type="text" value={mailAddress} onChange={inputMailAddress} placeholder="curry@xxxx.com" />
+										</div>
+									</td>
+								</tr>
+
+
+								<tr>
+									<td>
+										<div>郵便番号<span className="must" /></div>
+										<div>
+											<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />
+										</div>
+									</td>
+								</tr>
+
+
+								<tr>
+									<td>
+										<div>住所<span className="must" /></div>
+										<div>
+											<input className="input" type="text" value={address} onChange={inputAddress} placeholder="○○県○○市○○ 0-0-0" />
+										</div>
+									</td>
+								</tr>
+
+
+								<tr>
+									<td>
+										<div>電話番号<span className="must" /></div>
+										<div>
+											<input className="input" type="text" value={phoneNumber} onChange={inputPhoneNumber} placeholder="000-0000-0000" />
+										</div>
+									</td>
+								</tr>
+
+
+								<tr>
+									<td>
+										<div>配達日時<span className="must" /></div>
+										<div>
+											<input className="input" type="date" value={deliveryDate} onChange={inputDeliveryDate} />
+										</div>
+										<div className="time">
+											<div className="time-item"><input type="radio" name="time" value="10" onChange={inputDeliveryTime} id="r10" /><label htmlFor="r10">&nbsp;10時</label></div>
+											<div className="time-item"><input type="radio" name="time" value="11" onChange={inputDeliveryTime} id="r11" /><label htmlFor="r11">&nbsp;11時</label></div>
+											<div className="time-item"><input type="radio" name="time" value="12" onChange={inputDeliveryTime} id="r12" /><label htmlFor="r12">&nbsp;12時</label></div>
+											<div className="spacer"></div>
+											<div className="time-item"><input type="radio" name="time" value="13" onChange={inputDeliveryTime} id="r13" /><label htmlFor="r13">&nbsp;13時</label></div>
+											<div className="time-item"><input type="radio" name="time" value="14" onChange={inputDeliveryTime} id="r14" /><label htmlFor="r14">&nbsp;14時</label></div>
+											<div className="time-item"><input type="radio" name="time" value="15" onChange={inputDeliveryTime} id="r15" /><label htmlFor="r15">&nbsp;15時</label></div>
+											<div className="spacer"></div>
+											<div className="time-item"><input type="radio" name="time" value="16" onChange={inputDeliveryTime} id="r16" /><label htmlFor="r16">&nbsp;16時</label></div>
+											<div className="time-item"><input type="radio" name="time" value="17" onChange={inputDeliveryTime} id="r17" /><label htmlFor="r17">&nbsp;17時</label></div>
+											<div className="time-item"><input type="radio" name="time" value="18" onChange={inputDeliveryTime} id="r18" /><label htmlFor="r18">&nbsp;18時</label></div>
+										</div>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+
+
+
+
+				<div className="box2">
+
+					<div className="box2-title">お支払い方法</div>
+
+					<div className="container">
+						<table>
+							<tbody>
+
+								<tr>
+									<td>
+										お支払い方法を選択してください。<span className="must" />
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="radio" name="pay" value="1" onChange={inputStatus} id="cashOnDelivery" /><label htmlFor="cashOnDelivery">代金引換</label>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<input type="radio" name="pay" value="2" onChange={inputStatus} id="credit" /><label htmlFor="credit">クレジットカード決済</label>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+				</div>
 
 				<div className="container">
-					<table>
-						<tbody>
-
-							<tr>
-								<td>
-									お支払い方法を選択してください。<span className="must" />
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<input type="radio" name="pay" value="1" onChange={inputStatus} id="cashOnDelivery" /><label htmlFor="cashOnDelivery">代金引換</label>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<input type="radio" name="pay" value="2" onChange={inputStatus} id="credit" /><label htmlFor="credit">クレジットカード決済</label>
-								</td>
-							</tr>
-
-						</tbody>
-					</table>
+					<div className="error">
+						{errors.map((error) => (
+							<div key={error.id}>{error}</div>
+						))}
+					</div>
 				</div>
-			</div>
 
-			<div className="container">
-				<div className="error">
-					{errors.map((error) => (
-						<div key={error.id}>{error}</div>
-					))}
+
+				<div className="order-button">
+					<Button className={classes.button} onClick={Validation} variant="contained" > 注文 </Button>
 				</div>
+
 			</div>
-
-
-			<div className="order-button">
-				<Button className={classes.button} onClick={Validation} variant="contained" > 注文 </Button>
-			</div>
-
 		</div>
 
 

@@ -1,10 +1,63 @@
 import React, {useState,useEffect} from 'react'
-import { removeCart } from '../actions/ActionCreator';
+import { removeCart , addOrder} from '../actions/ActionCreator';
 import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { createStyles,makeStyles } from '@material-ui/styles';
+
+const useStyle = makeStyles(() =>
+    createStyles({
+        "text":{
+            textAlign:"center",
+            fontWeight:600
+        },
+        "button":{
+            borderColor:"#faa61a",
+            color:"#faa61a",
+            fontWeight:600,
+            marginBottom:"8px",
+            backgroundColor:"#fff",
+            padding:"10px",
+            "&:hover":{
+                backgroundColor:"#faa61a",
+                color:"#fff"
+            }
+        },
+        "pic":{
+            width: "350px",
+            height: "200px"
+        },
+        "tableWidth":{
+            width:"80%",
+            margin:"3px auto",
+            paddingTop:"30px",
+            paddingBottom:"30px"
+        },
+        "cartTitle":{
+            background:"#ffab4c",
+            fontSize:"10px",
+            color:"#fff"
+
+        },
+        "tableBody":{
+            background:"#ffead6"
+        },
+        "u":{
+            textDecoration:"none",
+            borderBottom:"double 5px #faa61a",
+        },
+        "price":{
+            fontSize:"18px",
+            paddingBottom:"15px"
+        }
+
+
+
+    }),
+);
+    
 
 
 const loginSelector = state=>{ // Storeのログインユーザー情報
@@ -21,54 +74,50 @@ const currySelector = state => {
 }
 
 export const Cart = ()=>{
+
+    const classes = useStyle();
+
+
     const user = useSelector(loginSelector)
+    console.log(user);
+
     const cartlist = useSelector(cartSelector) // useSelectorの引数にcartSelector関数を渡す。 => Storeのstate情報の一部が引数に入る。
+
     const currylist = useSelector(currySelector)
 
     const history = useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
     const handleLink = path =>history.push(path);
     const dispatch = useDispatch() // useDispatchを呼び出して変数dispatchに格納する。
 
-    const undefinedCheck = ()=>{  // undefinedだったら再度、user情報をsetしたい！
-        if(user === undefined){
-            const google_auth_provider = new firebase.auth.GoogleAuthProvider()
-            firebase.auth().signInWithRedirect(google_auth_provider)
-        }
-    }
-
    const 
    [ currys, setCurry] = useState([]),
    [ carts, setCart ] = useState([]),
-   [ carts2 , setCart2] = useState([])
+   [ carts2 , setCart2 ] = useState([])
+   //[ userData, setUser ] = useState(null)
 
     useEffect(
         ()=>{
             currylist.length !==0 && setCurry(currylist)
             cartlist.length !== 0 &&  setCart(cartlist[0].cartItemList)
 
-            //無限レンダリングが起きてしまっている・・・
             if( cartlist.length !== 0 && currylist.length !==0 ){
+
                 const cartIdList =  carts.map( cart => cart.id) //カート内の商品のIDの配列を生成
-                let newCurry = currys.filter( curry => {
-                    let idMatch = cartIdList.find(id => id === curry.id) // idリストの中身と一つ一つ
-                    return curry.id === idMatch
+
+                let macthCurryData = cartIdList.map( cartid => {
+                    return currys.find(curry => cartid === curry.id) // idリストの中身と一つ一つ
                 })
 
                 const mergeArray = [] // 入れ物用意
-                newCurry.forEach(curry => {
-                    let idMatch = carts.find( cart => cart.id === curry.id) // idが一致するものを一つ格納！
-                    
-                    const merged = {...curry,...idMatch}                                   
+
+                carts.forEach(cart => {
+                    let idMatchCurry = macthCurryData.find( currydata => currydata.id === cart.id) // idが一致するものを一つ格納！
+                    const merged = {...cart,...idMatchCurry}                    
                     mergeArray.push(merged)
                 })
-
                 cartlist.length !== 0 && setCart2(mergeArray)
-
             }
-
         },[cartlist,currylist,carts,currys])
-
-
     
     const totalTax = ()=>{ // 消費税の合計を計算
         //console.log('totalTax')
@@ -96,12 +145,17 @@ export const Cart = ()=>{
 }
 
     const remove = (removeIndex)=>{
+        
+        console.log('dispatch!removeTodo')
+        console.log(removeIndex)
+        
         // 画面の削除処理
-        const copyCart = carts2.concat()
-        copyCart.splice(removeIndex,1)
-        setCart2(copyCart)
+        const copyCart2 = carts2.concat()
+        copyCart2.splice(removeIndex,1)
+        setCart2(copyCart2)
 
-        dispatch(removeCart(removeIndex))    
+        dispatch(removeCart(removeIndex))
+    
     }
 
     const login=()=>{
@@ -111,18 +165,23 @@ export const Cart = ()=>{
 
     return(
         <React.Fragment>
-            <h2>ショッピングカート</h2>
+            {
+                user === null ? 
+                <div>ショッピングカート</div>:
+                <div className={classes.text}>
+                    <h2><u className={classes.u}>{user.displayName}さんのショッピングカート</u></h2>
+                    <span><img src={user.photoURL}></img></span>
+                </div>
+                
+            }
+           
+            { carts.length === 0 ? 'カートに商品がありません！':
+            <div className={classes.text}>
+               
 
-            { !Object.keys(carts).length ? 'カートに商品がありません！':
-            <div>
-
-                {/* <h3></h3>
-
-                <div></div> */}
-
-                <table border='1'>
+                <table className={classes.tableWidth}>
                     <thead>
-                        <tr>
+                        <tr className={classes.cartTitle}>
                             <th>
                                 <h2>商品名</h2>
                             </th>
@@ -150,14 +209,14 @@ export const Cart = ()=>{
                     {
                         carts2.map( (ailias,index)=>{
                             return (
-                            <tr key={ailias.id}>
+                            <tr key={ailias.id} className={classes.tableBody}>
                                 <td>{ailias.name}</td>
-                                <td><img src={ailias.pic}></img></td>
+                                <td><img src={ailias.pic} className={classes.pic}></img></td>
                                 <td>{ailias.size}</td>
                                 <td>{ailias.number}</td>
                                 <td>{ailias.topping}</td>
                                 <td>{ailias.total}</td>
-                                <td><button onClick={ ()=>{remove(index)} }>削除</button></td>
+                                <td><button onClick={ ()=>{remove(index)} } className={classes.button}>削除</button></td>
                             </tr>
                             )
                         })
@@ -167,13 +226,13 @@ export const Cart = ()=>{
 
 
                 <div>消費税：{ totalTax() }円</div>
-                <div>ご注文金額合計：{ sumTotalPlice() }円(税込)</div>
+                <div className={classes.price}><u className={classes.u}>ご注文金額合計：{ sumTotalPlice() }円(税込)</u></div>
                 <div>
                     {/* {checkLogin()} */}
                     {
                         user === null ? 
-                        <button onClick={ ()=>{login()} }>まずはログイン！</button>:
-                        <button onClick={ ()=>{handleLink('/buyHistory')} }>注文に進む！</button>
+                        <button onClick={ ()=>{login()} } className={classes.button}>まずはログイン！</button>:
+                        <button onClick={ ()=>{ handleLink('/buyHistory')} } className={classes.button}>注文に進む！</button>
                     }
                 </div>
             
