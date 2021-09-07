@@ -175,7 +175,7 @@ export const Cart = ()=>{
                 
             }
            
-            { carts.length === 0 ? 'カートに商品がありません！':
+            {carts.length === 0 ? 'カートに商品がありません！':
             <div className={classes.text}>
                
 

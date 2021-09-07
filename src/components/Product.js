@@ -58,7 +58,26 @@ const useStyle = makeStyles(() =>
             width: "350px",
             height: "200px"
 
-        }
+        },
+        "text":{
+            width:"250px",
+            height:"35px",
+            marginRight:"15px"            
+        },
+        "clearButton": {
+            borderColor: "#faa61a",
+            color: "#faa61a",
+            fontWeight: 600,
+            // marginBottom: "8px",
+            backgroundColor: "#fff",
+            padding: "10px",
+            marginLeft:"15px",
+            "&:hover": {
+                backgroundColor: "#faa61a",
+                color: "#fff"
+            }
+        },
+
     }),
 );
 
@@ -97,9 +116,11 @@ export const Product = () => {
         ))
         if (currys.length === 0) {
             alert('該当する商品はありません')
-            Setword('')
         }
         setNewCurry(currys)
+    }
+    const clear = () => {
+        Setword('')
     }
 
     const High = () => {
@@ -116,6 +137,8 @@ export const Product = () => {
         console.log(curry)
         Setcurry([...curry,low])
     }
+
+
 
     const ChangeCurry = () => {
         if (newCurry.length === 0) {
@@ -157,11 +180,11 @@ export const Product = () => {
     return (
         <div className={classes.search}>
             <h1>商品検索</h1>
-            <input type='text' value={word} onChange={handleName} placeholder='商品名を入力' />
+            <input type='text' value={word} onChange={handleName} placeholder='商品名を入力' className={classes.text}/>
             <button className={classes.button} onClick={serchCurry} >検索</button>
-            <button className={classes.button} onClick={() => { High() }} >高い順</button>
-            <button className={classes.button} onClick={() => { Low() }}>低い順</button>
+            <button　className={classes.clearButton}　onClick={clear}>クリア</button>
             <h2>商品一覧</h2>
+            <button className={classes.button} onClick={() => { High() }} >高い順</button>  <button className={classes.button} onClick={() => { Low() }}>低い順</button>
             <div className={classes['card-list']}>{ChangeCurry()}</div>
         </div>
     )

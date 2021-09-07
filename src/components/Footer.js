@@ -7,7 +7,10 @@ const useStyle = makeStyles(() =>
         "footer":{
             backgroundColor:"#faa61a",
             textAlign:"right",
-            height:"50px",            
+            height:"50px",
+ 
+            bottom: 0 /*下に固定*/
+           
         },
     }),
 );
