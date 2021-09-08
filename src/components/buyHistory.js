@@ -429,8 +429,6 @@ export const BuyHistory = () => {
 		return Math.floor(totalTaxIncludes)
 	}
 
-
-
 	const displaysCart = carts2.map((item, index) => {
 		return (
 			<tr className="cart-item" key={index}>

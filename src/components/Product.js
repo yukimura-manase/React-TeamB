@@ -107,6 +107,9 @@ export const Product = () => {
     const handleLink = path => history.push(path)
     const [word, Setword] = useState('')
     const [curry, Setcurry] = useState([])
+    const [newCurry, setNewCurry] = useState([])
+
+    console.log(curry)
 
     useEffect(() => {
         Setcurry(pullcurry)
@@ -116,7 +119,6 @@ export const Product = () => {
         Setword(e.target.value)
     }
 
-    const [newCurry, setNewCurry] = useState([])
 
     const serchCurry = () => {
         let currys = (curry.filter(
@@ -139,15 +141,22 @@ export const Product = () => {
         const high = curry.sort((a, b) => {
             return b.msizePrice - a.msizePrice
         })
-        console.log(curry)
+        const high2 = newCurry.sort((a, b) => {
+            return b.msizePrice - a.msizePrice
+        })
         Setcurry([...curry,high])
+        setNewCurry(high2)
+
     }
     const Low = () => {
         const low = curry.sort((a, b) => {
             return a.msizePrice - b.msizePrice
         })
-        console.log(curry)
+        const low2 = newCurry.sort((a, b) => {
+            return a.msizePrice - b.msizePrice
+        })
         Setcurry([...curry,low])
+        setNewCurry(low2)
     }
 
     const[ randomcurry, setRandom ] = useState('')

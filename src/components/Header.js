@@ -44,9 +44,9 @@ const Header=()=>{
   const curry=useSelector(currySelector)
   const cart=useSelector(cartSelector)
 
-  console.log(user)
-  console.log(curry)
-  console.log(cart)
+  // console.log(user)
+  // console.log(curry)
+  // console.log(cart)
 
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()
