@@ -89,23 +89,26 @@ export const BuyHistory = () => {
 
 	//支払い情報の変数たち
 	const
-		[userName, setUserName] = useState(""),
-		[address, setAddress] = useState(""),
-		[addressNumber, setAddressNumber] = useState(""),
-		[phoneNumber, setPhoneNumber] = useState(""),
-		[deliveryDate, setDeliveryDate] = useState(""),
-		[deliveryTime, setDeliveryTime] = useState(""),
-		[mailAddress, setMailAddress] = useState(""),
-		[status, setStatus] = useState(""),
-		[errors, setErrors] = useState([]),
-		[currys, setCurry] = useState([]),
-		[carts, setCart] = useState([]),
-		[carts2, setCart2] = useState([]);
+	[ userName, setUserName ] = useState(""),
+	[ address, setAddress ] = useState(""),
+	[ addressNumber, setAddressNumber ] = useState(""),
+	[ phoneNumber, setPhoneNumber ] = useState(""),
+	[ deliveryDate, setDeliveryDate ] = useState(""),
+	[ deliveryTime, setDeliveryTime ] = useState(""),
+	[ mailAddress, setMailAddress ] = useState(""),
+	[ status, setStatus ] = useState(""),
+	[ errors, setErrors ] = useState([]),
+	[ currys, setCurry] = useState([]),
+	[ carts, setCart ] = useState([]),
+	[ carts2 , setCart2] = useState([]);
 
 
-	// 郵便番号入力後、住所自動入力
-	// 郵便番号検索API
-	useEffect(() => {
+// 郵便番号入力後、住所自動入力
+// 郵便番号検索API
+// fetch(url, { mode: "cors" }) CORS (Cross-Origin Resource Sharing) なリクエストを送る。 CORSのプロトコルに沿わない場合（必要なヘッダが無いなど）にはエラーとなる。
+// CORSとは、別オリジンのリソースへアクセス(＝ クロスサイトHTTPリクエスト)できるようにするためのルール、手法。
+// 外部のリソースは、JSONPLACEHOLDERを利用してfetchメソッドでpostsデータを取得します。
+    useEffect(() => {
 		if (addressNumber) {
 			fetch(`https://api.zipaddress.net/?zipcode=${addressNumber}`, {
 				mode: 'cors',
@@ -362,19 +365,16 @@ export const BuyHistory = () => {
 		}
 
 		//アドレスエラー
-		if (mailAddress === "") {
-			allErrors.push("アドレスを入力してください")
-		}
-		else if (!attmark(mailAddress)) {
-			allErrors.push("メールアドレスの形式が不正です")
-		}
+		if ( mailAddress === "" ) {
+			allErrors.push("アドレスを入力してください") }
+		else if( !attmark( mailAddress ) ) {
+			allErrors.push("メールアドレスの形式が不正です ('@', '.'は入っているか、スペースを空けていないか確認して下さい。) ") }
 
 		//郵便番号エラー
 		if (addressNumber === "") {
 			allErrors.push("郵便番号を入力してください")
-		} else if (!yuubin(addressNumber)) {
-			allErrors.push("郵便番号はXXX-XXXXの形式で入力してください")
-		}
+		} else if ( !yuubin(addressNumber) ) {
+			allErrors.push("郵便番号はスペースは空けず、XXX-XXXXの形式で入力してください") }
 
 		//住所エラー
 		if (address === "") {
@@ -385,7 +385,7 @@ export const BuyHistory = () => {
 		if (phoneNumber === "") {
 			allErrors.push("電話番号を入力してください")
 		} else if (!denwa(phoneNumber)) {
-			allErrors.push("電話番号はXXX-XXXX-XXXXの形式で入力してください")
+			allErrors.push("電話番号はスペースは空けず、'0'始まりの XXX-XXXX-XXXX の形式で入力してください")
 		}
 
 		//お届け日エラー
@@ -527,7 +527,7 @@ export const BuyHistory = () => {
 								<td>
 									<div>郵便番号<span className="must" /></div>
 									<div>
-										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="123-4567" />
+										<input className="input" type="text" value={addressNumber} onChange={inputAddressNumber} placeholder="160-0022" />
 									</div>
 								</td>
 							</tr>

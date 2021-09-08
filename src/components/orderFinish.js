@@ -7,7 +7,7 @@ import {
     useHistory,
     BrowserRouter as Router,
 } from 'react-router-dom' 
-import { TextField } from '@material-ui/core';
+
 
 
 
@@ -49,22 +49,6 @@ export const OrderFinish = () => {
 
 
 
-    const [zipCode, setZipCode] = useState('');
-    const [address, setAddress] = useState('');
-    useEffect(() => {
-      if (zipCode) {
-        fetch(`https://api.zipaddress.net/?zipcode=${zipCode}`, {
-          mode: 'cors',
-        })
-          .then((result) => {
-            return result.json();
-          })
-          .then((result) => {
-            setAddress(result.data?.fullAddress || '');
-          });
-      }
-    }, [zipCode]);
-
 
     return (
         
@@ -90,11 +74,11 @@ export const OrderFinish = () => {
                         {
                              user === null ? 
                              <div>
-                                <h2>らくらくカレーをご利用頂きましてありがとうございます。</h2>
+                                <h2>ラクラクカリーをご利用頂きましてありがとうございます。</h2>
                                 <h3>決済は正常に完了しました。</h3>
                             </div>:
                             <div>
-                                <h2>{user.displayName}さん、らくらくカレーをご利用頂きましてありがとうございます。</h2>
+                                <h2>{user.displayName}さん、ラクラクカリーをご利用頂きましてありがとうございます。</h2>
                                 <span><img src={user.photoURL}></img></span>
                             <h3>決済は正常に完了しました。</h3>
                         </div>
@@ -110,30 +94,6 @@ export const OrderFinish = () => {
                     <img className="town-line" src={ `${process.env.PUBLIC_URL}/img/town.png` } />
                 </div>
 
-
-                <div style={{ padding: 10 }}>
-        <TextField
-          id="zipcode"
-          label="郵便番号"
-          variant="outlined"
-          placeholder="XXX-XXXX"
-          value={zipCode}
-          onChange={(e) => {
-            setZipCode(e.target.value);
-          }}
-        />
-      </div>
-      <div style={{ padding: 10 }}>
-        <TextField
-          id="address"
-          label="住所"
-          variant="outlined"
-          value={address}
-          onChange={(e) => {
-            setAddress(e.target.value);
-          }}
-        />
-      </div>
 
 
                 </div>
@@ -153,7 +113,6 @@ export const OrderFinish = () => {
     )
 }
 
-<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
 
 
