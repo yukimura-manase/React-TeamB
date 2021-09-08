@@ -6,7 +6,7 @@ import {
     useHistory,
     BrowserRouter as Router,
 } from 'react-router-dom' 
-import { TextField } from '@material-ui/core';
+
 
 
 
@@ -96,30 +96,6 @@ export const OrderFinish = () => {
                 </div>
 
 
-                <div style={{ padding: 10 }}>
-        <TextField
-          id="zipcode"
-          label="郵便番号"
-          variant="outlined"
-          placeholder="XXX-XXXX"
-          value={zipCode}
-          onChange={(e) => {
-            setZipCode(e.target.value);
-          }}
-        />
-      </div>
-      <div style={{ padding: 10 }}>
-        <TextField
-          id="address"
-          label="住所"
-          variant="outlined"
-          value={address}
-          onChange={(e) => {
-            setAddress(e.target.value);
-          }}
-        />
-      </div>
-
 
                 </div>
             </div>
@@ -138,7 +114,6 @@ export const OrderFinish = () => {
     )
 }
 
-<script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
 
 
