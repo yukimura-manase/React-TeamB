@@ -5,6 +5,59 @@ import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { createStyles,makeStyles } from '@material-ui/styles';
+
+const useStyle = makeStyles(() =>
+    createStyles({
+        "text":{
+            textAlign:"center",
+            fontWeight:600
+        },
+        "button":{
+            borderColor:"#faa61a",
+            color:"#faa61a",
+            fontWeight:600,
+            marginBottom:"8px",
+            backgroundColor:"#fff",
+            padding:"10px",
+            "&:hover":{
+                backgroundColor:"#faa61a",
+                color:"#fff"
+            }
+        },
+        "pic":{
+            width: "350px",
+            height: "200px"
+        },
+        "tableWidth":{
+            width:"80%",
+            margin:"3px auto",
+            paddingTop:"30px",
+            paddingBottom:"30px"
+        },
+        "cartTitle":{
+            background:"#ffab4c",
+            fontSize:"10px",
+            color:"#fff"
+
+        },
+        "tableBody":{
+            background:"#ffead6"
+        },
+        "u":{
+            textDecoration:"none",
+            borderBottom:"double 5px #faa61a",
+        },
+        "price":{
+            fontSize:"18px",
+            paddingBottom:"15px"
+        }
+
+
+
+    }),
+);
+    
 
 
 const loginSelector = state=>{ 
@@ -22,6 +75,9 @@ const currySelector = state => {
 
 export const Cart = ()=>{
 
+    const classes = useStyle();
+
+
     const user = useSelector(loginSelector)
 
     const cartlist = useSelector(cartSelector)
@@ -33,7 +89,6 @@ export const Cart = ()=>{
     const handleLink = path =>history.push(path);
     const dispatch = useDispatch()
 
-
    const 
    [ currys, setCurry ] = useState([]),
    [ carts, setCart ] = useState([]),
@@ -41,12 +96,9 @@ export const Cart = ()=>{
    [ randomcurry, setRandom ] = useState('')
    //[ userData, setUser ] = useState(null)
 
-
     useEffect(
         ()=>{
-
             currylist.length !==0 && setCurry(currylist)
-
             cartlist.length !== 0 &&  setCart(cartlist[0].cartItemList)
 
             if( cartlist.length !== 0 && currylist.length !==0 ){
@@ -60,11 +112,8 @@ export const Cart = ()=>{
                 const mergeArray = [] // 入れ物用意
 
                 carts.forEach(cart => {
-
                     let idMatchCurry = macthCurryData.find( currydata => currydata.id === cart.id) // idが一致するものを一つ格納！
-                    
-                    const merged = {...cart,...idMatchCurry}
-                    
+                    const merged = {...cart,...idMatchCurry}                    
                     mergeArray.push(merged)
                 })
                 cartlist.length !== 0 && setCart2(mergeArray)
@@ -125,27 +174,23 @@ export const Cart = ()=>{
 
     return(
         <React.Fragment>
-
             {
                 user === null ? 
-                <h2>ショッピングカート</h2>:
-                <div>
-                    <h2>{user.displayName}さんのショッピングカート</h2>
+                <div>ショッピングカート</div>:
+                <div className={classes.text}>
+                    <h2><u className={classes.u}>{user.displayName}さんのショッピングカート</u></h2>
                     <span><img src={user.photoURL}></img></span>
                 </div>
                 
             }
-            
-
            
-            { carts.length === 0 ? 'カートに商品がありません！':
-            <div>
-
+            {carts.length === 0 ? 'カートに商品がありません！':
+            <div className={classes.text}>
                
 
-                <table border='1'>
+                <table className={classes.tableWidth}>
                     <thead>
-                        <tr>
+                        <tr className={classes.cartTitle}>
                             <th>
                                 <h2>商品名</h2>
                             </th>
@@ -173,14 +218,14 @@ export const Cart = ()=>{
                     {
                         carts2.map( (ailias,index)=>{
                             return (
-                            <tr key={ailias.id}>
+                            <tr key={ailias.id} className={classes.tableBody}>
                                 <td>{ailias.name}</td>
-                                <td><img src={ailias.pic}></img></td>
+                                <td><img src={ailias.pic} className={classes.pic}></img></td>
                                 <td>{ailias.size}</td>
                                 <td>{ailias.number}</td>
                                 <td>{ailias.topping}</td>
                                 <td>{ailias.total}</td>
-                                <td><button onClick={ ()=>{remove(index)} }>削除</button></td>
+                                <td><button onClick={ ()=>{remove(index)} } className={classes.button}>削除</button></td>
                             </tr>
                             )
                         })
@@ -190,7 +235,7 @@ export const Cart = ()=>{
 
 
                 <div>消費税：{ totalTax() }円</div>
-                <div>ご注文金額合計：{ sumTotalPlice() }円(税込)</div>
+                <div className={classes.price}><u className={classes.u}>ご注文金額合計：{ sumTotalPlice() }円(税込)</u></div>
                 <div>
                     <button onClick={ ()=>{randomCurry()} }>今日のハッピー・ラッキーカレー♪♫</button>
                     <h3>{randomcurry}</h3>
@@ -199,8 +244,8 @@ export const Cart = ()=>{
                 <div>
                     {
                         user === null ? 
-                        <button onClick={ ()=>{login()} }>まずはログイン！</button>:
-                        <button onClick={ ()=>{ handleLink('/buyHistory')} }>注文に進む！</button>
+                        <button onClick={ ()=>{login()} } className={classes.button}>まずはログイン！</button>:
+                        <button onClick={ ()=>{ handleLink('/buyHistory')} } className={classes.button}>注文に進む！</button>
                     }
                 </div>
             
@@ -209,5 +254,3 @@ export const Cart = ()=>{
 </React.Fragment>
     )
 }
-
-

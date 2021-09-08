@@ -39,12 +39,12 @@ const Header=()=>{
   const history=useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
   const handleLink = path =>history.push(path);
   const user=useSelector(userSelector)
-
   const curry=useSelector(currySelector)
   const cart=useSelector(cartSelector)
 
-  // console.log(user)
-  // console.log(cart)
+  console.log(user)
+  console.log(curry)
+  console.log(cart)
 
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()
