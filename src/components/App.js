@@ -23,6 +23,8 @@ import { OrderFinish } from './orderFinish';
 //materialUI
 import { createStyles,makeStyles } from '@material-ui/styles';
 
+import { Like } from './Like' 
+
 
 const useStyle = makeStyles(() =>
     createStyles({
@@ -35,10 +37,6 @@ const useStyle = makeStyles(() =>
       }
     }),
   );
-
-//const currySelector = state => state.StoreState.loginUser
-// const currySelector=state=>state.StoreState.Curry
-// const cartSelector=state=>state.StoreState.Cart
 
 const App = () => {
   const classes = useStyle();
@@ -75,7 +73,8 @@ const App = () => {
               deliveryDate: "",
               deliveryTime: "",
               status: 0,
-              cartItemList: []
+              cartItemList: [],
+              likeItemList: []
             }).then(doc => {
               cartItem.push({
                 id: doc.id,
@@ -88,7 +87,8 @@ const App = () => {
                 deliveryDate: "",
                 deliveryTime: "",
                 status: 0,
-                cartItemList: []
+                cartItemList: [],
+                likeItemList: []
               }
               )
             })
@@ -101,23 +101,6 @@ const App = () => {
         dispatch(fetchCartItem(cartItem))
       })
   }
-
-  // const noLoginCart = ()=>{ // 追加
-  //   console.log('noLoginCart')
-  //   dispatch(fetchCartItem({
-  //     orderDate: "",
-  //     userName: "",
-  //     mailAddress: "",
-  //     addressNumber: "",
-  //     address: "",
-  //     phoneNumber: "",
-  //     deliveryDate: "",
-  //     deliveryTime: "",
-  //     status: 0,
-  //     cartItemList: []
-  //   })
-  //   )
-  // }
 
   const fetchCurry = () => {
     const CurryItem = []
@@ -144,13 +127,13 @@ const App = () => {
       deliveryDate: "",
       deliveryTime: "",
       status: 0,
-      cartItemList: []
+      cartItemList: [],
+      likeItemList: []
     })
     dispatch(fetchCartItem(cartItem))
   }
 
   useEffect(() => {
-    //noLoginCart() // 追加
 
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
@@ -168,8 +151,8 @@ const App = () => {
 
     <React.Fragment>
       <Router>
-        <div className={classes.pic}>
-          <img src={`${process.env.PUBLIC_URL}/pic/header_logo.png`} alt="Logo" className={classes.header}/>
+        <div className={classes.pic} >
+          <img src={`${process.env.PUBLIC_URL}/pic/header_logo.png`} alt="Logo" className={classes.header} />
         </div>
       <Header/>
 
@@ -177,6 +160,7 @@ const App = () => {
 
       <Switch>
         <Route path='/currydetail/:id' component={CurryDetail}></Route>
+        <Route path='/like' exact component={Like}></Route>
         <Route path='/' exact component={Product}></Route>
         <Route path='/orderFinish' exact component={OrderFinish} />
         <Route path='/buyHistory' exact component={BuyHistory} />

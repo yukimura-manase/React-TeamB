@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import { removeCart , addOrder} from '../actions/ActionCreator';
+import { removeCart } from '../actions/ActionCreator';
 import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
@@ -60,12 +60,12 @@ const useStyle = makeStyles(() =>
     
 
 
-const loginSelector = state=>{ // Storeのログインユーザー情報
+const loginSelector = state=>{ 
     return state.StoreState.loginUser
 }
 
 
-const cartSelector = state => { // Storeのカート情報
+const cartSelector = state => { 
     return state.StoreState.Cart
 }
 
@@ -79,20 +79,21 @@ export const Cart = ()=>{
 
 
     const user = useSelector(loginSelector)
-    console.log(user);
 
-    const cartlist = useSelector(cartSelector) // useSelectorの引数にcartSelector関数を渡す。 => Storeのstate情報の一部が引数に入る。
+    const cartlist = useSelector(cartSelector)
 
     const currylist = useSelector(currySelector)
 
-    const history = useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
+
+    const history = useHistory();
     const handleLink = path =>history.push(path);
-    const dispatch = useDispatch() // useDispatchを呼び出して変数dispatchに格納する。
+    const dispatch = useDispatch()
 
    const 
-   [ currys, setCurry] = useState([]),
+   [ currys, setCurry ] = useState([]),
    [ carts, setCart ] = useState([]),
-   [ carts2 , setCart2 ] = useState([])
+   [ carts2 , setCart2 ] = useState([]),
+   [ randomcurry, setRandom ] = useState('')
    //[ userData, setUser ] = useState(null)
 
     useEffect(
@@ -116,11 +117,24 @@ export const Cart = ()=>{
                     mergeArray.push(merged)
                 })
                 cartlist.length !== 0 && setCart2(mergeArray)
-            }
-        },[cartlist,currylist,carts,currys])
+
+        }
+
+    },[cartlist,currylist,carts,currys])
+
+
+    const happy = ['大吉','中吉','小吉',]
+    // 追加機能
+    const randomCurry = ()=>{
+        let random = carts2[Math.floor(Math.random() * carts2.length )]
+        let random2 = happy[Math.floor(Math.random() * happy.length )]
+        console.log(random)
+        setRandom(`今日のハッピー・ラッキーカレーは、「${random.name}」!! 　カレー・おみくじは「${random2}」`)
+    }
+
+
     
     const totalTax = ()=>{ // 消費税の合計を計算
-        //console.log('totalTax')
         let tax = []
         carts.forEach(cart => {
             tax.push(cart.total * 0.1)
@@ -133,7 +147,6 @@ export const Cart = ()=>{
     }
 
      const sumTotalPlice = ()=>{ // 小計金額(total)ごとの消費税分を計算。
-        //console.log('sumTotalPlice')
         let taxInclude = []
         carts.forEach(cart => {
         taxInclude.push(cart.total * 1.1)
@@ -146,10 +159,6 @@ export const Cart = ()=>{
 
     const remove = (removeIndex)=>{
         
-        console.log('dispatch!removeTodo')
-        console.log(removeIndex)
-        
-        // 画面の削除処理
         const copyCart2 = carts2.concat()
         copyCart2.splice(removeIndex,1)
         setCart2(copyCart2)
@@ -228,7 +237,11 @@ export const Cart = ()=>{
                 <div>消費税：{ totalTax() }円</div>
                 <div className={classes.price}><u className={classes.u}>ご注文金額合計：{ sumTotalPlice() }円(税込)</u></div>
                 <div>
-                    {/* {checkLogin()} */}
+                    <button onClick={ ()=>{randomCurry()} }>今日のハッピー・ラッキーカレー♪♫</button>
+                    <h3>{randomcurry}</h3>
+                </div>
+                
+                <div>
                     {
                         user === null ? 
                         <button onClick={ ()=>{login()} } className={classes.button}>まずはログイン！</button>:
