@@ -49,22 +49,6 @@ export const OrderFinish = () => {
 
 
 
-    const [zipCode, setZipCode] = useState('');
-    const [address, setAddress] = useState('');
-    useEffect(() => {
-      if (zipCode) {
-        fetch(`https://api.zipaddress.net/?zipcode=${zipCode}`, {
-          mode: 'cors',
-        })
-          .then((result) => {
-            return result.json();
-          })
-          .then((result) => {
-            setAddress(result.data?.fullAddress || '');
-          });
-      }
-    }, [zipCode]);
-
 
     return (
         
@@ -90,11 +74,11 @@ export const OrderFinish = () => {
                         {
                              user === null ? 
                              <div>
-                                <h2>らくらくカレーをご利用頂きましてありがとうございます。</h2>
+                                <h2>ラクラクカリーをご利用頂きましてありがとうございます。</h2>
                                 <h3>決済は正常に完了しました。</h3>
                             </div>:
                             <div>
-                                <h2>{user.displayName}さん、らくらくカレーをご利用頂きましてありがとうございます。</h2>
+                                <h2>{user.displayName}さん、ラクラクカリーをご利用頂きましてありがとうございます。</h2>
                                 <span><img src={user.photoURL}></img></span>
                             <h3>決済は正常に完了しました。</h3>
                         </div>
