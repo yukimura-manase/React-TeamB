@@ -77,6 +77,18 @@ const useStyle = makeStyles(() =>
                 color: "#fff"
             }
         },
+        "randombutton": {
+            borderColor: "#faa61a",
+            color: "#faa61a",
+            fontWeight: 600,
+            marginBottom: "8px",
+            backgroundColor: "#fff",
+            padding: "10px",
+            "&:hover": {
+                backgroundColor: "#faa61a",
+                color: "#fff"
+            }
+        },
 
     }),
 );
@@ -138,6 +150,14 @@ export const Product = () => {
         Setcurry([...curry,low])
     }
 
+    const[ randomcurry, setRandom ] = useState('')
+    const[ randompic,setRandom2 ]=useState('')
+
+    const randomCurry=()=>{
+        let random=curry[Math.floor(Math.random() * curry.length )]
+        setRandom(`本日のオススメ  ${random.name}`)
+        setRandom2(random.pic)
+    }
 
 
     const ChangeCurry = () => {
@@ -180,6 +200,11 @@ export const Product = () => {
     return (
         <div className={classes.search}>
             <h1>商品検索</h1>
+
+            <button　className={classes.randombutton}　 onClick={ ()=>{randomCurry()}}　>迷っているあなたへ</button>
+            <h2>{randomcurry}</h2>
+            <h2><img src={randompic} alt=''/></h2>
+
             <input type='text' value={word} onChange={handleName} placeholder='商品名を入力' className={classes.text}/>
             <button className={classes.button} onClick={serchCurry} >検索</button>
             <button　className={classes.clearButton}　onClick={clear}>クリア</button>
@@ -189,3 +214,22 @@ export const Product = () => {
         </div>
     )
 }
+
+
+
+// ・state
+// [ randomcurry, setRandom ] = useState('') 
+
+// ・関数
+// const randomCurry = ()=>{
+//         let random = carts2（普段使っている配列名）[Math.floor(Math.random() * carts2.length )]
+//         console.log(random)
+//         setRandom(`今日のラッキーカレーは、「${random.name}」!!`)
+//     }
+// ・
+
+// ・jsx呼び出し
+// <div>
+//                     <button onClick={ ()=>{randomCurry()} }>今日のラッキーカレー！</button>
+//                     <h3>{randomcurry}</h3>
+//                 </div>
