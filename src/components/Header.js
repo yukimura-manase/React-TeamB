@@ -8,8 +8,6 @@ import 'firebase/compat/firestore';
 // import { setLoginUser,deleteLoginUser,fetchCartItem,fetchItem } from '../actions/ActionCreator';
 import { createStyles,makeStyles } from '@material-ui/styles';
 
-// const cartSelector = state=> state.StoreState.Curry
-
 const userSelector=state=>state.StoreState.loginUser
 const currySelector=state=>state.StoreState.Curry
 const cartSelector=state=>state.StoreState.Cart
@@ -44,9 +42,9 @@ const Header=()=>{
   const curry=useSelector(currySelector)
   const cart=useSelector(cartSelector)
 
-  console.log(user)
-  console.log(curry)
-  console.log(cart)
+  // console.log(user)
+  // console.log(curry)
+  // console.log(cart)
 
   const login=()=>{
     const google_auth_provider = new firebase.auth.GoogleAuthProvider()
@@ -75,6 +73,10 @@ const Header=()=>{
       <div className={classes.right}>
         <button onClick={()=>handleLink('/')} className={classes.buttonStyle}>一覧</button>|
         <button onClick={()=>handleLink('/cart')} className={classes.buttonStyle}>ショッピングカートへ</button>|
+        {
+          user === null ? 
+          true : <button onClick={()=>handleLink('/like')} className={classes.buttonStyle}>お気に入り|</button>
+        }
         <Logbutton />
       </div>
     </header>

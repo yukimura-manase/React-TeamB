@@ -3,13 +3,12 @@
 // import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM ,REMOVECART, ADDDATA,CURRYCARTITEM,ADDORDER} from '../actions/ActionCreator'
 import firebase from 'firebase/compat/app'
 
-import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM, REMOVECART, ADDDATA, CURRYCARTITEM,SETCART } from '../actions/ActionCreator'
+import { SETLOGINUSER, DELETELOGINUSER, FETCHCARTITEM, FETCHITEM, REMOVECART, ADDDATA, CURRYCARTITEM,SETCART, ADDLIKE,REMOVELIKE } from '../actions/ActionCreator'
 
 const initialState = {
   loginUser: null,
   Curry: [],
   Cart: [],
-  //orderCart:[]
 
 }
 
@@ -51,6 +50,7 @@ export const StoreState = (state = initialState, action) => {
 
         case CURRYCARTITEM:{
             const curryCart = state.Cart.slice()
+            console.log(curryCart)
             curryCart[0].cartItemList.push(action.Cart)
 
             if(state.loginUser){
@@ -63,50 +63,34 @@ export const StoreState = (state = initialState, action) => {
 
             return {...state,Cart: curryCart}
         }
+
+        case ADDLIKE:{
+            const copyCart = state.Cart.slice()
+            copyCart[0].likeItemList.push(action.likeCurry)
+
+            firebase.firestore()
+                .collection(`users/${state.loginUser.uid}/carts`)
+                .doc(copyCart[0].id)
+                .update( {likeItemList: copyCart[0].likeItemList} )
+            
+            return {...state,Cart: copyCart}
+        }
+
+        case REMOVELIKE:{
+            
+            const copyCart = state.Cart.concat()
+            copyCart[0].likeItemList.splice(action.index,1)
+
+            firebase.firestore()
+            .collection(`users/${state.loginUser.uid}/carts`)
+            .doc(copyCart[0].id) // curryCart[0].id
+            .update( {likeItemList: copyCart[0].likeItemList} )
+
+            return { ...state,Cart: copyCart}
+        
+        }
     
         default:
             return state
     }
 }
-
-
-  // case ADDDATA:
-    //     const data = state.Cart.slice()
-    //     const dataObject = {
-    //         // orderDate: action.orderDate,
-    //         userName: action.userName,
-    //         mailAddress: action.mailAddress,
-    //         addressNumber: action.addressNumber,
-    //         address: action.address,
-    //         phoneNumber: action.phoneNumber,
-    //         deliveryDate: action.deliveryDate,
-    //         deliveryTime: action.deliveryTime,
-    //         status: action.status,
-    //     }
-    
-    //     const dataArray = [ ...data, dataObject ]
-    //         return { cartItem: dataArray }
-    
-    
-
-    // case ADDDATA:
-
-    //   const data = state.Cart.slice()
-    //   return {...state, cartItem: data }
-
-    
-      // const data = state.Cart.slice()
-      // const dataObject = {
-      //   // orderDate: action.orderDate,
-      //   userName: action.userName,
-      //   mailAddress: action.mailAddress,
-      //   addressNumber: action.addressNumber,
-      //   address: action.address,
-      //   phoneNumber: action.phoneNumber,
-      //   deliveryDate: action.deliveryDate,
-      //   deliveryTime: action.deliveryTime,
-      //   status: action.status,
-      // }
-
-      // const dataArray = [...data, dataObject]
-      // return { cartItem: dataArray }

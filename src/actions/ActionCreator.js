@@ -8,6 +8,8 @@ export const CURRYCARTITEM = 'curryCartItem'
 export const REMOVECART = 'removeCart';
 export const ADDDATA = 'addData';
 //export const ADDORDER = 'addOrder';
+export const ADDLIKE = 'addLike';
+export const REMOVELIKE = 'removeLike';
 
 export const setLoginUser = (user) =>({ // ログインユーザー情報のセット
     type: SETLOGINUSER,
@@ -40,31 +42,16 @@ export const removeCart = (index)=>{
     }
 }
 
+export const addLike = (likeCurry)=>{
+    return {
+        type:ADDLIKE,
+        likeCurry:likeCurry
+    }
+}
 
-// export const addData = (cartItem) => ({
-//     type: ADDDATA,
-//     Cart: cartItem
-
-// })
-
-// export const addData = ( 
-//     userName,
-//     mailAddress,
-//     addressNumber,
-//     address,
-//     phoneNumber,
-//     deliveryDate,
-//     deliveryTime,
-//     status
-//     ) => ({
-
-//         type: ADDDATA,
-//         userName: userName,
-//         mailAddress: mailAddress,
-//         addressNumber: addressNumber,
-//         address: address,
-//         phoneNumber: phoneNumber,
-//         deliveryDate: deliveryDate,
-//         deliveryTime: deliveryTime,
-//         status: status,
-// })
+export const removeLike = (index)=>{
+    return {
+        type:REMOVELIKE,
+        index:index
+    }
+}

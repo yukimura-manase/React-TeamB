@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { fetchItem } from '../actions/ActionCreator';
+import { fetchItem, addLike } from '../actions/ActionCreator';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore'
 //materialUI
@@ -96,18 +96,50 @@ const useStyle = makeStyles(() =>
 // export const curryItem = state => {
 // import { StoreState } from '../reducers/StoreState';
 
-export const curryItem = state => {
+const cartSelector = state => { 
+    return state.StoreState.Cart
+}
+
+
+const loginSelector = state=>{ 
+    return state.StoreState.loginUser
+}
+
+const curryItem = state =>{
     return state.StoreState.Curry
 }
 
-export const Product = () => {
-    const pullcurry = useSelector(curryItem)
-    const classes = useStyle()
-    const history = useHistory()
-    const handleLink = path => history.push(path)
-    const [word, Setword] = useState('')
-    const [curry, Setcurry] = useState([])
+export const Product =()=>{
 
+    const pullcurry =useSelector(curryItem) //curryだったりpullcurryだったりする
+
+    const user = useSelector(loginSelector)
+
+    const storeCart = useSelector(cartSelector)
+
+
+    const classes = useStyle()
+
+    const history=useHistory()
+
+    const handleLink = path => history.push(path)
+    
+    const [curry, Setcurry] = useState([])
+    const [newCurry, setNewCurry] = useState([])
+
+    console.log(curry)
+
+    // 追加機能
+    const dispatch = useDispatch() 
+
+    const likeAdd = (curry)=>{
+        alert('お気に入りに追加しました！')
+
+        dispatch(addLike(curry))
+    }
+
+    const [word, Setword] = useState('')
+    
     useEffect(() => {
         Setcurry(pullcurry)
     })
@@ -116,7 +148,6 @@ export const Product = () => {
         Setword(e.target.value)
     }
 
-    const [newCurry, setNewCurry] = useState([])
 
     const serchCurry = () => {
         let currys = (curry.filter(
@@ -131,6 +162,7 @@ export const Product = () => {
         }
         setNewCurry(currys)
     }
+
     const clear = () => {
         Setword('')
     }
@@ -139,15 +171,22 @@ export const Product = () => {
         const high = curry.sort((a, b) => {
             return b.msizePrice - a.msizePrice
         })
-        console.log(curry)
+        const high2 = newCurry.sort((a, b) => {
+            return b.msizePrice - a.msizePrice
+        })
         Setcurry([...curry,high])
+        setNewCurry(high2)
+
     }
     const Low = () => {
         const low = curry.sort((a, b) => {
             return a.msizePrice - b.msizePrice
         })
-        console.log(curry)
+        const low2 = newCurry.sort((a, b) => {
+            return a.msizePrice - b.msizePrice
+        })
         Setcurry([...curry,low])
+        setNewCurry(low2)
     }
 
     const[ randomcurry, setRandom ] = useState('')
@@ -158,31 +197,13 @@ export const Product = () => {
         setRandom(`本日のオススメ  ${random.name}`)
         setRandom2(random.pic)
     }
-
-
-    const ChangeCurry = () => {
-        if (newCurry.length === 0) {
-            return (
-                curry.map((curry) => {
-                    return <div>
-                        <div>
-                            <div key={curry.id} className={classes.card}>
-                                <div className={classes['card-title']}>{curry.name}</div>
-                                <div><img src={curry.pic} alt='' onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']} /></div>
-                                <div className={classes['card-content']}>
-                                    <div>Mサイズ:{curry.msizePrice}円</div>
-                                    <div>Lサイズ:{curry.lsizePrice}円</div>
-                                    <button onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                })
-            )
-        } else {
-            return (
-                newCurry.map((curry) => {
-                    return <div>
+    
+const ChangeCurry = () => {
+    if (newCurry.length === 0) {
+        return (
+            curry.map((curry) => {
+                return <div>
+                    <div>
                         <div key={curry.id} className={classes.card}>
                             <div className={classes['card-title']}>{curry.name}</div>
                             <div><img src={curry.pic} alt='' onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']} /></div>
@@ -190,13 +211,38 @@ export const Product = () => {
                                 <div>Mサイズ:{curry.msizePrice}円</div>
                                 <div>Lサイズ:{curry.lsizePrice}円</div>
                                 <button onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+                                {
+                                    user === null ? 
+                                    true : <button onClick={ ()=> likeAdd(curry) } className={classes.button}>お気に入り</button>
+                                }
                             </div>
                         </div>
                     </div>
-                })
-            )
-        }
+                </div>
+            })
+        )
+    } else {
+        return (
+            newCurry.map((curry) => {
+                return <div>
+                    <div key={curry.id} className={classes.card}>
+                        <div className={classes['card-title']}>{curry.name}</div>
+                        <div><img src={curry.pic} alt='' onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes['card-picutre']} /></div>
+                        <div className={classes['card-content']}>
+                            <div>Mサイズ:{curry.msizePrice}円</div>
+                            <div>Lサイズ:{curry.lsizePrice}円</div>
+                            <button onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+                            {
+                                user === null ? 
+                                true : <button onClick={ ()=> likeAdd(curry) } className={classes.button}>お気に入り</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            })
+        )
     }
+}
     return (
         <div className={classes.search}>
             <h1>商品検索</h1>
@@ -214,22 +260,3 @@ export const Product = () => {
         </div>
     )
 }
-
-
-
-// ・state
-// [ randomcurry, setRandom ] = useState('') 
-
-// ・関数
-// const randomCurry = ()=>{
-//         let random = carts2（普段使っている配列名）[Math.floor(Math.random() * carts2.length )]
-//         console.log(random)
-//         setRandom(`今日のラッキーカレーは、「${random.name}」!!`)
-//     }
-// ・
-
-// ・jsx呼び出し
-// <div>
-//                     <button onClick={ ()=>{randomCurry()} }>今日のラッキーカレー！</button>
-//                     <h3>{randomcurry}</h3>
-//                 </div>
