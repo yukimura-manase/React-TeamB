@@ -176,7 +176,7 @@ export const Cart = ()=>{
         <React.Fragment>
             {
                 user === null ? 
-                <div>ショッピングカート</div>:
+                <h2 className={classes.text}><u className={classes.u}>ショッピングカート</u></h2>:
                 <div className={classes.text}>
                     <h2><u className={classes.u}>{user.displayName}さんのショッピングカート</u></h2>
                     <span><img src={user.photoURL}></img></span>
@@ -210,7 +210,7 @@ export const Cart = ()=>{
                                 <h2>小計(税抜)</h2>
                             </th>
                             <th>
-                                <h2>削除</h2>
+                                <h2></h2>
                             </th>
                         </tr>
                     </thead>
@@ -237,7 +237,7 @@ export const Cart = ()=>{
                 <div>消費税：{ totalTax() }円</div>
                 <div className={classes.price}><u className={classes.u}>ご注文金額合計：{ sumTotalPlice() }円(税込)</u></div>
                 <div>
-                    <button onClick={ ()=>{randomCurry()} }>今日のハッピー・ラッキーカレー♪♫</button>
+                    <button onClick={ ()=>{randomCurry()} }　className={classes.button}>今日のハッピー・ラッキーカレー♪♫</button>
                     <h3>{randomcurry}</h3>
                 </div>
                 

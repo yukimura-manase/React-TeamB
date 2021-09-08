@@ -75,7 +75,7 @@ const Header=()=>{
         <button onClick={()=>handleLink('/cart')} className={classes.buttonStyle}>ショッピングカートへ</button>|
         {
           user === null ? 
-          true : <button onClick={()=>handleLink('/like')} className={classes.buttonStyle}>お気に入り|</button>
+          true : <button onClick={()=>handleLink('/like')} className={classes.buttonStyle}>お気に入り |</button>
         }
         <Logbutton />
       </div>

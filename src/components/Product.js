@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom';
 import { fetchItem, addLike } from '../actions/ActionCreator';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore'
-//materialUI
 import { createStyles, makeStyles } from '@material-ui/styles';
 
 const useStyle = makeStyles(() =>
@@ -81,7 +80,6 @@ const useStyle = makeStyles(() =>
             borderColor: "#faa61a",
             color: "#faa61a",
             fontWeight: 600,
-            marginBottom: "8px",
             backgroundColor: "#fff",
             padding: "10px",
             "&:hover": {
@@ -89,6 +87,31 @@ const useStyle = makeStyles(() =>
                 color: "#fff"
             }
         },
+        "lucky":{
+            backgroundColor:"#ffead6",
+            width:"60%",
+            paddingTop:"15px",
+            paddingBottom:"15px",
+            marginLeft:"auto",
+            marginRight:"auto",
+            marginTop:"50px"
+        },
+        "likebutton":{
+            borderColor: "#faa61a",
+            color: "#faa61a",
+            fontWeight: 600,
+            marginBottom: "8px",
+            backgroundColor: "#fff",
+            padding: "10px",
+            marginLeft:"15px",
+
+            "&:hover": {
+                backgroundColor: "#faa61a",
+                color: "#fff"
+            }
+        },
+    
+
 
     }),
 );
@@ -134,7 +157,8 @@ export const Product =()=>{
 
     const likeAdd = (curry)=>{
         alert('お気に入りに追加しました！')
-
+        console.log(user);
+        console.log(storeCart);
         dispatch(addLike(curry))
     }
 
@@ -213,7 +237,7 @@ const ChangeCurry = () => {
                                 <button onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
                                 {
                                     user === null ? 
-                                    true : <button onClick={ ()=> likeAdd(curry) } className={classes.button}>お気に入り</button>
+                                    true : <button onClick={ ()=> likeAdd(curry) } className={classes.likebutton}>お気に入り</button>
                                 }
                             </div>
                         </div>
@@ -234,7 +258,7 @@ const ChangeCurry = () => {
                             <button onClick={() => handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
                             {
                                 user === null ? 
-                                true : <button onClick={ ()=> likeAdd(curry) } className={classes.button}>お気に入り</button>
+                                true : <button onClick={ ()=> likeAdd(curry) } className={classes.likebutton}>お気に入り</button>
                             }
                         </div>
                     </div>
@@ -245,12 +269,13 @@ const ChangeCurry = () => {
 }
     return (
         <div className={classes.search}>
-            <h1>商品検索</h1>
-
+            <div className={classes.lucky}>
             <button　className={classes.randombutton}　 onClick={ ()=>{randomCurry()}}　>迷っているあなたへ</button>
             <h2>{randomcurry}</h2>
-            <h2><img src={randompic} alt=''/></h2>
+            <h2><img src={randompic} alt='' className="pic"　/></h2>
+            </div>
 
+            <h1>商品検索</h1>
             <input type='text' value={word} onChange={handleName} placeholder='商品名を入力' className={classes.text}/>
             <button className={classes.button} onClick={serchCurry} >検索</button>
             <button　className={classes.clearButton}　onClick={clear}>クリア</button>

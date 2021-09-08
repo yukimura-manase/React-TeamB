@@ -7,7 +7,6 @@ import {
   Link
 } from 'react-router-dom' // Router設定仮置き
 import { useDispatch,useSelector } from 'react-redux'; // 仮置きサンプル
-
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth' // authentication code
 import 'firebase/compat/firestore' // firestore access
@@ -166,8 +165,8 @@ const App = () => {
         <Route path='/buyHistory' exact component={BuyHistory} />
         <Route path='/cart' exact component={Cart} />
       </Switch>
-        <Footer/>
       </Router>
+      <Footer/>
     </React.Fragment>
   );
 }

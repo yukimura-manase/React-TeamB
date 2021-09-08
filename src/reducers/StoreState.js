@@ -66,6 +66,8 @@ export const StoreState = (state = initialState, action) => {
 
         case ADDLIKE:{
             const copyCart = state.Cart.slice()
+            console.log(state);
+            console.log(copyCart);
             copyCart[0].likeItemList.push(action.likeCurry)
 
             firebase.firestore()

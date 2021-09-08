@@ -23,6 +23,19 @@ const useStyle = makeStyles(() =>
 				color: "#fff"
 			}
 		},
+		"pic":{
+            width: "350px",
+            height: "200px"
+        },
+		"u":{
+            textDecoration:"none",
+            borderBottom:"double 5px #faa61a",
+        },
+		"table":{
+			width:"100%"
+		}
+
+
 	}),
 );
 
@@ -433,7 +446,7 @@ export const BuyHistory = () => {
 		return (
 			<tr className="cart-item" key={index}>
 				<td className="cartName"> {item.name} </td>
-				<td className="imgPosition"><img className="img" src={item.pic} /></td>
+				<td className="imgPosition"><img className="img" src={item.pic} className={classes.pic}/></td>
 				<td> {item.size} </td>
 				<td> {item.number} </td>
 				<td className="cartTopping"> {item.topping} </td>
@@ -445,12 +458,10 @@ export const BuyHistory = () => {
 	return (
 		<div>
 
-			<div className="main-title">注文確認画面</div>
+			<div className="main-title"><u className={classes.u}>注文確認画面</u></div>
 
 			<div className="container">
-				<div>
-
-					<table>
+					<table className={classes.table}>
 						<tbody>
 							<tr className="cart-title">
 								<th>商品名</th>
@@ -465,7 +476,6 @@ export const BuyHistory = () => {
 
 						</tbody>
 					</table>
-				</div>
 			</div>
 
 			<div className="container">
@@ -476,9 +486,8 @@ export const BuyHistory = () => {
 
 
 			<div className="container">
-				<div className="total-price">注文金額 (税込) : {sumTotalPlice()} 円</div>
+				<div className="total-price"><u className={classes.u}>注文金額 (税込) : {sumTotalPlice()} 円</u></div>
 			</div>
-			<div className="border"></div>
 
 
 

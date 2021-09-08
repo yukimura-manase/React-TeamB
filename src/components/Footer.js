@@ -8,8 +8,11 @@ const useStyle = makeStyles(() =>
             backgroundColor:"#faa61a",
             textAlign:"right",
             height:"50px",
- 
-            bottom: 0 /*下に固定*/
+            // padding:0, /*　追加*/
+            // margin:0,
+            // bottom: 0, /*下に固定*/
+            // marginTop:"auto"
+    bottom:0            
            
         },
     }),

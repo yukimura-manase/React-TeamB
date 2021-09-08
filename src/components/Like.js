@@ -5,6 +5,53 @@ import { useHistory } from "react-router-dom";
 import firebase from "firebase/compat/app";
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import { createStyles, makeStyles } from '@material-ui/styles';
+
+const useStyle = makeStyles(() =>
+    createStyles({
+        "u":{
+            textDecoration:"none",
+            borderBottom:"double 5px #faa61a",
+        },
+        "button":{
+            borderColor:"#faa61a",
+            color:"#faa61a",
+            fontWeight:600,
+            marginBottom:"8px",
+            backgroundColor:"#fff",
+            padding:"10px",
+            "&:hover":{
+                backgroundColor:"#faa61a",
+                color:"#fff"
+            }
+        },
+        "pic":{
+            width: "350px",
+            height: "200px"
+        },
+        "dis":{
+            textAlign:"center"
+            
+        },
+        "tableWidth":{
+            width:"80%",
+            margin:"3px auto",
+            paddingTop:"30px",
+            paddingBottom:"30px"
+        },
+        "cartTitle":{
+            background:"#ffab4c",
+            fontSize:"10px",
+            color:"#fff"
+
+        },
+        "tableBody":{
+            background:"#ffead6",
+            textAlign:"center"
+        },
+    }),
+    );
+    
 
 const loginSelector = state=>{
     return state.StoreState.loginUser
@@ -20,8 +67,11 @@ const currySelector = state => {
 
 export const Like = ()=>{
 
-    const user = useSelector(loginSelector)
+    const classes = useStyle()
 
+
+    const user = useSelector(loginSelector)
+    console.log(user);
     const cartLikelist = useSelector(CartSelector)
 
     const currylist = useSelector(currySelector)
@@ -41,7 +91,7 @@ export const Like = ()=>{
 
         //console.log(likelist)
         cartLikelist.length !== 0 &&  setLike(cartLikelist[0].likeItemList)
-
+        console.log(likes);
     },[currylist,currys,cartLikelist,likes])
 
 
@@ -57,8 +107,8 @@ export const Like = ()=>{
             {
                 user === null ? 
                 <h2>お気に入り画面(ログインユーザーのみが使えます！)</h2>:
-                <div>
-                    <h2>{user.displayName}さんのお気に入り商品！</h2>
+                <div className={classes.dis}>
+                    <h2><u className={classes.u}>{user.displayName}さんのお気に入り商品！</u></h2>
                     <span><img src={user.photoURL}></img></span>
                 </div>
                 
@@ -66,20 +116,50 @@ export const Like = ()=>{
             
             { likes.length === 0 ? <h2>お気に入り登録がありません！</h2>:
                 <div>
+                    <div >
+                        <table className={classes.tableWidth}>
+                            <thead>
+                                <tr className={classes.cartTitle}>
+                                    <th>
+                                        <h2>商品名</h2>
+                                    </th>
+                                    <th>
+                                        <h2>商品イメージ</h2>
+                                    </th>
+                                    <th>
+                                        <h2>説明</h2>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
                     {
                         console.log(likes),
                         likes.map( (like,index)=>{
                             return (
-                            <div key={like.id}>
-                                <div>商品名：{like.name}</div>
-                                <div><img src={like.pic}></img></div>
-                                <div>商品説明：{like.detail}</div>
-                                <button onClick={()=> handleLink(`currydetail/${like.id}`)} >商品詳細へ</button>
-                                <button onClick={ ()=>{remove(index)} }>お気に入りから削除</button>
-                            </div>
+                                    <tbody className={classes.tableBody}　key={like.id}>
+                                        <tr>
+                                        <td>
+                                        <div>{like.name}</div>
+                                        </td>
+                                        <td>
+                                        <div><img src={like.pic} className={classes.pic}></img></div>
+                                        </td>
+                                        <td>
+                                            <div>{like.detail}</div>
+                                        </td>
+                                        <td>
+                                            <button onClick={()=> handleLink(`currydetail/${like.id}`)} className={classes.button}>商品詳細へ</button>
+                                            <button onClick={ ()=>{remove(index)} } className={classes.button}>お気に入りから削除</button>
+                                        </td>
+                                        </tr>
+                                        </tbody>
                             )
                         })
                     }
+                    
+                                </table>
+                            </div>
+
                 </div>
             }
 
