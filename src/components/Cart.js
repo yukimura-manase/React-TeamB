@@ -1,5 +1,5 @@
 import React, {useState,useEffect} from 'react'
-import { removeCart , addOrder} from '../actions/ActionCreator';
+import { removeCart } from '../actions/ActionCreator';
 import { useDispatch,useSelector } from 'react-redux';
 import {useHistory} from "react-router-dom";
 import firebase from "firebase/compat/app";
@@ -7,12 +7,12 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 
 
-const loginSelector = state=>{ // Storeのログインユーザー情報
+const loginSelector = state=>{ 
     return state.StoreState.loginUser
 }
 
 
-const cartSelector = state => { // Storeのカート情報
+const cartSelector = state => { 
     return state.StoreState.Cart
 }
 
@@ -24,19 +24,21 @@ export const Cart = ()=>{
 
     const user = useSelector(loginSelector)
 
-    const cartlist = useSelector(cartSelector) // useSelectorの引数にcartSelector関数を渡す。 => Storeのstate情報の一部が引数に入る。
+    const cartlist = useSelector(cartSelector)
 
     const currylist = useSelector(currySelector)
 
-    const history = useHistory(); // useHistory => 画面の表示履歴のすべてのデータを持っているhistoryオブジェクトを呼び出し格納する。
+
+    const history = useHistory();
     const handleLink = path =>history.push(path);
-    const dispatch = useDispatch() // useDispatchを呼び出して変数dispatchに格納する。
+    const dispatch = useDispatch()
 
 
    const 
-   [ currys, setCurry] = useState([]),
+   [ currys, setCurry ] = useState([]),
    [ carts, setCart ] = useState([]),
-   [ carts2 , setCart2 ] = useState([])
+   [ carts2 , setCart2 ] = useState([]),
+   [ randomcurry, setRandom ] = useState('')
    //[ userData, setUser ] = useState(null)
 
 
@@ -67,9 +69,19 @@ export const Cart = ()=>{
                 })
                 cartlist.length !== 0 && setCart2(mergeArray)
 
-            }
+        }
 
-        },[cartlist,currylist,carts,currys])
+    },[cartlist,currylist,carts,currys])
+
+
+    const happy = ['大吉','中吉','小吉',]
+    // 追加機能
+    const randomCurry = ()=>{
+        let random = carts2[Math.floor(Math.random() * carts2.length )]
+        let random2 = happy[Math.floor(Math.random() * happy.length )]
+        console.log(random)
+        setRandom(`今日のハッピー・ラッキーカレーは、「${random.name}」!! 　カレー・おみくじは「${random2}」`)
+    }
 
 
     
@@ -179,6 +191,11 @@ export const Cart = ()=>{
 
                 <div>消費税：{ totalTax() }円</div>
                 <div>ご注文金額合計：{ sumTotalPlice() }円(税込)</div>
+                <div>
+                    <button onClick={ ()=>{randomCurry()} }>今日のハッピー・ラッキーカレー♪♫</button>
+                    <h3>{randomcurry}</h3>
+                </div>
+                
                 <div>
                     {
                         user === null ? 

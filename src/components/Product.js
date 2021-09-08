@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { fetchItem } from '../actions/ActionCreator';
+import { fetchItem, addLike } from '../actions/ActionCreator';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore'
 //materialUI
@@ -65,12 +65,26 @@ const useStyle = makeStyles(() =>
 // export const curryItem = state => {
 // import { StoreState } from '../reducers/StoreState';
 
-export const curryItem = state =>{
+const cartSelector = state => { 
+    return state.StoreState.Cart
+}
+
+
+const loginSelector = state=>{ 
+    return state.StoreState.loginUser
+}
+
+const curryItem = state =>{
     return state.StoreState.Curry
 }
 
 export const Product =()=>{
+
     const curry =useSelector(curryItem)
+
+    const user = useSelector(loginSelector)
+
+    const storeCart = useSelector(cartSelector)
 
 
     const classes = useStyle();
@@ -78,6 +92,16 @@ export const Product =()=>{
     const history=useHistory()
 
     const handleLink = path => history.push(path)
+
+    // 追加機能
+    const dispatch = useDispatch() 
+
+    const likeAdd = (curry)=>{
+        alert('お気に入りに追加しました！')
+
+        dispatch(addLike(curry))
+    }
+
 
     const [word,Setword]=useState('')
 
@@ -116,6 +140,10 @@ export const Product =()=>{
             <div>Mサイズ:{curry.msizePrice}円</div>
             <div>Lサイズ:{curry.lsizePrice}円</div>
             <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+            {
+                user === null ? 
+                true : <button onClick={ ()=> likeAdd(curry) } className={classes.button}>お気に入り</button>
+            }
             </div>
             </div>
             </div>
@@ -133,6 +161,10 @@ export const Product =()=>{
             <div>Mサイズ:{curry.msizePrice}円</div>
             <div>Lサイズ:{curry.lsizePrice}円</div>
             <button onClick={()=> handleLink(`currydetail/${curry.id}`)} className={classes.button}>商品詳細へ</button>
+            {
+                user === null ? 
+                true : <button onClick={ ()=> likeAdd(curry) } className={classes.button}>お気に入り</button>
+            }
             </div>
             </div>
             </div>
